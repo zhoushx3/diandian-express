@@ -1,0 +1,28 @@
+#donation-scroller {
+  width: 100%;
+  font-size: 12pt;
+  line-height: 40px;
+  height: 40px;
+  background-color: #6D6E72;
+  overflow: hidden;
+
+  .outer {
+    height: 100%;
+    width: 50000px;
+  }
+
+  .inner {
+    display: inline-block;
+    width: auto;
+
+    span {
+      color: white;
+      margin: 0 20px;
+      cursor: pointer;
+    }
+  }
+  
+  div span:hover {
+    text-decoration: underline;
+  }
+}

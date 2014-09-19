@@ -1,0 +1,25 @@
+extends  ../background_layout
+
+block content 
+  form#search-users(name= 'search-users' method= 'POST', action= '/background/search')
+    input(type= 'text' name= 'words')
+    button(type= 'submit') 搜索
+  div#administrator
+    div#header-line
+      p 管理员
+      button 添加管理员
+    div#header-line
+      p 普通用户
+      button 查看黑名单
+  div#add-administrator
+    form(method= 'POST', action= '/background/add-administrator')
+      p 管理员姓名
+      input#administrator-name(name= 'administrator-name' type= 'text')
+      p 注册邮箱（登录名）
+      input#email(type= 'text' name= 'email')
+      p QQ帐号（首次登录默认密码）
+      input#qq(type= 'text' name= 'qq')
+      div
+        button#quit 取消
+        button#confirm(type= 'submit') 确认添加
+      

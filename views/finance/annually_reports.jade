@@ -1,0 +1,17 @@
+extends  ../layout
+
+block content
+  #annually-reports.finance
+    .finance-sidebar
+      ol#years
+        - each year in years
+          li=year
+    #main-content
+      h3 年度报表
+      #container
+        ul#records
+          each item in annual
+            li=item.src
+          img#img(alt = "年报告")
+          #no-info 对不起，本年度暂无公开数据。
+    .clear

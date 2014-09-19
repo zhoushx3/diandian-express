@@ -1,0 +1,38 @@
+#activity_content {
+	width: 80%;
+	float: right;
+	max-height: 800px;
+	overflow: auto;
+	#contents {
+		display: none;
+		.active {
+			display: block;
+		}
+		p#signature {
+			display: none;
+		}
+	}
+}
+#activity_headline {
+	width: 16%;
+	float: left;
+	li {
+		padding: 10px 15px;
+		border: 1px solid #ddd;
+		border-collapse: collapse;
+		text-align: center;
+		font-size: 20px;
+		background-color: rgba(219, 230, 219, 0.65);
+		&:hover {
+			cursor: pointer;
+			background: #ccc;
+		}
+		&.active {
+			background: #fff;
+		}
+	}
+	h2 {
+		margin-bottom: 20px;
+		background:  rgba(104, 104, 104, 1);
+	}
+}

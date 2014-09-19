@@ -1,0 +1,5 @@
+#donation-scroller
+  .outer
+    .inner
+      each donation in donations
+        span= formatDate(donation.date) + ' ' + getDonationString(donation)

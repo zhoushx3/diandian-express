@@ -1,0 +1,34 @@
+.finance-sidebar{
+	float: left;
+	width: 144px;
+	h3 {
+		margin-top: 0;
+	}
+	#year select{
+		width: 100px;
+		margin-left: 20px;
+		text-align: center;
+	}
+	ol{
+		list-style: none;
+		border: 1px solid #c3c3c3;
+		text-align: center;
+		margin-left: 0;
+		width: 144px;
+		li {
+			font-size: 20px;
+			height: 40px;
+			line-height: 40px;
+			background-color: #F2F2F2;
+			border-top: 1px dotted #c3c3c3;
+			border-collapse: collapse;
+			cursor: pointer;
+			&.active {
+				background-color: #ffffff;
+			}
+			&:first-child {
+				border: none;
+			}
+		}
+	}
+}

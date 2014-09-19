@@ -1,0 +1,12 @@
+extends  ../layout
+
+block content
+  #activity_headline
+    h2 活动预告
+    ul
+      each item in items
+        li=item.headline
+
+  include activity_content
+  +activity_content(items)
+

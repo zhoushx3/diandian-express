@@ -1,0 +1,11 @@
+extends  ../background_layout
+
+block content
+	form(method= 'post', action= 'background/bannerssubmit')
+		input#add-banner(type= 'file', name= 'addImage', size= '28')
+		button.btn(type = 'submit') 上传 
+	div#warning
+		p 亲爱的管理员，请注意：
+		p .上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过5个。
+		p .请上传不大于4M的图片，且宽高比为1：3。
+	div#div-image

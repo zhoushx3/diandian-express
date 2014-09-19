@@ -1,0 +1,274 @@
+extends ../layout
+
+block content
+  form#volunteer-application.application(name='volunteerApplication')
+    h1 志愿者申请表格
+    fieldset
+      legend 个人信息
+      #photo-area
+        #photo
+          img(src='', alt='')
+          #upload 上传照片
+        .note 支持bmp/jpg/jpeg/png格式，1M以内。
+      .field
+        label
+          span.field-name 姓名：
+          input#name(type='text', name='name', maxlength='20', datatype='s1-20')
+      .field
+        span.field-name 性别：
+        label
+          input(type='radio', name='gender', value='male', checked='')
+          | 男
+        label
+          input(type='radio', name='gender', value='female')
+          | 女
+      .field
+        span.field-name 出生年月：
+        input#birth-year(type='text', name='birthYear')
+        | 年
+        input#birth-month(type='text', name='birthMonth')
+        | 月
+      .field
+        span.field-name 籍贯：
+        input#province(type='text', name='province')
+        | 省
+        input#city(type='text', name='city')
+        | 市
+      .field
+        span.field-name 政治面貌：
+        label
+          input(type='radio', name='politicalStatus', value='群众', checked='')
+          | 群众
+        label
+          input(type='radio', name='politicalStatus', value='团员')
+          | 团员
+        label
+          input(type='radio', name='politicalStatus', value='党员')
+          | 党员
+      .field
+        label
+          span.field-name 工作单位：
+          input#work-unit(type='text', name='workUnit')
+        label
+          span.field-name 职务：
+          input#position(type='text', name='position')
+      .field
+        label
+          span.field-name 身份证号：
+          input#IDCardNo(type='text', name='IDCardNo')
+        label
+          span.field-name 特长：
+          input#speciality(type='text', name='speciality')
+    fieldset
+      legend 联系方式
+      .field
+        label
+          span.field-name 通讯地址：
+          input#address.input-large(type='text', name='address')
+      .field
+        label
+          span.field-name 邮政编码：
+          input#postcode(type='text', name='postcode')
+      .field
+        label
+          span.field-name 手机：
+          input#cellphone(type='text', name='cellphone')
+        label
+          span.field-name 固定电话：
+          input#phone(type='text', name='phone')
+      .field
+        label
+          span.field-name Email：
+          input#email(type='text', name='email')
+        label
+          span.field-name QQ号码：
+          input#QQ(type='text', name='QQ')
+    fieldset
+      legend 志愿相关
+      ol
+        li
+          | 熟悉的语言：(可多选)
+          ul
+            li
+              label
+                input(type='checkbox', name='languages', value='国语')
+                | 国语
+            li
+              label
+                input(type='checkbox', name='languages', value='粤语')
+                | 粤语
+            li
+              label
+                input(type='checkbox', name='languages', value='英语')
+                | 英语
+            li
+              label
+                input(type='checkbox', name='languages', value='日语')
+                | 日语
+            li
+              label
+                input(type='checkbox', name='languages')
+                | 其它：
+              input#other-languages(type='text')
+        li
+          | 拥有的交通工具：(可多选)
+          ul
+            li
+              label
+                input(type='checkbox', name='vihicles', value='小汽车')
+                | 小汽车
+            li
+              label
+                input(type='checkbox', name='vihicles', value='面包车')
+                | 面包车
+            li
+              label
+                input(type='checkbox', name='vihicles', value='货车')
+                | 货车
+            li
+              label
+                input(type='checkbox', name='vihicles', value='三轮车')
+                | 三轮车
+            li
+              label
+                input(type='checkbox', name='vihicles', value='自行车')
+                | 自行车
+            li
+              label
+                input(type='checkbox', name='vihicles')
+                | 其它：
+              input#other-vihicles(type='text')
+        li
+          | 希望服务时间：
+          ul
+            li
+              label
+                input(type='radio', name='volunteerTime', value='长期参与')
+                | 长期参与
+            li
+              label
+                input(type='radio', name='volunteerTime', value='周末参与')
+                | 周末参与
+            li
+              label
+                input(type='radio', name='volunteerTime', value='时间不固定')
+                | 时间不固定
+            li
+              label
+                input(type='radio', name='volunteerTime')
+                | 固定时间
+              input#other-time(type='text')
+        li#services
+          | 愿意提供的服务：
+          br
+          div 志愿者管理：
+          label
+            input(type='checkbox', name='serviceManage', value='志愿者培训')
+            | 志愿者培训
+          label
+            input(type='checkbox', name='serviceManage', value='挂载服务')
+            | 挂载服务
+          label
+            input(type='checkbox', name='serviceManage', value='摄影')
+            | 摄影
+          label
+            input(type='checkbox', name='serviceManage', value='文书写作')
+            | 文书写作
+          label
+            input(type='checkbox', name='serviceManage', value='活动策划')
+            | 活动策划
+          label
+            input(type='checkbox', name='serviceManage', value='美工设计')
+            | 美工设计
+          label
+            input(type='checkbox', name='serviceManage', value='公关外联')
+            | 公关外联
+          label
+            input(type='checkbox', name='serviceManage', value='数据录入')
+            | 数据录入
+          label
+            input(type='checkbox', name='serviceManage', value='活动主持')
+            | 活动主持
+          label
+            input(type='checkbox', name='serviceManage', value='志愿者培训')
+            | 财务管理
+          label
+            input(type='checkbox', name='serviceManage', value='仓库管理')
+            | 仓库管理
+          label
+            input(type='checkbox', name='serviceManage', value='网络论坛管理')
+            | 网络论坛管理
+          div 大型活动：
+          label
+            input(type='checkbox', name='serviceActivity', value='翻译')
+            | 翻译
+          label
+            input(type='checkbox', name='serviceActivity', value='礼仪服务')
+            | 礼仪服务
+          label
+            input(type='checkbox', name='serviceActivity', value='文艺演出')
+            | 文艺演出
+          label
+            input(type='checkbox', name='serviceActivity', value='医疗卫生')
+            | 医疗卫生
+          label
+            input(type='checkbox', name='serviceActivity', value='物资搬运')
+            | 物资搬运
+          label
+            input(type='checkbox', name='serviceActivity', value='体育活动')
+            | 体育活动
+          label
+            input(type='checkbox', name='serviceActivity', value='后勤服务')
+            | 后勤服务
+          div 其它活动：
+          label
+            input(type='checkbox', name='serviceOthers', value='社区调查')
+            | 社区调查
+          label
+            input(type='checkbox', name='serviceOthers', value='家教服务')
+            | 家教服务
+          label
+            input(type='checkbox', name='serviceOthers', value='清洁服务')
+            | 清洁服务
+          label
+            input(type='checkbox', name='serviceOthers', value='环境保护')
+            | 环境保护
+          label
+            input(type='checkbox', name='serviceOthers', value='心理辅导')
+            | 心理辅导
+          label
+            input(type='checkbox', name='serviceOthers', value='法律援助')
+            | 法律援助
+          label
+            input(type='checkbox', name='serviceOthers', value='家电维修')
+            | 家电维修
+          label
+            input(type='checkbox', name='serviceOthers', value='长者服务')
+            | 长者服务
+          label
+            input(type='checkbox', name='serviceOthers', value='爱心义卖')
+            | 爱心义卖
+          label
+            input(type='checkbox', name='serviceOthers', value='交通协管')
+            | 交通协管
+          label
+            input(type='checkbox', name='serviceOthers', value='残疾智障人群服务')
+            | 残疾智障人群服务
+          label
+            input(type='checkbox', name='serviceOthers', value='图书管理服务')
+            | 图书管理服务
+          label
+            input(type='checkbox', name='serviceOthers', value='边缘青少年帮扶')
+            | 边缘青少年帮扶
+        li
+          | 工作意见与建议
+          br
+          textarea#opinions(name='opinions')
+    #note
+      span 注：
+      | 提交前请认真核对所填信息，一旦提交，无法修改。
+      br
+      | 点点公益青少年发展服务中心承诺，以上所有信息仅供志愿者管理使用，不作其它用途。
+    .operation
+      button#submit.btn.btn-large.btn-primary 提交
+

@@ -1,0 +1,13 @@
+extends  ../layout
+
+block content
+  #donations.finance
+    include sidebar
+    #main-content
+      h3 捐款明细
+      #total ""
+      #container
+        ul#records
+          each donation in donations
+            li= formatDate(donation.date) + ' ' + getDonationString(donation)
+    .clear

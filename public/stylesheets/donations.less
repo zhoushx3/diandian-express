@@ -1,0 +1,65 @@
+#donations #main-content {
+	#total {
+		text-align: center;
+		font-size: 20px;
+		height: 20px;
+		line-height: 33px;
+	}
+	#container {
+		margin: 20px 0;
+		padding: 20px 0 12px 40px;
+		font-size: 15px;
+		background-color: #FFFFFF;
+	}
+	#records {
+		margin: 0;
+		padding: 0;
+		max-height: 500px;
+		list-style: none;
+		overflow: auto;
+		li {
+			line-height: 2;
+			text-align: left;
+			display: none;
+			&.active {
+				display: block;
+			}
+			&.disactive {
+				line-height: 10;
+			}
+		}
+	}
+}
+#donations #loading{
+	padding: 100px 0;
+}
+
+.finance h3,
+#finance-sidebar h3
+{
+	background-color: #36401A;
+	line-height: 40px;
+	color: #ffffff;
+	text-align: center;
+}
+
+.finance #main-content {
+	margin-left: 200px;
+	h3 {
+		text-align: center;
+	}
+	#no-info {
+		font-size: 20px;
+		text-align: center;
+		margin-top: 50px;
+		display: none;
+		&.active {
+			display: block;
+		}
+	}
+}
+#annually-reports.finance #records li,
+#monthly-reports.finance #records li,
+#projects-expenses.finance #records li {
+	display: none;
+}

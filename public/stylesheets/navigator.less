@@ -1,0 +1,65 @@
+#navigator {
+  width: 100%;
+
+  a {
+    display: block;
+    color: #d1de30;
+    width: 100%;
+  
+    a.invalid {
+      cursor: default;
+    }
+  }
+  
+  li:hover > a {
+    outline: 0 none;
+    color: #ffffff;
+  }
+
+  li {
+    width: 145px;
+    height: 35px;
+    font-size: 20px;
+    line-height: 35px;
+    background: -webkit-gradient(linear, 0 0, 100% 100%, from(#ffffff), to(#E7E7E7)); /** Chrome Safari **/
+    background: -moz-linear-gradient(left, #ffffff, #E7E7E7); /** FireFox **/
+    background: -o-linear-gradient(left, #ffffff, #E7E7E7);  /** Opear **/
+    background: -ms-linear-gradient(#ffffff 0%,#E7E7E7 100%);  /** IE9 IE10 **/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#E7E7E7',grandientType=1); /*IE7*/
+    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#E7E7E7',grandientType=1); /*IE8*/
+  }
+  
+  & > li {
+    border-left: 1px solid #ffffff;
+    float: left;
+  } 
+  
+  & > li:first-child {
+    border-left: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+  }
+
+  & > li ul {
+    display: none;
+    position: absolute;
+    z-index: 10;
+  }
+
+  li:hover ul {
+    display: block;
+  }
+  
+  li:hover {
+    background: orange;
+  }
+  
+  & > li#lastLi,
+  & > li#lastLi li {
+    width: 148px;
+  }
+}

@@ -1,0 +1,29 @@
+block content
+  #newPosts
+    h2 最近动态
+    each post in posts 
+      .post
+        a.cover(href='/news/posts/' + post._id)
+          img(src=post.cover, alt='cover')
+        .right
+          h3.title
+            a.generalA(href='/news/posts/' + post._id)= post.title
+          h4= formatDate(post.createdAt)
+          p.digest= post.digest
+        .footer
+          a.generalA(href='/news/posts/' + post._id) 详情>|
+        .clear
+    if (at_home)
+      a.generalA 更多动态>>>
+    if (at_news)
+      //-还需要调整根据所处页面调整高度，因为在首页是3个，在最新动态里是6个新闻
+      p#movePage
+        a.pageBack.generalA(href='#') previous
+        // 加入背景图给Previous 和 next
+        each page in pages
+          a.generalA page.pageNumber
+        a.pageForward.generalA(href='#') Next
+        span
+          | 跳到
+          input(type='text')
+          | 页

@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  #myCarousel.carousel.slide
+    ol.carousel-indicators
+      each obj, index in carousels
+        li(data-slide-to=index, data-target='#myCarousel')
+    
+    .carousel-inner
+      each obj, index in carousels
+        .item(class=index == 0 ? "active" : "")
+          a(href=obj.link): img(src=obj.src)
+
+    a.carousel-control.left(data-slide='prev', href='#myCarousel') ‹
+    a.carousel-control.right(data-slide='next', href='#myCarousel') ›
+
+  include includes/posts
+  +posts(posts)
+
+  div.home-right
+    div
+      h2 关于点点公益
+      ul
+        li
+          a(href='/about#introduction') 机构简介
+        li
+          a(href='/about#project') 项目介绍
+        li
+          a(href='/about#structure') 组织架构
+        li
+          a(href='/about#contacts') 联系我们
+    div#volunteer
+      a(href='/volunteer/apply') 加入志愿者团队
+    div
+      h2 爱心捐助
+      div
+        p 开户银行：珠海华润银行夏湾支行
+        p 户名：珠海市香洲区点点公益青少年发展服务中心
+        p 账号：213210178135500001

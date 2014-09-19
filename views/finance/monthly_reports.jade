@@ -1,0 +1,14 @@
+extends  ../layout
+
+block content
+  #monthly-reports.finance
+    include sidebar
+    #main-content
+      h3 每月收支报表
+      #container
+        ul#records
+          each item in money
+            li=item.src
+          img#img(alt = "月报告")
+          #no-info 对不起，本月暂无公开数据。
+    .clear

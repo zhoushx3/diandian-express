@@ -1,0 +1,12 @@
+.finance-sidebar
+  h3 请选择年份
+  #year
+    select
+      - each year in years
+        option(value=year)=year
+  ol#months
+    - if (showAll)
+      li.active 所有
+    - for (var m = 12; m > 0; m--)  
+      li= m + '月'
+

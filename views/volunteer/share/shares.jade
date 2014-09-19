@@ -1,0 +1,25 @@
+extends ../../layout
+
+block content	
+	#share
+		#module-one
+			img(alt=share[0].headline, src=share[0].path)
+			p=share[0].contents
+		#module-two
+			p=share[1].contents
+			img(alt=share[1].headline, src=share[1].path)
+		#module-three
+			p=share[2].contents
+			img(alt=share[2].headline, src=share[2].path)
+		#module-headline
+			h1
+				span 志愿者感言 
+			//	span="第"  + "n" + "期"
+			small 点点公益感谢有你们
+		#module-four
+			img(alt=share[3].headline, src=share[3].path)
+			p=share[3].contents
+		#module-five
+			img(alt=share[4].headline, src=share[4].path)
+			p=share[4].contents
+			a(href='/volunteer/shareList') 查看更多志愿者的分享

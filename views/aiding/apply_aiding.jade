@@ -1,0 +1,88 @@
+extends ../layout
+
+block content
+  form#aidingApplication.application.apply-aiding(name='aidingApplication', method="POST", action="/aiding/apply/submit")
+    legend 个人申请资助表格
+      .field
+        label
+          span.field-name 姓名：
+          input#name(type='text', name='name', maxlength='20')
+      .field
+        span.field-name 性别：
+        label
+          input#male(type='radio', name='gender', value='male', checked='')
+          | 男
+        label
+          input#female(type='radio', name='gender', value='female')
+          | 女
+      .field
+        label
+          span.field-name 民族：
+          input#nation(type='text', name='nation')
+      .field
+        span.field-name 出生年月：
+        input#birth-year(type='text', name='birthYear')
+        | 年
+        input#birth-month(type='text', name='birthMonth')
+        | 月
+      .field
+        label
+          span.field-name 所在学校：
+          input#school(type='text', name='school')
+      .field
+        label
+          span.field-name 所在班级：
+          input#class(type='text', name='class')
+      .field
+        label
+          span.field-name 所缴学费：
+          input#fee(type='text', name='fee')
+      .field
+        label
+          span.field-name 监护人姓名：
+          input#watcher(type='text', name='watcher')
+      .field
+        label
+          span.field-name 年龄：
+          input#age(type='text', name='age')
+      .field
+        label
+          span.field-name 身份证号：
+          input#ID-cardNo(type='text', name='IDCardNo')
+      .field
+        label
+          span.field-name 工作单位：
+          input#work(type='text', name='work')
+      .field
+        label
+          span.field-name 联系电话：
+          input#phone(type='text', name='cellphone')
+      .field
+        label
+          span.field-name 其他家庭成员及情况：
+          textarea#else(rows='3', cols='200', name='else')
+      .field
+        label
+          span.field-name 家庭月收入：
+          input#income(type='text', name='income')
+      .field
+        label
+          span.field-name 是否有房产、定期存款、基金等固定财产：
+          input#pocession(type='text', name='pocession')
+      .field
+        label
+          span.field-name 现在住址：
+          input#nowAddress(type='text', name='nowAddress')
+      .field
+        label
+          span.field-name 家乡住址：
+          input#homeAddress(type='text', name='homeAddress')
+      .field
+        label
+          span.field-name 申请助学金理由：
+          textarea#reason(rows='3', cols='200', name='reason')
+      .operation
+        button#save.btn.btn-large(type = "button") 保存
+        button#submit.btn.btn-large.btn-danger(type = "submit") 提交
+        button#reset.btn.btn-large.btn-warning(type = "reset") 重置
+        button#print.btn.btn-large.btn-success 打印
