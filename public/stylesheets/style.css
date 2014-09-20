@@ -204,7 +204,6 @@ h3.projectH3 {
 #one {
   width: 90%;
   padding: 0 5%;
-  height: 100px;
 }
 
 #donation-scroller {
@@ -291,6 +290,72 @@ h3.projectH3 {
 #monthly-reports.finance #records li,
 #projects-expenses.finance #records li {
   display: none;
+}
+
+.historyRecord {
+  color: #808000;
+  margin-left: 10px;
+}
+span {
+  color: black;
+}
+p {
+  color: black;
+}
+.wrapper {
+  padding: 15px;
+  background-color: #CCCC99;
+  line-height: 3em;
+}
+.donator {
+  width: 70px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.donate-money {
+  width: 70px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.material {
+  width: 500px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.use {
+  width: 672px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.donations-btn {
+  margin-left: 624px;
+}
+#donations-body {
+  margin-left: 200px;
+}
+#remarks {
+  color: grey;
+  margin-left: 27px;
+  margin-top: -18px;
+  font-size: 10px;
+}
+#donations-body button {
+  margin-left: 20px;
+  margin-top: 10px;
+  width: 80px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#custom-donations-wrapper input {
+  margin-left: 30px;
+  margin-top: -2px;
+}
+#customtext {
+  resize: none;
+  width: 810px;
+  height: 100px;
 }
 
 #finance {

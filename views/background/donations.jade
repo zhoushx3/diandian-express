@@ -1,2 +1,76 @@
-#backgroundDonations
-	p 捐赠明细
+extends  ../background_layout
+
+block content
+	-var now = new Date()
+	-var year = now.getFullYear()
+	-var month = now.getMonth()
+	-var day = now.getDate()
+
+	div#donations-body
+		div#unlimited-donations
+			div#unlimited-donations-header
+				h3(style='display: inline-block') 非限定性捐款
+				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				
+			div#unlimited-donations-wrapper.wrapper
+				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
+				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
+				a.historyRecord(style="text-decoration: underline" href='#') 批量填写
+
+			div#unlimited-donations-btn.donations-btn
+				a(href='#') <button>取消</button>
+				a(href='#') <button>发布</button>
+
+		hr
+
+		div#limited-donations
+			div#limited-donations-header
+				h3(style='display: inline-block') 限定性捐款 
+				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				
+			div#limited-donations-wrapper.wrapper
+				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
+				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
+				a.historyRecord(style="text-decoration: underline" href='#') 批量填写
+
+			div#limited-donations-btn.donations-btn
+				a(href='#') <button>取消</button>
+				a(href='#') <button>发布</button>
+
+		hr
+
+		div#material-donations
+			div#material-donations-header
+				h3(style='display: inline-block') 物资捐款 
+				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				
+			div#material-donations-wrapper.wrapper
+				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
+				span 捐赠<input class="material" placeholder="请输入所捐赠的物资"></input>
+				p 用于<input class="use"></input>。
+				p#remarks *物资用途为选填项
+
+			div#material-donations-btn.donations-btn
+				a(href='#') <button>取消</button>
+				a(href='#') <button>发布</button>
+
+		hr
+
+		div#custom-donations
+			div#custom-donations-header
+				h3(style='display: inline-block') 手动填写
+
+			div#custom-donations-wrapper
+				span 请选择该捐赠所属类型
+				input(type="radio" name="donation-type" value="unlimited")
+				span 非限定性捐款
+				input(type="radio" name="donation-type" value="limited")
+				span 限定性捐款
+				input(type="radio" name="donation-type" value="material")
+				span 物资捐款
+				div
+				textarea#customtext(rows="10" cols="80")
+
+			div#custom-donations-btn.donations-btn
+				a(href='#') <button>取消</button>
+				a(href='#') <button>发布</button>
