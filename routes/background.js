@@ -22,8 +22,8 @@ router.get('/finances', function(req, res) {
 
 router.post('/finances', function(req, res) {
 	// using formidable
-	var form = new formidable.IncomingForm();
-	form.uploadDir = DOCS_PATH;  // set upload dir
+   var form = new formidable.IncomingForm();
+   form.uploadDir = DOCS_PATH;  // set upload dir
    form.keepExtensions = true;  // 保留后缀
    form.maxFieldSize =  MAXFILESZIZE;  // file size
    //var fileName = 
