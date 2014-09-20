@@ -161,11 +161,15 @@ router.get('/accounts', function(req, res) {
 
 router.get('/passwords', function(req, res) {
   res.render('background/passwords', {
-    title: 'passwords '
+    title: 'passwords'
   });
 });
 
-
+router.get('/donations', function(req, res) {
+  res.render('background/donations', {
+    title: 'donations'
+  });
+});
 
 
 module.exports = router;
