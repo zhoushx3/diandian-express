@@ -1,2 +1,33 @@
-#backgroundFinace
-	p 财务报表
+extends  ../background_layout
+
+block content
+    backgroundFinace
+    form#one(enctype='multipart/form-data' method='post' action='/background/finances')
+      h1 项目收支报表
+      input(type='text' name='year' placeholder= '年份 输入格式: 2014')
+      select(name='month')
+        each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            option=val + "月份"
+      p 上传文件重新命名为 年份-月份.后缀
+      #oneItems
+          input(type="file" name="add")
+          input(id = 'item' type="submit" name="submit" value="提交")
+
+    form#two(enctype='multipart/form-data' method='post' action='/background/finances')
+      h1 季度报表
+      input(type='text' name='year' placeholder= '年份 输入格式: 2014')
+      select(name="month")
+        each val in ['一', '二', '三', '四']
+           option='第' + val + '季度'
+      p 上传文件重新命名为 年份-第X季度.后缀
+         #twoItems
+            input(type='file' name='add')
+            input(id = 'season' type='submit' name='submit' value='提交')
+
+      form#three(enctype='multipart/form-data' method='post' action='/background/finances')
+        h1 年度报表
+        input(type='text' name='year' placeholder= '年份 输入格式: 2014')
+        p 上传文件重新命名为 年度-年份.后缀
+           #threeItems
+             input(type='file' name='add')
+             input(id = 'annual' type='submit' name='submit' value='提交')
