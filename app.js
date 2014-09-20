@@ -65,12 +65,12 @@ db.getConnection(function(db) {
   app.use('/news', require('./routes/news'));
   app.use('/volunteer', require('./routes/volunteer'));  //  add volunteer route
   
-  /// catch 404 and forward to error handler
-  app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
+  // /// catch 404 and forward to error handler
+  // app.use(function(req, res, next) {
+  //   var err = new Error('Not Found');
+  //   err.status = 404;
+  //   next(err);
+  // });
 
   var debug = require('debug')('diandian-express');
 
