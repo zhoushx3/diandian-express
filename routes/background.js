@@ -15,9 +15,28 @@ router.get('/', function(req, res) {
 });
 
 router.get('/finances', function(req, res) {
-  res.render('background/finances', {
-    title: 'finances'
-  });
+	fs.readdir(DOCS_PATH, function(err, files){
+		var itemFiles = [],
+		seasonFiles = [],
+		annualFiles = [];
+		var sortFiles = files.sort();
+		for (var i = 0; i < sortFiles.length; i++) {
+			var fileName = sortFiles[i];
+			if (fileName.match("月份"))
+				itemFiles.push(fileName);
+			else if (fileName.match("季度"))
+				seasonFiles.push(fileName);
+			else if (fileName.match("年度"))
+				annualFiles.push(fileName);
+		}
+
+   		res.render('background/finances', {
+    	  title: 'finances',
+        itemFiles: itemFiles,
+        seasonFiles: seasonFiles,
+        annualFiles: annualFiles
+  		});
+	});
 });
 
 router.post('/finances', function(req, res) {
@@ -44,9 +63,18 @@ router.post('/finances', function(req, res) {
    	// 重命名 文件
    	fs.renameSync(files.add.path,newPath);
     });
-   res.render('background/finances', {
-  		title: 'finances'
- 	});
+   res.redirect('finances');
+});
+
+// delete file post router
+router.post('/finances_deleteFiles', function(req, res){
+	console.log(req);
+	// request body fileName
+	fs.unlink(DOCS_PATH + req.body.fileName, function(){
+		console.log(DOCS_PATH + req.body.fileName);
+	})
+
+	res.redirect('finances');
 });
 
 // //wjw
