@@ -3,8 +3,37 @@ extends  ../background_layout
 block content
 	-var now = new Date()
 	-var year = now.getFullYear()
-	-var month = now.getMonth()
+	-var month = now.getMonth()+1
 	-var day = now.getDate()
+
+	div#unlimited-mul.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-header-header
+			h3 非限定性捐款
+			p 时间: #{year}年#{month}月#{day}日
+		div.modal-body-body
+			p 请将捐款人/单位及其捐款金额(元)用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
+			p 陈小姐 100
+			p 李先生 1200
+			textarea
+		div.modal-footer-footer
+			button(data-dismiss='modal', aria-hidden='true') 取消
+			button.right-btn 发布
+
+	div#limited-mul.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-header-header
+			h3 限定性捐款
+			p 时间: #{year}年#{month}月#{day}日
+		div.modal-body-body
+			p 请将捐款人/单位及其捐款金额(元)用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
+			p 陈小姐 100
+			p 李先生 1200
+			textarea
+		div.modal-footer-footer
+			button(data-dismiss='modal', aria-hidden='true') 取消
+			button.right-btn 发布
+
 
 	div#donations-body
 		div#unlimited-donations
@@ -15,7 +44,7 @@ block content
 			div#unlimited-donations-wrapper.wrapper
 				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
 				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
-				a.historyRecord(style="text-decoration: underline" href='#') 批量填写
+				a.historyRecord(style="text-decoration: underline" data-toggle="modal" href='#unlimited-mul') 批量填写
 
 			div#unlimited-donations-btn.donations-btn
 				a(href='#') <button>取消</button>
@@ -31,7 +60,7 @@ block content
 			div#limited-donations-wrapper.wrapper
 				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
 				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
-				a.historyRecord(style="text-decoration: underline" href='#') 批量填写
+				a.historyRecord(style="text-decoration: underline" data-toggle="modal" href='#limited-mul') 批量填写
 
 			div#limited-donations-btn.donations-btn
 				a(href='#') <button>取消</button>
@@ -69,7 +98,7 @@ block content
 				input(type="radio" name="donation-type" value="material")
 				span 物资捐款
 				div
-				textarea#customtext(rows="10" cols="80")
+				textarea#customtext
 
 			div#custom-donations-btn.donations-btn
 				a(href='#') <button>取消</button>
