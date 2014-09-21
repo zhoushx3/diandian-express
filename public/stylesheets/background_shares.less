@@ -1,0 +1,66 @@
+#background_share {
+	width: 83%;
+	float: right;
+	input#share_add, input#add {
+		margin-bottom: 18px;
+	}
+	input#add {
+		margin-left: 30px;
+	}
+}
+
+.share_details {
+	padding: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #aaa;
+	height: 150px;
+	#share_contents{
+		float: right;
+		width: 82%;
+		textarea {
+			float: left;
+			min-width: 90%;
+			max-width: 90%;
+			height: 80px;
+			&.summary {
+				height: 40px;
+				margin-bottom: 3px;
+				border-bottom: 1px solid	#aaa;
+			}
+		}
+		input {
+			float: right;
+			width: 7%;
+		}		
+	}
+	#share_img {
+		float: left;
+		height: 100%;
+		width: 17%;
+		img {
+			height:  100%;
+			width: 80%;
+			vertical-align: center;
+		}
+		form {
+			width:  80%;
+			position: relative;
+			left: 10px;
+			bottom: 60px;
+			input {
+				width: 66px; 
+			}
+		}
+	}
+} 
+
+textarea.id {
+	display: none;
+}
+
+#add_choose, #add_more {
+	display:  none;
+	&.active {
+		display: block;
+	}
+}
