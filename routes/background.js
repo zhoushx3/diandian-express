@@ -42,6 +42,7 @@ router.post('/finances', function(req, res) {
    		newPath = DOCS_PATH + "年度-" + fields.year + '.' + (files.add.name + "").split('.')[1];
    	}
    	// 重命名 文件
+   	console.log(files.add.path,newPath);
    	fs.renameSync(files.add.path,newPath);
     });
    res.render('background/finances', {
