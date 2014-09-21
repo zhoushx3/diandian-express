@@ -357,6 +357,38 @@ p {
   width: 810px;
   height: 100px;
 }
+#unlimited-mul {
+  background-color: #CCCC99;
+  padding: 20px;
+}
+#limited-mul {
+  background-color: #CCCC99;
+  padding: 20px;
+}
+.modal-header-header {
+  text-align: center;
+}
+.modal-header-header p {
+  margin-left: -10px;
+}
+.modal-body-body {
+  line-height: 0.8em;
+}
+.modal-body-body textarea {
+  width: 546px;
+  height: 170px;
+  resize: none;
+}
+.modal-footer-footer button {
+  width: 80px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+.modal-footer-footer .right-btn {
+  margin-left: 400px;
+}
 
 #finance {
   background-color: #ffffff;
