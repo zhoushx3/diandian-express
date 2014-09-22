@@ -2,9 +2,10 @@ extends  ../background_layout
 
 block content
     backgroundFinace
-      a#background_upload_button.btn(href='#myModal', role='button', data-toggle='modal') 上传报表
+
+      a#background_upload_button.btn(href='#upload', role='button', data-toggle='modal') 上传报表
       // Modal
-      #myModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+      #upload.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
           h3#myModalLabel 上传报表
@@ -43,25 +44,32 @@ block content
           button.btn(data-dismiss='modal', aria-hidden='true') 关闭
       
       h1.background_h1 项目收支报表
+
       #itemDisplay
         for fileName in itemFiles
             .itemReport 
               li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') delete
+                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
+                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
+      
       h1.background_h1 季度报表
       #seasonDisplay
         for fileName in seasonFiles
             .seasonReport 
               li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') delete
+                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
+                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
+      
       h1.background_h1 年度报表
       #annualDisplay
         for fileName in annualFiles
             .annualReport 
               li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') delete
+                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
+                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
+
       
-      // Modal
+      // myDelete
       #myDelete.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
@@ -71,4 +79,13 @@ block content
         .modal-footer
           button.delete_files_button.btn(data-dismiss='modal', aria-hidden='true') 刪除
           button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-    script(src="/javascripts/background_finance.js")
+
+      // myView
+      #myView.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h3#myViewHeader 报表
+        .modal-body
+          p#myViewContent 啦啦啦
+        .modal-footer
+          button.btn(data-dismiss='modal', aria-hidden='true') 关闭
