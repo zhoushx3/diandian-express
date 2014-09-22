@@ -19,7 +19,7 @@ block content
             p 上传文件重新命名为 年份-月份.后缀
             #oneItems
                 input(type="file" name="add")
-                input(id = 'item' type="submit" name="submit" value="提交")
+                input(id = 'item' type="submit" name="submit" value="提交" disabled="")
       
           form#two(enctype='multipart/form-data' method='post' action='/background/finances')
             h1 季度报表
@@ -30,7 +30,7 @@ block content
             p 上传文件重新命名为 年份-第X季度.后缀
                #twoItems
                   input(type='file' name='add')
-                  input(id = 'season' type='submit' name='submit' value='提交')
+                  input(id = 'season' type='submit' name='submit' value='提交' disabled="")
       
           form#three(enctype='multipart/form-data' method='post' action='/background/finances')
             h1 年度报表
@@ -38,7 +38,7 @@ block content
             p 上传文件重新命名为 年度-年份.后缀
                 #threeItems
                 input(type='file' name='add')
-                input(id = 'annual' type='submit' name='submit' value='提交')
+                input(id = 'annual' type='submit' name='submit' value='提交' disabled="")
   
         .modal-footer
           button.btn(data-dismiss='modal', aria-hidden='true') 关闭
@@ -84,7 +84,7 @@ block content
       #myView.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h3#myViewHeader 报表
+          h3#myViewHeader
         .modal-body
           p#myViewContent 啦啦啦
         .modal-footer
