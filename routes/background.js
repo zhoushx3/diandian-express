@@ -68,13 +68,25 @@ router.post('/finances', function(req, res) {
 
 // delete file post router
 router.post('/finances_deleteFiles', function(req, res){
-	console.log(req);
 	// request body fileName
 	fs.unlink(DOCS_PATH + req.body.fileName, function(){
-		console.log(DOCS_PATH + req.body.fileName);
+		console.log("Delete " + DOCS_PATH + req.body.fileName + "  !");
 	});
 
 	res.redirect('finances');
+});
+
+// view file post router
+router.post('/finances_ViewFiles', function(req, res){
+	fs.readFile(DOCS_PATH + req.body.fileName,
+		{
+			encoding: "UTF-8"
+		},
+		function(errr, data){
+		res.send({
+			content: data});
+	});
+
 });
 
 // //wjw
@@ -168,6 +180,12 @@ router.post('/finances_deleteFiles', function(req, res){
 // });
 
 // //wjw
+
+router.get('/news', function(req, res) {
+	res.render('background/news', {
+		title:'news'
+	});
+});
 
 router.get('/volunteers_apply', function(req, res) {
   res.render('background/volunteers_apply', {
