@@ -307,6 +307,21 @@
 		for (var y = 0; y < monthLi.length; y++) 
 			monthLi[y].onclick = setMonths;
 	}
+})();;(function() {
+	if (location.pathname == '/background/shares' || location.pathname == "/background/share_period") {
+		$('#share_add').click(function() {
+			$('#add_choose').addClass('active');
+		});
+		$('#cancel_new_period').click(function() {
+			$('#add_choose').removeClass('active');	
+		});
+		$('#add').click(function() {
+			$('#add_more').addClass('active');
+		});
+		$('#add_cancel').click(function() {
+			$('#add_more').removeClass('active');
+		});
+	}
 })();;(function(){
 	if (location.pathname == '/finance/annually-reports'){
 		var flag = -1;
