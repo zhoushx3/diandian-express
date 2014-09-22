@@ -199,7 +199,17 @@ router.get('/donations', function(req, res) {
   });
 });
 
+router.get('/dynamics', function(req, res) {
+  res.render('background/dynamics', {
+    title: 'dynamics'
+  });
+});
 
+router.get('/dynamics-edit', function(req, res) {
+  res.render('background/dynamics-edit', {
+    title: 'dynamics'
+  });
+});
 
 /**
 ** 分享交流基本页面

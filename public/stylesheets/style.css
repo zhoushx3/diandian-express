@@ -471,6 +471,68 @@ p {
   margin-left: 400px;
 }
 
+#news-editor {
+  margin-left: 210px;
+}
+#news-editor input {
+  line-height: 1.5em;
+  width: 800px;
+  height: 40px;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#news-btn {
+  margin-top: 20px;
+  margin-left: 210px;
+}
+#news-btn button {
+  margin-bottom: 20px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#news-draft {
+  margin-right: 474px;
+}
+#news-cancel {
+  margin-right: 30px;
+}
+#news-logo {
+  margin-left: 880px;
+}
+
+#dynamic-news {
+  margin-left: 200px;
+  padding: 10px;
+}
+#add-news {
+  margin-top: -10px;
+  margin-bottom: 35px;
+  margin-left: 677px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#dynamic-news .news-title {
+  width: 310px;
+  font-size: 20px;
+  float: left;
+}
+#dynamic-news .news-date {
+  width: 380px;
+  float: left;
+}
+#dynamic-news a {
+  margin-left: 5px;
+  color: #808000;
+  text-decoration: underline;
+}
+
 #finance {
   background-color: #ffffff;
   padding: 20px 30px;
