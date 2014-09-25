@@ -84,6 +84,18 @@ router.get('/posts/:id', function(req, res){
   });
 });
 
+router.get('/album/:name', function(req, res) {
+  var db = req.db;
+  db.collection('albums', function(err, col) {
+    col.findOne({name: req.params.name}, function(err, item) {
+      res.render('news/album_details', {
+        title: req.params.name,
+        album: item
+      });
+    });
+  });
+});
+
 router.get('/activity', function(req, res) {
   var db = req.db;
   var activity;

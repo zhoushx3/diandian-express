@@ -203,7 +203,88 @@ h3.projectH3 {
 }
 #one {
   width: 90%;
-  padding: 0 5%;
+}
+.background_h1 {
+  line-height: normal;
+}
+#background_upload_button,
+.background_delete_button {
+  float: right;
+}
+.itemReport,
+.annualReport,
+.seasonReport {
+  margin-bottom: 10px;
+}
+.delete_files_button {
+  margin-left: 10px;
+}
+
+#background_share {
+  width: 83%;
+  float: right;
+}
+#background_share input#share_add,
+#background_share input#add {
+  margin-bottom: 18px;
+}
+#background_share input#add {
+  margin-left: 30px;
+}
+.share_details {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #aaa;
+  height: 150px;
+}
+.share_details #share_contents {
+  float: right;
+  width: 82%;
+}
+.share_details #share_contents textarea {
+  float: left;
+  min-width: 90%;
+  max-width: 90%;
+  height: 80px;
+}
+.share_details #share_contents textarea.summary {
+  height: 40px;
+  margin-bottom: 3px;
+  border-bottom: 1px solid	#aaa;
+}
+.share_details #share_contents input {
+  float: right;
+  width: 7%;
+}
+.share_details #share_img {
+  float: left;
+  height: 100%;
+  width: 17%;
+}
+.share_details #share_img img {
+  height: 100%;
+  width: 80%;
+  vertical-align: center;
+}
+.share_details #share_img form {
+  width: 80%;
+  position: relative;
+  left: 10px;
+  bottom: 60px;
+}
+.share_details #share_img form input {
+  width: 66px;
+}
+textarea.id {
+  display: none;
+}
+#add_choose,
+#add_more {
+  display: none;
+}
+#add_choose.active,
+#add_more.active {
+  display: block;
 }
 
 #donation-scroller {
@@ -388,6 +469,68 @@ p {
 }
 .modal-footer-footer .right-btn {
   margin-left: 400px;
+}
+
+#news-editor {
+  margin-left: 210px;
+}
+#news-editor input {
+  line-height: 1.5em;
+  width: 800px;
+  height: 40px;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#news-btn {
+  margin-top: 20px;
+  margin-left: 210px;
+}
+#news-btn button {
+  margin-bottom: 20px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#news-draft {
+  margin-right: 474px;
+}
+#news-cancel {
+  margin-right: 30px;
+}
+#news-logo {
+  margin-left: 880px;
+}
+
+#dynamic-news {
+  margin-left: 200px;
+  padding: 10px;
+}
+#add-news {
+  margin-top: -10px;
+  margin-bottom: 35px;
+  margin-left: 677px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#dynamic-news .news-title {
+  width: 310px;
+  font-size: 20px;
+  float: left;
+}
+#dynamic-news .news-date {
+  width: 380px;
+  float: left;
+}
+#dynamic-news a {
+  margin-left: 5px;
+  color: #808000;
+  text-decoration: underline;
 }
 
 #finance {

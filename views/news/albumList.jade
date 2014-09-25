@@ -4,7 +4,7 @@ block content
     div.container
       each album in albums
         div.album
-          a(href='/album/' + album._id)
+          a(href='/news/album/' + album.name)
             img(src=album.cover)
             h3=name
             h3=createdAt

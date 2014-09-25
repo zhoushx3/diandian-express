@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+	#album_pitures_list
+		h2="点点相册： " + album.name + " " + "   发布时间： " + formatDate(album.createdAt)
+		each item in album.pictures
+			.each_picture
+				img.select_img(src=item.src, alt=item.name)
+				p=item.photo_date
+			.show_picture
+				input.off(type="button", value="close")
+				h3=item.instruction
+				input.left(type="button", value="left")
+				img(src=item.src, alt=item.name)
+				input.right(type="button", value="right")
+			
+			
+

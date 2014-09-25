@@ -36,7 +36,8 @@ exports.insert = function(db, callback){
           src: '/images/post1_' + i + '.jpg',
           name: '\u56fe\u7247' + i,
           votes: [],
-          commentCount: 0
+          photo_date: "2014-" + i + "-" + (i +10),
+          instruction: "有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有"
         });
       }
 
@@ -47,7 +48,7 @@ exports.insert = function(db, callback){
 
         albums.insert([
           {
-            name: '相册1',
+            name: 'album_1',
             createdAt: new Date(),
             createdBy: doc._id,
             cover: '/images/post1_1.jpg',
@@ -55,7 +56,7 @@ exports.insert = function(db, callback){
           },
 
           {
-            name: '相册2',
+            name: 'album_2',
             createdAt: new Date(),
             createdBy: doc._id,
             cover: '/images/post1_2.jpg',
@@ -63,7 +64,7 @@ exports.insert = function(db, callback){
           },
 
           {
-            name: '相册3',
+            name: 'album_3',
             createdAt: new Date(),
             createdBy: doc._id,
             cover: '/images/post1_6.jpg',
