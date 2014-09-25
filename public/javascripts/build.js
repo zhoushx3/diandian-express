@@ -78,6 +78,24 @@
     });
   } 
 })();;(function() {
+	if (location.pathname.indexOf('/news/album/') > -1) {
+		$('.select_img').click(function() {
+			$(this).parent().next().addClass('active');
+		});
+
+		$('.off').click(function() {
+			$(this).parent().removeClass('active');
+		});
+
+		$('.left').click(function() {
+			$(this).parent().removeClass('active').prev().prev().addClass('active');
+		});
+
+		$('.right').click(function() {
+			$(this).parent().removeClass('active').next().next().addClass('active');
+		});
+	}
+})();;(function() {
 	if (location.pathname == '/finance/annually-reports') {
 		var x, year = 2012;
 		var li = document.getElementById('records').getElementsByTagName('li');
@@ -132,7 +150,69 @@
         });
     }
 })();
-;(function() {
+;(function(){
+
+	var preDeleteFileName;
+	function setFileName(name) {
+		preDeleteFileName = name;
+	}
+
+	function deleteFile(fileName) {
+		$.post("finances_deleteFiles", {
+			fileName: fileName
+		});
+	}
+
+	function deletePageElement (fileName) {
+		$("[file=" + "'" +fileName + "'" + "]").parent().parent().remove();
+	}
+
+	function setMyViewHeader(fileName) {
+		$("#myViewHeader").text(fileName.split('.')[0]);
+	}
+
+	function setMyViewContent(content) {
+		$("#myViewContent").text(content.content);
+	}
+
+	$(".background_delete_button").click(function() {
+		setFileName($(this).attr("file"));
+	});
+
+	$(".background_view_button").click(function(){
+		var fileName = $(this).attr("file");
+		$.post("finances_ViewFiles",{
+			fileName: fileName},
+			function(data){
+				console.log(fileName);
+				// set view Header
+				setMyViewHeader(fileName);
+				// SET VIEW CONTENT
+				setMyViewContent(data);
+			});
+	});
+
+
+	$(".delete_files_button").click(function() {
+		console.log( preDeleteFileName );
+		deleteFile(preDeleteFileName);
+		deletePageElement( preDeleteFileName );
+	});
+	
+	/** IF input(type=file) is null
+		*	 disable input(type= submit)
+		* 	ELSE enable
+	**/
+	$("backgroundFinace input[type='file']").mouseout(function(){
+		console.log($(this).val());
+		if ($(this).val() !== '') {
+			$(this).next().removeAttr("disabled");
+		} else {
+			$(this).next().attr("disabled","");
+		}
+	});
+
+})();;(function() {
   $.getJSON('background/loadimages?jsoncallback=?', function(data) {
     alert('3');
     for (var i = 0; i < 3; ++i) {

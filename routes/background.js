@@ -229,6 +229,19 @@ router.get('/dynamics-edit', function(req, res) {
   });
 });
 
+router.get('/foreshows', function(req, res) {
+  res.render('background/foreshows', {
+    title: 'foreshows'
+  });
+});
+
+router.get('/foreshows-edit', function(req, res) {
+  res.render('background/foreshows-edit', {
+    title: 'foreshows'
+  });
+});
+
+
 /**
 ** 分享交流基本页面
 ** 获得查询到的所有条目的总数，进而确定分期数目，每期5个，最新一期可少于5个
