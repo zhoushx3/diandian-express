@@ -1,0 +1,29 @@
+extends  ../background_layout
+
+block content
+	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/ueditor.config.js")
+	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/_examples/editor_api.js")
+	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/lang/zh-cn/zh-cn.js")
+
+	div#news-logo(style="margin-left:852px;")
+		span 点点动态·活动预告
+		img(src='/images/logo-small.png')
+
+	div#news-editor
+		div
+			input#news-title(placeholder = "请在这里输入标题")
+
+		div
+			input#news-author(placeholder = "输入文本作者姓名")
+
+		div
+			script#news-body(type="text/plain" style="width:800px;height:200px;")
+
+	div#news-btn
+		button#news-draft 保存草稿
+		a(href='./foreshows')
+			button#news-cancel 取消
+		button 发布
+
+	script.
+		var ue = UE.getEditor('news-body')
