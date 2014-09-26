@@ -3,13 +3,13 @@ mixin posts(posts)
     h2 最近动态
     each post in posts
       .post
-        a.cover(href='/news/' + post._id)
+        a.cover(href='/news/posts/' + post._id)
           img(alt='cover', src=post.cover)
         .right
           h3.title
-            a.generalA(href='/news/' + post._id)= post.title
+            a.generalA(href='/news/posts/' + post._id)= post.title
           h4= formatDate(post.createdAt)
           p.digest= post.digest
         .footer
-          a.generalA(href='/news/' + post._id) 详情&gt;|
+          a.generalA(href='/news/posts/' + post._id) 详情&gt;|
         .clear
