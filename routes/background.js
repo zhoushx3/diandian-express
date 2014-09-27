@@ -94,6 +94,7 @@ router.post('/finances_ViewFiles', function(req, res){
 
 // handle uploaded volunteer form
 router.post("/upload_volunteer_form", function(req, res) {
+  console.log(req);
    var form = new formidable.IncomingForm();
    form.uploadDir = VOLUNTEER_HEADIMG_PATH;  // set upload dir
    form.keepExtensions = true;  // 保留后缀

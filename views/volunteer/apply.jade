@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-  form#volunteer-application.application(name='volunteerApplication' enctype="multipart/form-data" method="post" action="/background/upload_volunteer_form")
+  form#volunteer-application.application(name='volunteerApplication' method="post" action="/background/upload_volunteer_form" )
     h1 志愿者申请表格
     fieldset
       legend 个人信息
@@ -91,23 +91,23 @@ block content
           ul
             li
               label
-                input(type='checkbox', name='languages1', value='国语')
+                input(type='checkbox', name='languages', value='国语')
                 | 国语
             li
               label
-                input(type='checkbox', name='languages2', value='粤语')
+                input(type='checkbox', name='languages', value='粤语')
                 | 粤语
             li
               label
-                input(type='checkbox', name='languages3', value='英语')
+                input(type='checkbox', name='languages', value='英语')
                 | 英语
             li
               label
-                input(type='checkbox', name='languages4', value='日语')
+                input(type='checkbox', name='languages', value='日语')
                 | 日语
             li
               label
-                input(type='checkbox', name='languages5')
+                input(type='checkbox', name='languages')
                 | 其它：
               input#other-languages(type='text')
         li
