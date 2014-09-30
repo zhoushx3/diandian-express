@@ -5,7 +5,9 @@ var express = require('express'),
       fs = require('fs'),
       bodyParser = require('body-parser'),
       DOCS_PATH = 'docs/',
-      MAXFILESZIZE = 4 * 1024 * 1024;
+      VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
+      MAXFILESZIZE = 4 * 1024 * 1024,
+      MAXHEADIMGSZIZE = 2 * 1024 * 1024;
 
 /* GET About page. */
 router.get('/', function(req, res) {
@@ -45,7 +47,6 @@ router.post('/finances', function(req, res) {
    form.uploadDir = DOCS_PATH;  // set upload dir
    form.keepExtensions = true;  // 保留后缀
    form.maxFieldSize =  MAXFILESZIZE;  // file size
-   //var fileName = 
    form.parse(req, function(err, fields, files) {
    	if (err) {
    		// expection handling
@@ -65,6 +66,8 @@ router.post('/finances', function(req, res) {
     });
    res.redirect('finances');
 });
+
+
 
 // delete file post router
 router.post('/finances_deleteFiles', function(req, res){
@@ -86,8 +89,47 @@ router.post('/finances_ViewFiles', function(req, res){
 		res.send({
 			content: data});
 	});
-
 });
+
+
+// handle uploaded volunteer form
+router.post("/upload_volunteer_form", function(req, res) {
+  console.log(req);
+   var form = new formidable.IncomingForm();
+   form.uploadDir = VOLUNTEER_HEADIMG_PATH;  // set upload dir
+   form.keepExtensions = true;  // 保留后缀
+   form.maxFieldSize =  MAXHEADIMGSZIZE;  // file size
+   form.parse(req, function(err, fields, files) {
+   		if (err) {
+   			// expection handling
+   			res.locals.error = err;
+   			console.log(err);
+   			return;
+   		} else {
+   			console.log(fields);
+   		}
+   });
+   res.redirect("/volunteer/apply");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // //wjw
 // router.post('/add-administrator', function(req, res) {

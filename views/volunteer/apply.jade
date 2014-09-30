@@ -1,14 +1,14 @@
 extends ../layout
 
 block content
-  form#volunteer-application.application(name='volunteerApplication')
+  form#volunteer-application.application(name='volunteerApplication' method="post" action="/background/upload_volunteer_form" )
     h1 志愿者申请表格
     fieldset
       legend 个人信息
       #photo-area
         #photo
           img(src='', alt='')
-          #upload 上传照片
+          input#upload(type='file' name='volunteer_head' placeholder="上传照片")
         .note 支持bmp/jpg/jpeg/png格式，1M以内。
       .field
         label
@@ -270,5 +270,5 @@ block content
       br
       | 点点公益青少年发展服务中心承诺，以上所有信息仅供志愿者管理使用，不作其它用途。
     .operation
-      button#submit.btn.btn-large.btn-primary 提交
+      button#submit.btn.btn-large.btn-primary(type="submit") 提交
 
