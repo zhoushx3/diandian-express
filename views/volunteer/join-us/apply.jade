@@ -1,19 +1,19 @@
-extends ../layout
+extends ../../layout
 
 block content
-  form#volunteer-application.application(name='volunteerApplication' enctype="multipart/form-data" method="post" action="/background/upload_volunteer_form")
+  form#volunteer-application.application(name='volunteerApplication' method="post" action="/background/upload_volunteer_form" )
     h1 志愿者申请表格
     fieldset
       legend 个人信息
       #photo-area
         #photo
           img(src='', alt='')
-          #upload 上传照片
+          input#upload(type='file' name='volunteer_head' placeholder="上传照片")
         .note 支持bmp/jpg/jpeg/png格式，1M以内。
       .field
         label
           span.field-name 姓名：
-          input#name(type='text', name='name', maxlength='20', datatype='s1-20')
+          input#name(type='text', name='name', maxlength='20', datatype='s1-20' )
       .field
         span.field-name 性别：
         label
@@ -24,15 +24,15 @@ block content
           | 女
       .field
         span.field-name 出生年月：
-        input#birth-year(type='text', name='birthYear')
+        input#birth-year(type='text', name='birthYear' value='')
         | 年
-        input#birth-month(type='text', name='birthMonth')
+        input#birth-month(type='text', name='birthMonth' value='')
         | 月
       .field
         span.field-name 籍贯：
-        input#province(type='text', name='province')
+        input#province(type='text', name='province' value='')
         | 省
-        input#city(type='text', name='city')
+        input#city(type='text', name='city' value='')
         | 市
       .field
         span.field-name 政治面貌：
@@ -48,41 +48,41 @@ block content
       .field
         label
           span.field-name 工作单位：
-          input#work-unit(type='text', name='workUnit')
+          input#work-unit(type='text', name='workUnit' value='')
         label
           span.field-name 职务：
-          input#position(type='text', name='position')
+          input#position(type='text', name='position' value='')
       .field
         label
           span.field-name 身份证号：
-          input#IDCardNo(type='text', name='IDCardNo')
+          input#IDCardNo(type='text', name='IDCardNo' value='')
         label
           span.field-name 特长：
-          input#speciality(type='text', name='speciality')
+          input#speciality(type='text', name='speciality' value='')
     fieldset
       legend 联系方式
       .field
         label
           span.field-name 通讯地址：
-          input#address.input-large(type='text', name='address')
+          input#address.input-large(type='text', name='address' value='')
       .field
         label
           span.field-name 邮政编码：
-          input#postcode(type='text', name='postcode')
+          input#postcode(type='text', name='postcode' value='')
       .field
         label
           span.field-name 手机：
-          input#cellphone(type='text', name='cellphone')
+          input#cellphone(type='text', name='cellphone' value='')
         label
           span.field-name 固定电话：
-          input#phone(type='text', name='phone')
+          input#phone(type='text', name='phone' value='')
       .field
         label
           span.field-name Email：
-          input#email(type='text', name='email')
+          input#email(type='text', name='email' value='')
         label
           span.field-name QQ号码：
-          input#QQ(type='text', name='QQ')
+          input#QQ(type='text', name='QQ' value='')
     fieldset
       legend 志愿相关
       ol
@@ -157,7 +157,7 @@ block content
               label
                 input(type='radio', name='volunteerTime')
                 | 固定时间
-              input#other-time(type='text')
+                input#other-time(type='text' name='volunteerTime')
         li#services
           | 愿意提供的服务：
           br
@@ -263,12 +263,13 @@ block content
         li
           | 工作意见与建议
           br
-          textarea#opinions(name='opinions')
+          textarea#opinions(name='opinions' value='')
     #note
       span 注：
       | 提交前请认真核对所填信息，一旦提交，无法修改。
+      | 请注意你的资料已经填写完毕才提交 !!
       br
       | 点点公益青少年发展服务中心承诺，以上所有信息仅供志愿者管理使用，不作其它用途。
     .operation
-      input#submit.btn.btn-large.btn-primary(type="submit") 提交
+      button#submit.btn.btn-large.btn-primary(type="submit") 提交
 

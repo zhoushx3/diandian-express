@@ -62,7 +62,7 @@ router.get('/apply', function(req, res) {
   var callback = function(){
     counter++;
     if (counter == 3){
-      res.render('volunteer/apply', {
+      res.render('volunteer/join-us/apply', {
         title: 'apply',
         showDonationScroller: true,
         carousels: carousels,
