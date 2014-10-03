@@ -4,6 +4,7 @@ var express = require('express'),
       formidable = require('formidable'),
       fs = require('fs'),
       bodyParser = require('body-parser'),
+      assert = require('assert'),
       DOCS_PATH = 'docs/',
       VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
       MAXFILESZIZE = 4 * 1024 * 1024,
@@ -42,7 +43,7 @@ router.get('/finances', function(req, res) {
 });
 
 router.post('/finances', function(req, res) {
-	// using formidable
+  // using formidable
    var form = new formidable.IncomingForm();
    form.uploadDir = DOCS_PATH;  // set upload dir
    form.keepExtensions = true;  // 保留后缀
@@ -92,44 +93,66 @@ router.post('/finances_ViewFiles', function(req, res){
 });
 
 
+function volunteer_apply(requstBody) {
+
+  function returnObject(object) {
+    return object === undefined ? '' : object;
+  }
+  var date = new Date();
+  var day = date.getDate(),
+  month = date.getMonth() + 1,
+  year = date.getFullYear();
+  return {
+              username: returnObject(requstBody.name),
+              gender: returnObject(requstBody.gender),
+              birthYear: returnObject(requstBody.birthYear),
+              birthMonth: returnObject(requstBody.birthMonth),
+              province: returnObject(requstBody.province),
+              city: returnObject(requstBody.city),
+              politicalStatus: returnObject(requstBody.politicalStatus),
+              workUnit: returnObject(requstBody.workUnit),
+              position: returnObject(requstBody.postion),
+              IDCardNo: returnObject(requstBody.IDCardNo),
+              speciality: returnObject(requstBody.speciality),
+              address: returnObject(requstBody.address),
+              postcode: returnObject(requstBody.postcode),
+              cellphone: returnObject(requstBody.cellphone),
+              phone: returnObject(requstBody.phone),
+              email: returnObject(requstBody.email),
+              QQ: returnObject(requstBody.QQ),
+              languages: returnObject(requstBody.languages),
+              vihicles: returnObject(requstBody.vihicles),
+              volunteerTime: returnObject(requstBody.volunteerTime),
+              serviceMessage: returnObject(requstBody.serviceMessage),
+              serviceActivity: returnObject(requstBody.serviceActivity),
+              serviceOthers: returnObject(requstBody.serviceOthers),
+              opinions: returnObject(requstBody.opinions),
+              time: (year + "/" + month + "/" + day),
+              isPassed: false
+  };
+}
+
 // handle uploaded volunteer form
 router.post("/upload_volunteer_form", function(req, res) {
   console.log(req);
-   var form = new formidable.IncomingForm();
-   form.uploadDir = VOLUNTEER_HEADIMG_PATH;  // set upload dir
-   form.keepExtensions = true;  // 保留后缀
-   form.maxFieldSize =  MAXHEADIMGSZIZE;  // file size
-   form.parse(req, function(err, fields, files) {
-   		if (err) {
-   			// expection handling
-   			res.locals.error = err;
-   			console.log(err);
-   			return;
-   		} else {
-   			console.log(fields);
-   		}
-   });
-   res.redirect("/volunteer/apply");
+  var db = req.db.collection('volunteers_apply');
+  var volunteerApply = volunteer_apply(req.body);
+  // insert volunteerApply
+    console.log(volunteerApply);
+  db.insert(volunteerApply, function(err, item) {
+    assert.equal(null, err);
+  });
+  res.redirect("/volunteer/apply");
 });
 
+// pass volunteer form
+router.post("/pass_volunteer_form", function(req, res) {
+  var db = req.db.collection('volunteers_apply');
+  db.update({username:req.body.username}, {$set:{"isPassed": true}}, function(err, item){
+    res.location("volunteers_apply");
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 // //wjw
 // router.post('/add-administrator', function(req, res) {
@@ -229,9 +252,27 @@ router.get('/news', function(req, res) {
 	});
 });
 
+
+
 router.get('/volunteers_apply', function(req, res) {
-  res.render('background/volunteers_apply', {
-    title: 'volunteers_apply '
+  var db = req.db.collection('volunteers_apply');
+  db.find().toArray(function(err, docs) {
+     var volunteersApply = [],
+     volunteersPassed = [];
+     assert.equal(null, err);
+     for (var i in docs) {
+        if (docs[i].isPassed) {
+          volunteersPassed.push(docs[i]);
+        } else {
+          volunteersApply.push(docs[i]);
+        }
+     }
+
+     res.render('background/volunteers_apply', {
+      title: 'volunteers_apply ',
+      volunteersApply: volunteersApply,
+      volunteersPassed: volunteersPassed
+     });
   });
 });
 

@@ -2,4 +2,155 @@ extends  ../background_layout
 
 block content
   #backgroundVolunteersApply
-    p 志愿者申请
+   h2 志愿者申请 
+   hr
+   .background_volunteer_apply_header 未审核
+   hr
+   #volunteer_unchecked
+       for volunteer in volunteersApply
+         .volunteer_apply_item
+           li #{volunteer.username} #{volunteer.time}
+             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.username}" href='##{volunteer.username}', role='button', data-toggle='modal') View
+           .modal.hide.fade(id= '#{volunteer.username}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+             .modal-header
+               button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+               h3#myViewHeader #{volunteer.username}申请表
+             .modal-body
+               span.field-name 姓名：
+                 p #{volunteer.username}
+               span.field-name 性别：
+                 p #{volunteer.gender}
+               span.field-name 出生年月：
+                 p #{volunteer.birthYear} / #{volunteer.birthMonth}
+               span.field-name 籍贯：
+                 p #{volunteer.province}
+               span.field-name 政治面貌：
+                 p #{volunteer.politicalStatus}
+               span.field-name 工作单位：
+                 p #{volunteer.workUnit}
+               span.field-name 职务：
+                 p #{volunteer.position}
+               span.field-name 身份证号：
+                 p #{volunteer.IDCardNo}
+               span.field-name 特长：
+                 p #{volunteer.speciality}
+               span.field-name 通讯地址：
+                 p #{volunteer.address}
+               span.field-name 邮政编码：
+                 p #{volunteer.postcode}
+               span.field-name 手机：
+                 p #{volunteer.phone}
+               span.field-name Email：
+                 p #{volunteer.email}
+               legend 志愿相关
+               if volunteer.languages != null
+                 ol 熟悉的语言：
+                 for language in volunteer.languages
+                   if language != 'on'
+                     li #{language}
+               if volunteer.vihicles != null
+                 ol 拥有的交通工具：
+                   for vihicle in volunteer.vihicles
+                     if vihicle != "on"
+                       li #{vihicle}
+               if volunteer.volunteerTime != null
+                 ol 希望服务时间：
+                   for volunteerOpenTime in volunteer.volunteerTime
+                     if volunteerOpenTime != "on"
+                       li #{volunteerOpenTime}
+               if volunteer.serviceManage !=  null
+                 ol 愿意提供的服务：
+                   for service in volunteer.serviceManage
+                     if service != "on"
+                       li #{service}
+               if volunteer.serviceActivity != null
+                 ol 大型活动：
+                   for service in volunteer.serviceActivity
+                     if service != "on"
+                       li #{service}
+               if volunteer.serviceOthers != null
+                 ol 其它活动：
+                   for service in volunteer.serviceOthers
+                     if service != "on"
+                       li #{service}
+               span.field-name 工作意见与建议
+                 p #{volunteer.opinions}
+
+             .modal-footer
+                button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+                button.volunteer_pass_button.btn(volunteer ='#{volunteer.username}') Pass
+
+   hr 
+   .background_volunteer_apply_header 已审核
+   hr
+   #volunteer_checked
+       for volunteer in volunteersPassed
+         .volunteer_apply_item
+           li #{volunteer.username} #{volunteer.time}
+             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.username}" href='##{volunteer.username}', role='button', data-toggle='modal') View
+           .modal.hide.fade(id= '#{volunteer.username}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+             .modal-header
+               button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+               h3#myViewHeader #{volunteer.username}申请表
+             .modal-body
+               span.field-name 姓名：
+                 p #{volunteer.username}
+               span.field-name 性别：
+                 p #{volunteer.gender}
+               span.field-name 出生年月：
+                 p #{volunteer.birthYear} / #{volunteer.birthMonth}
+               span.field-name 省：
+                 p #{volunteer.province}
+               span.field-name 市：
+                 p #{volunteer.city}
+               span.field-name 政治面貌：
+                 p #{volunteer.politicalStatus}
+               span.field-name 工作单位：
+                 p #{volunteer.workUnit}
+               span.field-name 职务：
+                 p #{volunteer.position}
+               span.field-name 身份证号：
+                 p #{volunteer.IDCardNo}
+               span.field-name 特长：
+                 p #{volunteer.speciality}
+               span.field-name 通讯地址：
+                 p #{volunteer.address}
+               span.field-name 邮政编码：
+                 p #{volunteer.postcode}
+               span.field-name 手机：
+                 p #{volunteer.phone}
+               span.field-name Email：
+                 p #{volunteer.email}
+               legend 志愿相关
+               if volunteer.languages != null
+                 ol 熟悉的语言：
+                 for language in volunteer.languages
+                   if language != "on"
+                     li #{language}
+               if volunteer.vihicles != null
+                 ol 拥有的交通工具：
+                   for vihicle in volunteer.vihicles
+                     if vihicle != "on"
+                       li #{vihicle}
+               if volunteer.volunteerTime != null
+                 ol 希望服务时间：
+                   for volunteerOpenTime in volunteer.volunteerTime
+                     if volunteerOpenTime != "on"
+                       li #{volunteerOpenTime}
+               if volunteer.serviceManage !=  null
+                 ol 愿意提供的服务：
+                   for service in volunteer.serviceManage
+                     if service != "on"
+                       li #{service}
+               if volunteer.serviceActivity != null
+                 ol 大型活动：
+                   for service in volunteer.serviceActivity
+                     if service != "on"
+                       li #{service}
+               if volunteer.serviceOthers != null
+                 ol 其它活动：
+                   for service in volunteer.serviceOthers
+                     if service != "on"
+                       li #{service}
+               span.field-name 工作意见与建议
+                 p #{volunteer.opinions}
