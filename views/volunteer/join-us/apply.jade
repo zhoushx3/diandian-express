@@ -5,11 +5,6 @@ block content
     h1 志愿者申请表格
     fieldset
       legend 个人信息
-      #photo-area
-        #photo
-          img(src='', alt='')
-          input#upload(type='file' name='volunteer_head' placeholder="上传照片")
-        .note 支持bmp/jpg/jpeg/png格式，1M以内。
       .field
         label
           span.field-name 姓名：
@@ -109,7 +104,7 @@ block content
               label
                 input(type='checkbox', name='languages')
                 | 其它：
-              input#other-languages(type='text')
+                input#other-languages(type='text' name='languages')
         li
           | 拥有的交通工具：(可多选)
           ul
@@ -137,7 +132,7 @@ block content
               label
                 input(type='checkbox', name='vihicles')
                 | 其它：
-              input#other-vihicles(type='text')
+                input#other-vihicles(type='text' name='vihicles')
         li
           | 希望服务时间：
           ul

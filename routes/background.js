@@ -98,7 +98,10 @@ function volunteer_apply(requstBody) {
   function returnObject(object) {
     return object === undefined ? '' : object;
   }
-
+  var date = new Date();
+  var day = date.getDate(),
+  month = date.getMonth() + 1,
+  year = date.getFullYear();
   return {
               username: returnObject(requstBody.name),
               gender: returnObject(requstBody.gender),
@@ -124,6 +127,7 @@ function volunteer_apply(requstBody) {
               serviceActivity: returnObject(requstBody.serviceActivity),
               serviceOthers: returnObject(requstBody.serviceOthers),
               opinions: returnObject(requstBody.opinions),
+              time: (year + "/" + month + "/" + day),
               isPassed: false
   };
 }
@@ -139,6 +143,15 @@ router.post("/upload_volunteer_form", function(req, res) {
     assert.equal(null, err);
   });
   res.redirect("/volunteer/apply");
+});
+
+// pass volunteer form
+router.post("/pass_volunteer_form", function(req, res) {
+  var db = req.db.collection('volunteers_apply');
+  db.update({username:req.body.username}, {$set:{"isPassed": true}}, function(err, item){
+    res.location("volunteers_apply");
+  });
+
 });
 
 // //wjw
@@ -243,14 +256,23 @@ router.get('/news', function(req, res) {
 
 router.get('/volunteers_apply', function(req, res) {
   var db = req.db.collection('volunteers_apply');
-  var volunteersApply ;
-  // db.find().toArray(function(err, docs) {
-  //   assert.equal(null, err);
-  //   volunteersApply = docs;
-  // });
-  console.log(db.find({}));
-  res.render('background/volunteers_apply', {
-    title: 'volunteers_apply '
+  db.find().toArray(function(err, docs) {
+     var volunteersApply = [],
+     volunteersPassed = [];
+     assert.equal(null, err);
+     for (var i in docs) {
+        if (docs[i].isPassed) {
+          volunteersPassed.push(docs[i]);
+        } else {
+          volunteersApply.push(docs[i]);
+        }
+     }
+
+     res.render('background/volunteers_apply', {
+      title: 'volunteers_apply ',
+      volunteersApply: volunteersApply,
+      volunteersPassed: volunteersPassed
+     });
   });
 });
 
