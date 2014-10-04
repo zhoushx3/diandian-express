@@ -1,2 +1,19 @@
-#backgroundAlbums
-	p 点点相册
+extends  ../background_layout
+
+block content 
+	input.save_all(type="button", value="save all modification")
+	input.add(type="button", value="add")
+	#albums_list_show
+		each album in albums
+			.ui-state-default
+				a(href='/background/albums/' + album.name)
+					img(src=album.cover)
+				textarea=album.name
+				div
+					input.delete(type="button", value="@")
+
+	#make_sure
+		div
+			p="Do you really want to delete it ? "
+			input.yes(type="button", value="yes")
+			input.no(type="button", value="no")			

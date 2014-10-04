@@ -418,4 +418,38 @@ router.post('/share_contents', function(req, res) {
   };
 });
 
+/**
+**  后台点点相册
+**/
+router.get('/albums', function(req, res) {
+  var db = req.db;
+  var albums;
+  db.collection('albums', function(err, col) {
+    col.find().toArray(function(err, docs) {
+      albums = docs;
+      callback();
+    });
+   var callback = function() {
+      res.render('background/albums', {
+        titile: "albums",
+        albums: albums
+      });
+    };
+  });
+});
+
+router.get('/albums/:name', function(req, res) {
+  var db = req.db;
+  // var ObjectID = require('mongodb').ObjectID;
+  db.collection('albums', function(err, col) {
+    col.findOne({name: req.params.name}, function(err, item) {
+      res.render('background/album_details', {
+        title: req.params.name,
+        album: item
+      });
+    });
+  });
+});
+
+
 module.exports = router;

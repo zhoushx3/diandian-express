@@ -1,23 +1,23 @@
 doctype html
 html
   head
-  title= '点点公益青少年服务发展中心 - ' + title
-  meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
-  link(rel="stylesheet", href="/lib/bootstrap/css/bootstrap.css")
-  link(rel="stylesheet", href="/stylesheets/style.css")
+    title= '点点公益青少年服务发展中心 - ' + title
+    meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+    link(rel="stylesheet", href="/lib/bootstrap/css/bootstrap.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
 
   body
-  include includes/header
-  include includes/navigator
+    include includes/header
+    include includes/navigator
 
-  if showDonationScroller
-    include includes/donation_scroller
+    if showDonationScroller
+      include includes/donation_scroller
 
-  #page-content
-    block content
-    .clear
+    #page-content
+      block content
+      .clear
 
-  include includes/footer
+    include includes/footer
 
   script(src="/lib/jquery/jquery-1.11.1.js")
   script(src="/lib/bootstrap/js/bootstrap.js")

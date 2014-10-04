@@ -1,0 +1,25 @@
+extends  ../background_layout
+
+block content 
+	#album_cover
+		h3=album.name
+		img(src=album.cover, alt=album.name)
+		form
+			input.add(type="button", value="add")=add
+			input.save(type="submit", value="save", name="")=save
+	#album_pitures_list
+		each item in album.pictures
+			.ui-state-default
+				img(src=item.src, alt=item.name)
+				textarea=item.instruction
+				.img_property
+					input.delete(type="button", value="删除照片？")
+					input.setCover(type="button", value="设为封面？" )
+				.new_img_load
+					input(type="file")
+					input.delete(type="button", value="删除照片？")
+	#make_sure
+		div
+			p="Do you really want to delete it ? "
+			input.yes(type="button", value="yes")
+			input.no(type="button", value="no")			
