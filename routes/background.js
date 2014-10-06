@@ -5,6 +5,8 @@ var express = require('express'),
       fs = require('fs'),
       bodyParser = require('body-parser'),
       assert = require('assert'),
+      mongo = require('mongodb'),
+      BSON = mongo.BSONPure,
       DOCS_PATH = 'docs/',
       VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
       MAXFILESZIZE = 4 * 1024 * 1024,
@@ -134,11 +136,10 @@ function volunteer_apply(requstBody) {
 
 // handle uploaded volunteer form
 router.post("/upload_volunteer_form", function(req, res) {
-  console.log(req);
   var db = req.db.collection('volunteers_apply');
   var volunteerApply = volunteer_apply(req.body);
   // insert volunteerApply
-    console.log(volunteerApply);
+  console.log(volunteerApply);
   db.insert(volunteerApply, function(err, item) {
     assert.equal(null, err);
   });
@@ -148,10 +149,17 @@ router.post("/upload_volunteer_form", function(req, res) {
 // pass volunteer form
 router.post("/pass_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
-  db.update({username:req.body.username}, {$set:{"isPassed": true}}, function(err, item){
-    res.location("volunteers_apply");
+  db.update({IDCardNo: req.body.IDCardNo}, {$set:{"isPassed": true}}, {multi:true},function(err, item){
+    res.redirect("/");
   });
+});
 
+router.post("/delete_volunteer_form", function(req, res) {
+   var db = req.db.collection('volunteers_apply');
+   console.log(req.body);
+   db.remove({IDCardNo: req.body.IDCardNo}, {w:1}, function(err, item){
+       res.location("/");
+   });
 });
 
 // //wjw

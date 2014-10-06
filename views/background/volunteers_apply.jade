@@ -10,8 +10,9 @@ block content
        for volunteer in volunteersApply
          .volunteer_apply_item
            li #{volunteer.username} #{volunteer.time}
-             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.username}" href='##{volunteer.username}', role='button', data-toggle='modal') View
-           .modal.hide.fade(id= '#{volunteer.username}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+             a.delete_volunteers_button.btn(volunteer="#{volunteer.IDCardNo}" role='button', data-toggle='modal' href='#delete_volunteers') 删除
+             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.IDCardNo}" href='##{volunteer.IDCardNo}', role='button', data-toggle='modal') View
+           .modal.hide.fade(id= '#{volunteer.IDCardNo}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
              .modal-header
                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
                h3#myViewHeader #{volunteer.username}申请表
@@ -78,7 +79,7 @@ block content
 
              .modal-footer
                 button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-                button.volunteer_pass_button.btn(volunteer ='#{volunteer.username}') Pass
+                button.volunteer_pass_button.btn(volunteer ='#{volunteer.IDCardNo}') Pass
 
    hr 
    .background_volunteer_apply_header 已审核
@@ -87,8 +88,9 @@ block content
        for volunteer in volunteersPassed
          .volunteer_apply_item
            li #{volunteer.username} #{volunteer.time}
-             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.username}" href='##{volunteer.username}', role='button', data-toggle='modal') View
-           .modal.hide.fade(id= '#{volunteer.username}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+             a.delete_volunteers_button.btn(volunteer="#{volunteer.IDCardNo}" role='button', data-toggle='modal' href='#delete_volunteers') 删除
+             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.IDCardNo}" href='##{volunteer.IDCardNo}', role='button', data-toggle='modal') View
+           .modal.hide.fade(id= '#{volunteer.IDCardNo}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
              .modal-header
                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
                h3#myViewHeader #{volunteer.username}申请表
@@ -154,3 +156,13 @@ block content
                        li #{service}
                span.field-name 工作意见与建议
                  p #{volunteer.opinions}
+
+         .modal.hide.fade(id= 'delete_volunteers' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+           .modal-header
+             button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+             h3 Warning
+           .modal-body
+              p 你确定要删除该名志愿者么？（未通过审核的志愿者计入不符合条件；通过审核后的志愿者若删除计入退出。）
+           .modal-footer
+              button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+              button.volunteer_delete_confirm_button.btn 删除
