@@ -158,7 +158,7 @@ router.post("/delete_volunteer_form", function(req, res) {
    var db = req.db.collection('volunteers_apply');
    console.log(req.body);
    db.remove({IDCardNo: req.body.IDCardNo}, {w:1}, function(err, item){
-       res.location("/");
+       res.redirect("/");
    });
 });
 
