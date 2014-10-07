@@ -4,7 +4,7 @@ exports.insert = function(db, callback){
       throw new Error('获取users失败！');
     }
     col.insert({
-      username: 'test',
+      username: '我是测试君',
       email: {address: 'test@test.com', verified: true},
       createdAt: Date.now,
       source: 'register',

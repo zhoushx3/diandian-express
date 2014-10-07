@@ -13,6 +13,12 @@ html
     if showDonationScroller
       include includes/donation_scroller
 
+    div#alert-flash
+      - if (success)
+        div.alert-success= success
+      - if (error)
+        div.alert-error= error
+
     #page-content
       block content
       .clear

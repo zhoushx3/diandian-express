@@ -3,52 +3,65 @@ var router = express.Router();
 
 /* GET aiding page. */
 router.get('/', function(req, res) {
-  res.render('aiding/aiding', {title:'申请资助'});
+  res.render('aiding/aiding', {
+    title: '申请资助',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
 });
 
 /* GET apply_aiding page. */
 router.get('/apply', function(req, res) {
-  res.render('aiding/apply_aiding', {});
+  if(!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  res.render('aiding/apply_aiding', {
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
 });
 
 router.post('/apply/submit', function(req, res) {
   var db = req.db,
-  name = req.body.name,
-  gender = req.body.gender,
-  birthYear = req.body.birthYear,
-  birthMonth = req.body.birthMonth,
-  school = req.body.school,
-  classic = req.body.class,
-  fee = req.body.fee,
-  server = req.body.server,
-  age = req.body.age,
-  IDCardNo = req.body.IDCardNo,
-  cellphone = req.body.cellphone,
-  other = req.body.else,
-  income = req.body.income,
-  possetion = req.body.possetion,
-  nowAddress = req.body.nowAddress,
-  homeAddress = req.body.homeAddress,
-  reason = req.body.reason;
+    name = req.body.name,
+    gender = req.body.gender,
+    birthYear = req.body.birthYear,
+    birthMonth = req.body.birthMonth,
+    school = req.body.school,
+    classic = req.body.class,
+    fee = req.body.fee,
+    server = req.body.server,
+    age = req.body.age,
+    IDCardNo = req.body.IDCardNo,
+    cellphone = req.body.cellphone,
+    other = req.body.else,
+    income = req.body.income,
+    possetion = req.body.possetion,
+    nowAddress = req.body.nowAddress,
+    homeAddress = req.body.homeAddress,
+    reason = req.body.reason;
   db.collection('singleAiding', function(err, col) {
     col.insert({
-      "name" : name,
-      "gender" : gender,
-      "birth-year" : birthYear,
-      "birth-month" : birthMonth,
-      "school" : school,
-      "class" : classic,
-      "fee" : fee,
-      "server" : server,
-      "age" : age,
-      "ID-cardNo" : IDCardNo,
-      "cellphone" : cellphone,
-      "else" : other,
-      "income" : income,
-      "possetion" : possetion,
-      "now-address" : nowAddress,
-      "home-address" : homeAddress,
-      "reason" : reason
+      "name": name,
+      "gender": gender,
+      "birth-year": birthYear,
+      "birth-month": birthMonth,
+      "school": school,
+      "class": classic,
+      "fee": fee,
+      "server": server,
+      "age": age,
+      "ID-cardNo": IDCardNo,
+      "cellphone": cellphone,
+      "else": other,
+      "income": income,
+      "possetion": possetion,
+      "now-address": nowAddress,
+      "home-address": homeAddress,
+      "reason": reason
     }, function(err, doc) {
       if (err) {
         console.log("Something wrong happened in adding imformation to the aiding database.");

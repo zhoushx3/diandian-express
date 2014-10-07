@@ -1,5 +1,5 @@
 module.exports = {
-	cookieSecret: 'secret key',
+	cookieSecret: 'diandian	',
 
 	database: {
 		host: 'localhost',

@@ -1,43 +1,75 @@
-//账号
-/*
-	users:
-		_id: ObjectID,
-		username: string,					//4-20个字符，只支持英文大小写字母、数字、下划线、连字符(-)
-		email: {address: email, verified: true/false},
-		createdAt: Date,
-		source: string, 					//register/qq/weibo/weixin
-		role: string,						//admin/manager/user
-		profile: {
-			nickname: string,				//2-30个字符，允许中文
-			gender: string, 				//'male'/'female'
-			birthday: string,
-			job: string,
-			phone: string,
-			QQ: string,
-			weibo: string,
-			photo: path,	//头像
-			about: string,
-			isPublic: {
-				birthday: true/false,
-				job: true/false,
-				phone: true/false,
-				QQ: true/false,
-				weibo:  true/false
-			}
-		},
-		password: {
-			identity: string,
-			salt: string
-		}，
-		services: {
-			weibo: {
-		
-			},
-			QQ: {
-		
-			},
-			weixin: {
-		
-			}
+var mongodb = require('../lib/DB');
+
+function User(user) {
+	this.username = user.username;
+	this.email = user.email;
+	this.password = user.password;
+	this.createdAt = user.createdAt;
+	this.role = user.role;
+	this.profile = user.profile;
+}
+
+module.exports = User;
+
+//存储用户信息
+User.prototype.save = function(callback) {
+	//要存入数据库的用户文档
+	var user = {
+		username: this.username,
+		email: this.email,
+		password: this.password,
+		createdAt: this.createdAt,
+		role: this.role,
+		profile: this.profile
+	};
+	//打开数据库
+	mongodb.open(function(err, db) {
+		if (err) {
+			return callback(err); //错误，返回 err 信息
 		}
-*/
+		//读取 users 集合
+		db.collection('users', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err); //错误，返回 err 信息
+			}
+			//将用户数据插入 users 集合
+			collection.insert(user, {
+				safe: true
+			}, function(err, user) {
+				mongodb.close();
+				if (err) {
+					return callback(err); //错误，返回 err 信息
+				}
+				callback(null, user[0]); //成功！err 为 null，并返回存储后的用户文档
+			});
+		});
+	});
+};
+
+//读取用户信息
+User.get = function(username, callback) {
+	//打开数据库
+	mongodb.open(function(err, db) {
+		if (err) {
+			return callback(err); //错误，返回 err 信息
+		}
+		//读取 users 集合
+		db.collection('users', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err); //错误，返回 err 信息
+			}
+			//查找用户名（name键）值为 name 一个文档
+			collection.findOne({
+				username: username
+			}, function(err, user) {
+				mongodb.close();
+				if (err) {
+					return callback(err); //失败！返回 err 信息
+				}
+				callback(null, user); //成功！返回查询的用户信息
+			});
+		});
+	});
+};
