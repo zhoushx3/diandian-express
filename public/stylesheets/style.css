@@ -493,6 +493,20 @@ textarea.id {
   display: block;
 }
 
+.background_volunteer_apply_header {
+  text-align: center;
+  font-size: 20px;
+}
+.volunteer_apply_item {
+  margin: 10px;
+}
+.view_volunteers_apply_button {
+  float: right;
+}
+.delete_volunteers_button {
+  float: right;
+}
+
 #donation-scroller {
   width: 100%;
   font-size: 12pt;

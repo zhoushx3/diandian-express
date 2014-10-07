@@ -10,6 +10,7 @@ var express = require('express'),
   MAXFILESZIZE = 4 * 1024 * 1024,
   MAXHEADIMGSZIZE = 2 * 1024 * 1024;
 
+
 /* GET About page. */
 router.get('/', function(req, res) {
   if (!req.session.user) {
@@ -148,7 +149,6 @@ function volunteer_apply(requstBody) {
 
 // handle uploaded volunteer form
 router.post("/upload_volunteer_form", function(req, res) {
-  console.log(req);
   var db = req.db.collection('volunteers_apply');
   var volunteerApply = volunteer_apply(req.body);
   // insert volunteerApply
@@ -171,7 +171,14 @@ router.post("/pass_volunteer_form", function(req, res) {
   }, function(err, item) {
     res.location("volunteers_apply");
   });
+});
 
+router.post("/delete_volunteer_form", function(req, res) {
+   var db = req.db.collection('volunteers_apply');
+   console.log(req.body);
+   db.remove({IDCardNo: req.body.IDCardNo}, {w:1}, function(err, item){
+       res.location("/");
+   });
 });
 
 // //wjw

@@ -288,6 +288,35 @@
 	});
 
 })();;(function() {
+	var preDeleteVolunteer;
+
+	function setPreDeleteVolunteer(id) {
+		preDeleteVolunteer = id;
+	}
+
+	function passVolunteer(id){
+		$.post("pass_volunteer_form", {
+			IDCardNo: id
+		});
+	}
+
+
+	$(".volunteer_pass_button").click(function(){
+		passVolunteer($(this).attr("volunteer"));
+	});
+
+	$(".delete_volunteers_button").click(function(){
+		setPreDeleteVolunteer($(this).attr("volunteer"));
+	});
+
+	$(".volunteer_delete_confirm_button").click(function(){
+		console.log(preDeleteVolunteer);
+		$.post("delete_volunteer_form", {
+			IDCardNo: preDeleteVolunteer
+		});
+	});
+
+})();;(function() {
   $.getJSON('background/loadimages?jsoncallback=?', function(data) {
     alert('3');
     for (var i = 0; i < 3; ++i) {
@@ -521,6 +550,24 @@
 			return;
 		}
 	});
+})();;(function(){
+	function	isEverythingFilled() {
+		var input = $("[value='']");
+		for (var i = 0; i < input.length; i++) {
+			if (input.val() === '') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	$("#volunteer-application").submit(function(e) {
+		if (!isEverythingFilled()) {
+			e.preventDefault();
+			alert("表格未填写完!");
+		}
+	});
+
 })();;(function(){
 	function	isEverythingFilled() {
 		var input = $("[value='']");
