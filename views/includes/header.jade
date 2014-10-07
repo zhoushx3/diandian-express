@@ -1,9 +1,15 @@
 #account-info
-  a(href="/signin") 登录
-  a(href="/signup") 注册
+        - if (user && user.role == 'admin')
+              a(href="/background") 后台管理
+              a(href="/profile") #{user.username}
+              a(href="/logout") 退出
+        - if (user && user.role == 'user')
+              a(href="/profile") #{user.username}
+              a(href="/logout") 退出
+        - if (!user)
+              a(href="/signin") 登陆
+              a(href="/signup") 注册
 
-  //- a(href="/profile") 用户名
-  //- a(href="/logout") 退出
 
 #header
   #headline

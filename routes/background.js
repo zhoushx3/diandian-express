@@ -1,95 +1,109 @@
 var querystring = require('querystring');
 var express = require('express'),
-      router = express.Router(),
-      formidable = require('formidable'),
-      fs = require('fs'),
-      bodyParser = require('body-parser'),
-      assert = require('assert'),
-      DOCS_PATH = 'docs/',
-      VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
-      MAXFILESZIZE = 4 * 1024 * 1024,
-      MAXHEADIMGSZIZE = 2 * 1024 * 1024;
+  router = express.Router(),
+  formidable = require('formidable'),
+  fs = require('fs'),
+  bodyParser = require('body-parser'),
+  assert = require('assert'),
+  DOCS_PATH = 'docs/',
+  VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
+  MAXFILESZIZE = 4 * 1024 * 1024,
+  MAXHEADIMGSZIZE = 2 * 1024 * 1024;
 
 /* GET About page. */
 router.get('/', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background_layout', {
-    title: 'background'
+    title: '后台',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/finances', function(req, res) {
-	fs.readdir(DOCS_PATH, function(err, files){
-		var itemFiles = [],
-		seasonFiles = [],
-		annualFiles = [];
-		var sortFiles = files.sort();
-		for (var i = 0; i < sortFiles.length; i++) {
-			var fileName = sortFiles[i];
-			if (fileName.match("月份"))
-				itemFiles.push(fileName);
-			else if (fileName.match("季度"))
-				seasonFiles.push(fileName);
-			else if (fileName.match("年度"))
-				annualFiles.push(fileName);
-		}
+  fs.readdir(DOCS_PATH, function(err, files) {
+    var itemFiles = [],
+      seasonFiles = [],
+      annualFiles = [];
+    var sortFiles = files.sort();
+    for (var i = 0; i < sortFiles.length; i++) {
+      var fileName = sortFiles[i];
+      if (fileName.match("月份"))
+        itemFiles.push(fileName);
+      else if (fileName.match("季度"))
+        seasonFiles.push(fileName);
+      else if (fileName.match("年度"))
+        annualFiles.push(fileName);
+    }
 
-   		res.render('background/finances', {
-    	  title: 'finances',
-        itemFiles: itemFiles,
-        seasonFiles: seasonFiles,
-        annualFiles: annualFiles
-  		});
-	});
+    res.render('background/finances', {
+      title: 'finances',
+      itemFiles: itemFiles,
+      seasonFiles: seasonFiles,
+      annualFiles: annualFiles,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
 });
 
 router.post('/finances', function(req, res) {
   // using formidable
-   var form = new formidable.IncomingForm();
-   form.uploadDir = DOCS_PATH;  // set upload dir
-   form.keepExtensions = true;  // 保留后缀
-   form.maxFieldSize =  MAXFILESZIZE;  // file size
-   form.parse(req, function(err, fields, files) {
-   	if (err) {
-   		// expection handling
-   		res.locals.error = err;
-   		console.log(err);
-   		return;
-   	}
-   	var newPath;
-   	// 判断报表类型
-   	if (fields.month !== undefined) {
-   		newPath = DOCS_PATH + fields.year + "-" + fields.month + '.' + (files.add.name + "").split('.')[1];
-   	} else {
-   		newPath = DOCS_PATH + "年度-" + fields.year + '.' + (files.add.name + "").split('.')[1];
-   	}
-   	// 重命名 文件
-   	fs.renameSync(files.add.path,newPath);
-    });
-   res.redirect('finances');
+  var form = new formidable.IncomingForm();
+  form.uploadDir = DOCS_PATH; // set upload dir
+  form.keepExtensions = true; // 保留后缀
+  form.maxFieldSize = MAXFILESZIZE; // file size
+  form.parse(req, function(err, fields, files) {
+    if (err) {
+      // expection handling
+      res.locals.error = err;
+      console.log(err);
+      return;
+    }
+    var newPath;
+    // 判断报表类型
+    if (fields.month !== undefined) {
+      newPath = DOCS_PATH + fields.year + "-" + fields.month + '.' + (files.add.name + "").split('.')[1];
+    } else {
+      newPath = DOCS_PATH + "年度-" + fields.year + '.' + (files.add.name + "").split('.')[1];
+    }
+    // 重命名 文件
+    fs.renameSync(files.add.path, newPath);
+  });
+  res.redirect('finances');
 });
 
 
 
 // delete file post router
-router.post('/finances_deleteFiles', function(req, res){
-	// request body fileName
-	fs.unlink(DOCS_PATH + req.body.fileName, function(){
-		console.log("Delete " + DOCS_PATH + req.body.fileName + "  !");
-	});
+router.post('/finances_deleteFiles', function(req, res) {
+  // request body fileName
+  fs.unlink(DOCS_PATH + req.body.fileName, function() {
+    console.log("Delete " + DOCS_PATH + req.body.fileName + "  !");
+  });
 
-	res.redirect('finances');
+  res.redirect('finances');
 });
 
 // view file post router
-router.post('/finances_ViewFiles', function(req, res){
-	fs.readFile(DOCS_PATH + req.body.fileName,
-		{
-			encoding: "UTF-8"
-		},
-		function(errr, data){
-		res.send({
-			content: data});
-	});
+router.post('/finances_ViewFiles', function(req, res) {
+  fs.readFile(DOCS_PATH + req.body.fileName, {
+      encoding: "UTF-8"
+    },
+    function(errr, data) {
+      res.send({
+        content: data
+      });
+    });
 });
 
 
@@ -100,35 +114,35 @@ function volunteer_apply(requstBody) {
   }
   var date = new Date();
   var day = date.getDate(),
-  month = date.getMonth() + 1,
-  year = date.getFullYear();
+    month = date.getMonth() + 1,
+    year = date.getFullYear();
   return {
-              username: returnObject(requstBody.name),
-              gender: returnObject(requstBody.gender),
-              birthYear: returnObject(requstBody.birthYear),
-              birthMonth: returnObject(requstBody.birthMonth),
-              province: returnObject(requstBody.province),
-              city: returnObject(requstBody.city),
-              politicalStatus: returnObject(requstBody.politicalStatus),
-              workUnit: returnObject(requstBody.workUnit),
-              position: returnObject(requstBody.postion),
-              IDCardNo: returnObject(requstBody.IDCardNo),
-              speciality: returnObject(requstBody.speciality),
-              address: returnObject(requstBody.address),
-              postcode: returnObject(requstBody.postcode),
-              cellphone: returnObject(requstBody.cellphone),
-              phone: returnObject(requstBody.phone),
-              email: returnObject(requstBody.email),
-              QQ: returnObject(requstBody.QQ),
-              languages: returnObject(requstBody.languages),
-              vihicles: returnObject(requstBody.vihicles),
-              volunteerTime: returnObject(requstBody.volunteerTime),
-              serviceMessage: returnObject(requstBody.serviceMessage),
-              serviceActivity: returnObject(requstBody.serviceActivity),
-              serviceOthers: returnObject(requstBody.serviceOthers),
-              opinions: returnObject(requstBody.opinions),
-              time: (year + "/" + month + "/" + day),
-              isPassed: false
+    username: returnObject(requstBody.name),
+    gender: returnObject(requstBody.gender),
+    birthYear: returnObject(requstBody.birthYear),
+    birthMonth: returnObject(requstBody.birthMonth),
+    province: returnObject(requstBody.province),
+    city: returnObject(requstBody.city),
+    politicalStatus: returnObject(requstBody.politicalStatus),
+    workUnit: returnObject(requstBody.workUnit),
+    position: returnObject(requstBody.postion),
+    IDCardNo: returnObject(requstBody.IDCardNo),
+    speciality: returnObject(requstBody.speciality),
+    address: returnObject(requstBody.address),
+    postcode: returnObject(requstBody.postcode),
+    cellphone: returnObject(requstBody.cellphone),
+    phone: returnObject(requstBody.phone),
+    email: returnObject(requstBody.email),
+    QQ: returnObject(requstBody.QQ),
+    languages: returnObject(requstBody.languages),
+    vihicles: returnObject(requstBody.vihicles),
+    volunteerTime: returnObject(requstBody.volunteerTime),
+    serviceMessage: returnObject(requstBody.serviceMessage),
+    serviceActivity: returnObject(requstBody.serviceActivity),
+    serviceOthers: returnObject(requstBody.serviceOthers),
+    opinions: returnObject(requstBody.opinions),
+    time: (year + "/" + month + "/" + day),
+    isPassed: false
   };
 }
 
@@ -138,7 +152,7 @@ router.post("/upload_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
   var volunteerApply = volunteer_apply(req.body);
   // insert volunteerApply
-    console.log(volunteerApply);
+  console.log(volunteerApply);
   db.insert(volunteerApply, function(err, item) {
     assert.equal(null, err);
   });
@@ -148,7 +162,13 @@ router.post("/upload_volunteer_form", function(req, res) {
 // pass volunteer form
 router.post("/pass_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
-  db.update({username:req.body.username}, {$set:{"isPassed": true}}, function(err, item){
+  db.update({
+    username: req.body.username
+  }, {
+    $set: {
+      "isPassed": true
+    }
+  }, function(err, item) {
     res.location("volunteers_apply");
   });
 
@@ -247,181 +267,316 @@ router.post("/pass_volunteer_form", function(req, res) {
 // //wjw
 
 router.get('/news', function(req, res) {
-	res.render('background/news', {
-		title:'news'
-	});
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  res.render('background/news', {
+    title: 'news',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
 });
 
 
 
 router.get('/volunteers_apply', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   var db = req.db.collection('volunteers_apply');
   db.find().toArray(function(err, docs) {
-     var volunteersApply = [],
-     volunteersPassed = [];
-     assert.equal(null, err);
-     for (var i in docs) {
-        if (docs[i].isPassed) {
-          volunteersPassed.push(docs[i]);
-        } else {
-          volunteersApply.push(docs[i]);
-        }
-     }
+    var volunteersApply = [],
+      volunteersPassed = [];
+    assert.equal(null, err);
+    for (var i in docs) {
+      if (docs[i].isPassed) {
+        volunteersPassed.push(docs[i]);
+      } else {
+        volunteersApply.push(docs[i]);
+      }
+    }
 
-     res.render('background/volunteers_apply', {
+    res.render('background/volunteers_apply', {
       title: 'volunteers_apply ',
       volunteersApply: volunteersApply,
-      volunteersPassed: volunteersPassed
-     });
+      volunteersPassed: volunteersPassed,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
   });
 });
 
 router.get('/banners', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/banners', {
-    title: 'banners'
+    title: 'banners',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/accounts', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/accounts', {
-    title: 'accounts'
+    title: 'accounts',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/passwords', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/passwords', {
-    title: 'passwords'
+    title: 'passwords',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/donations', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/donations', {
-    title: 'donations'
+    title: 'donations',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/dynamics', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/dynamics', {
-    title: 'dynamics'
+    title: 'dynamics',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/dynamics-edit', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/dynamics-edit', {
-    title: 'dynamics'
+    title: 'dynamics',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/foreshows', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/foreshows', {
-    title: 'foreshows'
+    title: 'foreshows',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 router.get('/foreshows-edit', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   res.render('background/foreshows-edit', {
-    title: 'foreshows'
+    title: 'foreshows',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
 
 /**
-** 分享交流基本页面
-** 获得查询到的所有条目的总数，进而确定分期数目，每期5个，最新一期可少于5个
-** show==0表示所有的内容都不展开
-**/
+ ** 分享交流基本页面
+ ** 获得查询到的所有条目的总数，进而确定分期数目，每期5个，最新一期可少于5个
+ ** show==0表示所有的内容都不展开
+ **/
 router.get('/shares', function(req, res) {
-    var db = req.db;
-    var record_num;
-    db.collection('share', function(err, col) {
-      col.find(function(err, cursor) {
-        cursor.count(function(err, count) {
-          record_num = count;
-          callback();
-        });
-      }); 
-    });
-    var callback = function() {
-      res.render('background/shares', {
-        title: '分享交流', 
-        number: Math.floor(record_num / 5) + 1,
-        show: 0
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  var db = req.db;
+  var record_num;
+  db.collection('share', function(err, col) {
+    col.find(function(err, cursor) {
+      cursor.count(function(err, count) {
+        record_num = count;
+        callback();
       });
-    };
+    });
+  });
+  var callback = function() {
+    res.render('background/shares', {
+      title: '分享交流',
+      number: Math.floor(record_num / 5) + 1,
+      show: 0,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  };
 });
 
 /**
-** 分享页面按期显示，通过点击得到当期期数
-**/
+ ** 分享页面按期显示，通过点击得到当期期数
+ **/
 router.post('/share_period', function(req, res) {
   var serial_number = req.param('id');
   var record_number, count = 0;
   var db = req.db;
   var share;
   db.collection('share', function(err, col) {
-    col.find({period: serial_number.toString()},{'limit': 5}).toArray(function(err, docs) {
+    col.find({
+      period: serial_number.toString()
+    }, {
+      'limit': 5
+    }).toArray(function(err, docs) {
       if (err) {
         console.log(err.message);
-      }
-      else {
+      } else {
         share = docs;
         callback();
       }
     });
   });
-    db.collection('share', function(err, col) {
+  db.collection('share', function(err, col) {
     col.find(function(err, cursor) {
       cursor.count(function(err, count) {
         record_number = count;
         callback();
       });
-    }); 
+    });
   });
   var callback = function() {
     count++;
     if (count == 2) {
       res.render('background/shares', {
-        title: '分享交流', 
+        title: '分享交流',
         share: share,
         number: Math.floor(record_number / 5) + 1,
         show: serial_number
       });
     }
- };
+  };
 });
 /**
-** 分享页面修改文本
-**/
+ ** 分享页面修改文本
+ **/
 router.post('/share_contents', function(req, res) {
   var id = req.param('id');
   var summary = req.param('summary');
   var contents = req.param('contents');
   var db = req.db;
-  db.collection('share').findAndModify(
-  {_id: id}, // query
-  [['_id','asc']],  // sort order
-  {
+  db.collection('share').findAndModify({
+      _id: id
+    }, // query
+    [
+      ['_id', 'asc']
+    ], // sort order
+    {
       summary: summary,
       contents: contents
-   }, // replacement, replaces only the field "hi"
-  {}, // options
-  function(err, object) {
-      if (err){
-          console.warn(err.message);  // returns error if no matching object found
-      }else{
-          console.log(object);
-          callback();
+    }, // replacement, replaces only the field "hi"
+    {}, // options
+    function(err, object) {
+      if (err) {
+        console.warn(err.message); // returns error if no matching object found
+      } else {
+        console.log(object);
+        callback();
       }
-  });
+    });
   var callback = function() {
     res.redirect('/background/shares');
   };
 });
 
 /**
-**  后台点点相册
-**/
+ **  后台点点相册
+ **/
 router.get('/albums', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   var db = req.db;
   var albums;
   db.collection('albums', function(err, col) {
@@ -429,23 +584,39 @@ router.get('/albums', function(req, res) {
       albums = docs;
       callback();
     });
-   var callback = function() {
+    var callback = function() {
       res.render('background/albums', {
         titile: "albums",
-        albums: albums
+        albums: albums,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     };
   });
 });
 
 router.get('/albums/:name', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
   var db = req.db;
   // var ObjectID = require('mongodb').ObjectID;
   db.collection('albums', function(err, col) {
-    col.findOne({name: req.params.name}, function(err, item) {
+    col.findOne({
+      name: req.params.name
+    }, function(err, item) {
       res.render('background/album_details', {
         title: req.params.name,
-        album: item
+        album: item,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     });
   });

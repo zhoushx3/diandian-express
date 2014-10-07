@@ -2,8 +2,8 @@
     if (location.pathname == '/background'){
         var showProperTab = function() {
             var hash = location.hash;
-            if (hash === "")
-                location.hash = '#donations';
+            if (hash === ""){}
+                //location.hash = '#donations';
             else {
                 $('#background-content .tab-pane.active').removeClass('active');
                 $('#background-content ' + location.hash).addClass('active');

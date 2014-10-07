@@ -7,47 +7,50 @@ router.get('/', function(req, res) {
 
   var albums, posts, donations, pictures;
   var counter = 0;
-  var callback = function(){
+  var callback = function() {
     counter++;
-    if (counter == 4){
+    if (counter == 4) {
       res.render('news/news', {
         title: '最新动态',
         showDonationScroller: true,
         albums: albums,
         posts: posts,
         donations: donations,
-        pictures: pictures
+        pictures: pictures,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     }
   };
 
-  db.collection('albums', function(err, col){
-    col.find().toArray(function(err, docs){
+  db.collection('albums', function(err, col) {
+    col.find().toArray(function(err, docs) {
       albums = docs;
       callback();
     });
   });
 
-  db.collection('pictures', function(err, col){
-    col.find().toArray(function(err, docs){
-      pictures  = docs;
+  db.collection('pictures', function(err, col) {
+    col.find().toArray(function(err, docs) {
+      pictures = docs;
       callback();
     });
   });
 
-  db.collection('donations', function(err, col){
+  db.collection('donations', function(err, col) {
     col.find({}, {
       sort: {
         date: -1
       },
       limit: 15
-    }).toArray(function(err, docs){
+    }).toArray(function(err, docs) {
       donations = docs;
       callback();
     });
   });
 
-  db.collection('posts', function(err, col){
+  db.collection('posts', function(err, col) {
     col.find({}, {
       sort: {
         createdAt: -1
@@ -56,7 +59,7 @@ router.get('/', function(req, res) {
       fields: {
         content: 0
       }
-    }).toArray(function(err, docs){
+    }).toArray(function(err, docs) {
       posts = docs;
       callback();
     });
@@ -65,18 +68,25 @@ router.get('/', function(req, res) {
 });
 
 /* GET news child page. */
-router.get('/posts/:id', function(req, res){
+router.get('/posts/:id', function(req, res) {
   var db = req.db;
   var posts;
   var ObjectID = require('mongodb').ObjectID;
-  db.collection('posts', function(err, col){
-    db.collection('users', function(err, users){
-      col.findOne({_id: ObjectID(req.params.id)}, function(err, item){
-        users.findOne({_id: ObjectID(item.createdBy)}, function(err, user){
+  db.collection('posts', function(err, col) {
+    db.collection('users', function(err, users) {
+      col.findOne({
+        _id: ObjectID(req.params.id)
+      }, function(err, item) {
+        users.findOne({
+          _id: ObjectID(item.createdBy)
+        }, function(err, user) {
           res.render('news/postPage', {
             title: item.title,
             post: item,
-            author: user.username
+            author: user.username,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
           });
         });
       });
@@ -87,7 +97,9 @@ router.get('/posts/:id', function(req, res){
 router.get('/album/:name', function(req, res) {
   var db = req.db;
   db.collection('albums', function(err, col) {
-    col.findOne({name: req.params.name}, function(err, item) {
+    col.findOne({
+      name: req.params.name
+    }, function(err, item) {
       res.render('news/album_details', {
         title: req.params.name,
         album: item
@@ -100,16 +112,19 @@ router.get('/activity', function(req, res) {
   var db = req.db;
   var activity;
 
-  db.collection('activity', function(err, col){
-    col.find({}).toArray(function(err, docs){
-      activity  = docs;
+  db.collection('activity', function(err, col) {
+    col.find({}).toArray(function(err, docs) {
+      activity = docs;
       callback();
     });
   });
   var callback = function() {
     res.render('news/activity', {
       title: 'activity',
-      items: activity
+      items: activity,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
     });
   };
 });
