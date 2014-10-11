@@ -174,11 +174,15 @@ router.post("/pass_volunteer_form", function(req, res) {
 });
 
 router.post("/delete_volunteer_form", function(req, res) {
-   var db = req.db.collection('volunteers_apply');
-   console.log(req.body);
-   db.remove({IDCardNo: req.body.IDCardNo}, {w:1}, function(err, item){
-       res.location("/");
-   });
+  var db = req.db.collection('volunteers_apply');
+  console.log(req.body);
+  db.remove({
+    IDCardNo: req.body.IDCardNo
+  }, {
+    w: 1
+  }, function(err, item) {
+    res.location("/");
+  });
 });
 
 // //wjw
@@ -290,8 +294,6 @@ router.get('/news', function(req, res) {
   });
 });
 
-
-
 router.get('/volunteers_apply', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -351,11 +353,28 @@ router.get('/accounts', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background/accounts', {
-    title: 'accounts',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  //从数据库获取用户
+  var db = req.db.collection('users');
+  db.find().toArray(function(err, users) {
+    var account_admin = [],
+      account_user = [];
+    assert.equal(null, err);
+    for (var i in users) {
+      if (users[i].role == 'admin') {
+        account_admin.push(users[i]);
+      } else if (users[i].role == 'user') {
+        account_user.push(users[i]);
+      }
+    }
+
+    res.render('background/accounts', {
+      title: '账户管理',
+      account_admin: account_admin,
+      account_user: account_user,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
   });
 });
 
@@ -629,5 +648,23 @@ router.get('/albums/:name', function(req, res) {
   });
 });
 
+router.post('/search-users', function(req, res) {
+  res.redirect("/background/accounts");
+});
+
+router.post('/delete-user', function(req, res) {
+  var username = req.param('username');
+  console.log("username " + username + " has received.");
+  var db = req.db.collection('users');
+  db.remove({
+    username: username
+  }, {
+    safe:true
+  }, function(err, result) {
+    console.log(result);
+  });
+
+  res.redirect("/background/accounts");
+});
 
 module.exports = router;
