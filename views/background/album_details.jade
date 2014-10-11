@@ -4,22 +4,38 @@ block content
 	#album_cover
 		h3=album.name
 		img(src=album.cover, alt=album.name)
-		form
-			input.add(type="button", value="add")=add
-			input.save(type="submit", value="save", name="")=save
+		form(action="modifyAlbumInfo/" + album.name, method="post")
+			input.add(type="button", value="add new photos")
+			input.save(type="submit", value="save cover and introductions")
+			input.hiddenAlbum_Id(type="text", value=album._id, name="hiddenAlbum_Id")
+			input.hiddenAlbumCoverSrc(type="text", value="", name="hiddenAlbumCoverSrc")
+			input.hiddenPictureNames(type="text", value="", name="hiddenPictureNames")
+			input.hiddenPictureIntroductions(type="text", value="", name="hiddenPictureIntroductions")
 	#album_pitures_list
-		each item in album.pictures
-			.ui-state-default
-				img(src=item.src, alt=item.name)
-				textarea=item.instruction
-				.img_property
-					input.delete(type="button", value="删除照片？")
-					input.setCover(type="button", value="设为封面？" )
-				.new_img_load
-					input(type="file")
-					input.delete(type="button", value="删除照片？")
+		if album.pictures
+			each item in album.pictures
+				.ui-state-default
+					img(src=item.src, alt=item.name)
+					textarea(name=item.name, title=album._id)=item.instruction
+					.img_property
+						input.delete(type="button", value="删除照片？")
+						input.setCover(type="button", value="设为封面？" )
+					.new_img_load
+						input(type="file")
+						input.delete(type="button", value="删除照片？")
 	#make_sure
-		div
+		form(action="deleteAlbum/"+album.name, method="post")
 			p="Do you really want to delete it ? "
-			input.yes(type="button", value="yes")
-			input.no(type="button", value="no")			
+			input.yes(type="submit", value="yes")
+			input.no(type="button", value="no")
+			input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
+			input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
+
+	#add_new_photos
+		form(enctype="multipart/form-data", action="/background/albums/uploadPhotos", method="post")
+			div.first_step
+				h3 添加照片(可同时添加多张)
+				input(type="file", name="upload", multiple="multiple")
+				input.hiddenAlbumId(type="text", name="hiddenAlbumId", value=album._id)
+			input.cancel(type="button", value="取消")
+			input.go(type="submit", value="确定")

@@ -1,19 +1,37 @@
 extends  ../background_layout
 
 block content 
-	input.save_all(type="button", value="save all modification")
-	input.add(type="button", value="add")
+	form(action="modifyAlbumInfo", method="post")
+		input.save_all(type="submit", value="save all modification")
+		input.add(type="button", value="add")
+		input.hiddenAlbumIds(type="text", name="hiddenAlbumIds", value="")
+		input.hiddenAlbumNames(type="text", name="hiddenAlbumNames", value="")
 	#albums_list_show
 		each album in albums
 			.ui-state-default
-				a(href='/background/albums/' + album.name)
+				a(href='/background/albums/' + album._id)
 					img(src=album.cover)
-				textarea=album.name
+				textarea(name=album.name, title=album._id)=album.name
 				div
 					input.delete(type="button", value="@")
 
 	#make_sure
-		div
+		form(action="/background/albums/deleteAlbum", method="post")
 			p="Do you really want to delete it ? "
-			input.yes(type="button", value="yes")
-			input.no(type="button", value="no")			
+			input.yes(type="submit", value="yes")
+			input.no(type="button", value="no")
+			input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
+			input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
+
+	div#add_album
+		form(enctype='multipart/form-data' , action="/background/albums/uploadAlbum", method="post")
+			div.first_step
+				h3 相册名称
+				input(type="text", name="new_album_name")
+			div.second_step
+				h3 相册封面
+				input(type="file", name="upload")
+			input.cancel(type="button", value="取消")
+			input.go(type="submit", value="确定")
+
+

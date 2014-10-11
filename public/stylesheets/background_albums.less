@@ -102,7 +102,7 @@ input.upload, input.sort, input.sort_ok{
 	&.active {
 		display: block;
 	}
-	div {
+	form {
 		position: relative;
 		top: 23%;
 		left: 42%;
@@ -116,6 +116,45 @@ input.upload, input.sort, input.sort_ok{
 		.no {
 			margin: 0 20px;
 			float: right;
+		}
+	}
+}
+input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hiddenPictureIntroductions, input.hiddenPictureNames, input.hiddenAlbumCoverSrc, input.hiddenAlbum_Id, input.hiddenAlbumIds, input.hiddenAlbumNames{
+	display: none;
+}
+/**
+**添加新相册操作/新照片操作
+**/
+@keyframes myfirst {
+	from {transform: scale(0.1, 0.1);}
+	to {transform: scale(1, 1);}
+}
+
+#add_album, #add_new_photos {
+	display: none;
+	width: 1000px;
+	height: 1000px;
+	&.active {
+		display: block;
+		}
+	form {
+		position: absolute;
+		border: 10px solid green;
+		background-color: white;
+		left: 40%;
+		top: 40%;
+		h3 {
+			text-align: center;
+		}
+		input.go {
+			float: left;
+			padding: 10px;
+			margin-top: 10px;
+		}
+		input.cancel {
+			float: right;
+			padding: 10px;
+			margin-top: 10px;
 		}
 	}
 }
