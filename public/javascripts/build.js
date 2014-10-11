@@ -25,6 +25,35 @@
     }
 })();
 ;(function() {
+	var username;
+	$(".deleteUser").click(function() {
+		username = $(this).parent().parent().find(".account-username")[0].innerText;
+		console.log(username);
+	});
+
+	$("#deleteUser").click(function() {
+		$.ajax({
+			type: "POST",
+			url: "/background/delete-user",
+			data: {
+				username: username
+			}
+		}).done(function() {
+			console.log("username " + username +" has been post to the server.");
+			$("#account-user-list table tr").each(function(){
+				if($(this).children(":first").text() == username) {
+					$(this).empty();
+				}
+			});
+
+			$("#account-admin-list table tr").each(function(){
+				if($(this).children(":first").text() == username) {
+					$(this).empty();
+				}
+			});
+		});
+	});
+})();;(function() {
 	if (location.pathname == '/news/activity') {
 		$('li').click(function( event ) {
 			$('li').removeClass('active');
@@ -298,6 +327,7 @@
 		$.post("pass_volunteer_form", {
 			IDCardNo: id
 		});
+		location.reload();
 	}
 
 
@@ -310,10 +340,10 @@
 	});
 
 	$(".volunteer_delete_confirm_button").click(function(){
-		console.log(preDeleteVolunteer);
 		$.post("delete_volunteer_form", {
 			IDCardNo: preDeleteVolunteer
 		});
+		location.reload();
 	});
 
 })();;(function() {
@@ -550,24 +580,6 @@
 			return;
 		}
 	});
-})();;(function(){
-	function	isEverythingFilled() {
-		var input = $("[value='']");
-		for (var i = 0; i < input.length; i++) {
-			if (input.val() === '') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	$("#volunteer-application").submit(function(e) {
-		if (!isEverythingFilled()) {
-			e.preventDefault();
-			alert("表格未填写完!");
-		}
-	});
-
 })();;(function(){
 	function	isEverythingFilled() {
 		var input = $("[value='']");

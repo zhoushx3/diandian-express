@@ -174,11 +174,15 @@ router.post("/pass_volunteer_form", function(req, res) {
 });
 
 router.post("/delete_volunteer_form", function(req, res) {
-   var db = req.db.collection('volunteers_apply');
-   console.log(req.body);
-   db.remove({IDCardNo: req.body.IDCardNo}, {w:1}, function(err, item){
-       res.redirect("/");
-   });
+  var db = req.db.collection('volunteers_apply');
+  console.log(req.body);
+  db.remove({
+    IDCardNo: req.body.IDCardNo
+  }, {
+    w: 1
+  }, function(err, item) {
+    res.redirect("/");
+  });
 });
 
 // //wjw
@@ -290,8 +294,6 @@ router.get('/news', function(req, res) {
   });
 });
 
-
-
 router.get('/volunteers_apply', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -351,11 +353,28 @@ router.get('/accounts', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background/accounts', {
-    title: 'accounts',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  //从数据库获取用户
+  var db = req.db.collection('users');
+  db.find().toArray(function(err, users) {
+    var account_admin = [],
+      account_user = [];
+    assert.equal(null, err);
+    for (var i in users) {
+      if (users[i].role == 'admin') {
+        account_admin.push(users[i]);
+      } else if (users[i].role == 'user') {
+        account_user.push(users[i]);
+      }
+    }
+
+    res.render('background/accounts', {
+      title: '账户管理',
+      account_admin: account_admin,
+      account_user: account_user,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
   });
 });
 
@@ -574,8 +593,8 @@ router.post('/share_contents', function(req, res) {
 
 
 /**
-**  后台点点相册
-**/
+ **  后台点点相册
+ **/
 router.get('/albums', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -588,11 +607,15 @@ router.get('/albums', function(req, res) {
   var db = req.db;
   var albums;
   db.collection('albums', function(err, col) {
-    col.find({}, {sort: {_id: -1}}).toArray(function(err, docs) {
+    col.find({}, {
+      sort: {
+        _id: -1
+      }
+    }).toArray(function(err, docs) {
       albums = docs;
       callback();
     });
-   var callback = function() {
+    var callback = function() {
       res.render('background/albums', {
         titile: "albums",
         albums: albums,
@@ -604,8 +627,8 @@ router.get('/albums', function(req, res) {
   });
 });
 /**
-**  后台点点相册的照片
-**/
+ **  后台点点相册的照片
+ **/
 router.get('/albums/:id', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -618,7 +641,9 @@ router.get('/albums/:id', function(req, res) {
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   db.collection('albums', function(err, col) {
-    col.findOne({_id: ObjectID(req.params.id)}, function(err, item) {
+    col.findOne({
+      _id: ObjectID(req.params.id)
+    }, function(err, item) {
       res.render('background/album_details', {
         title: req.params.name,
         album: item,
@@ -630,13 +655,17 @@ router.get('/albums/:id', function(req, res) {
   });
 });
 /**
-**  删除相册
-**/
+ **  删除相册
+ **/
 router.post('/albums/deleteAlbum', function(req, res) {
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   db.collection('albums', function(err, col) {
-    col.remove({_id: ObjectID(req.param('hiddenAlbumName'))}, {safe: true}, function(err, result) {
+    col.remove({
+      _id: ObjectID(req.param('hiddenAlbumName'))
+    }, {
+      safe: true
+    }, function(err, result) {
       if (err)
         console.log(err.message);
       else
@@ -645,165 +674,203 @@ router.post('/albums/deleteAlbum', function(req, res) {
   });
 });
 /**
-**  删除相册内的照片
-**/
+ **  删除相册内的照片
+ **/
 router.post('/albums/deleteAlbum/:name', function(req, res) {
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   var album_name = req.params.name;
-  var picture_name= req.param('hiddenAlbumId');
+  var picture_name = req.param('hiddenAlbumId');
   var album_id = req.param('hiddenAlbumName');
   db.collection('albums', function(err, col) {
-    col.update({_id: ObjectID(album_id)}, {
+    col.update({
+      _id: ObjectID(album_id)
+    }, {
       $pull: {
         pictures: {
           name: picture_name,
         }
       }
     }, function(err, result) {
-        res.redirect('/background/albums/' + album_id);
+      res.redirect('/background/albums/' + album_id);
     });
   });
 });
 /**
-**  上传相册
-**/
+ **  上传相册
+ **/
 router.post('/albums/uploadAlbum', function(req, res) {
   var db = req.db,
-        new_album_name,
-        new_album_src,
-        actual_album_src,
-        form = new formidable.IncomingForm();
+    new_album_name,
+    new_album_src,
+    actual_album_src,
+    form = new formidable.IncomingForm();
   form.keepExtensions = true;
-  form.encoding="utf-8";
+  form.encoding = "utf-8";
   form.parse(req, function(error, fields, files) {
     console.log(files.upload);
-    if(files.upload.size !== 0) { // 没上传文件也照吃
+    if (files.upload.size !== 0) { // 没上传文件也照吃
       new_album_name = fields.new_album_name;
       new_album_src = "public/images/albums/" + files.upload.name;
       actual_album_src = "/images/albums/" + files.upload.name;
       fs.renameSync(files.upload.path, new_album_src);
       db.collection('albums', function(err, col) {
         col.insert({
-                            name: new_album_name,
-                            createdAt: new Date(),
-                            cover: actual_album_src,
-                            pictures: []
-                          },
-                          {w: 1},
-                          function(err, records) {
-                            if (err) {
-                              console.log(err);
-                              return;
-                            }
-                            res.redirect('/background/albums');
-                          });
+            name: new_album_name,
+            createdAt: new Date(),
+            cover: actual_album_src,
+            pictures: []
+          }, {
+            w: 1
+          },
+          function(err, records) {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            res.redirect('/background/albums');
+          });
       });
-    }
-    else 
+    } else
       res.redirect('/background/albums');
   });
 });
 /**
-**  上传相册的照片
-**/
+ **  上传相册的照片
+ **/
 router.post('/albums/uploadPhotos', function(req, res) {
-    var db = req.db,
-          files = [],
-          fields = [],
-          ObjectID = require('mongodb').ObjectID,
-          form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.encoding = "utf-8";
-    form.on('field', function(field, value) {
-       fields.push([field, value]);
-    });
-    form.on('file', function(field, file) {
-      if(file.size !== 0) { // 没上传文件也照吃
-          fs.renameSync(file.path, 'public/images/albums/' + file.name);
-          files.push({
-            src: '/images/albums/' + file.name,
-            name: file.name,
-            instruction: "no instruction for now"
-          });
-      }
-    });
-    form.parse(req, function() {
-      db.collection('albums', function(err, col) {
-        col.update({_id: ObjectID(fields[0][1])}, {
-            $pushAll: {  pictures: files  }
-          }, function(err, result) {
-                if (err) {
-                  console.log(err.message);
-                  return;
-                }
-                else
-                  res.redirect('/background/albums/' + fields[0][1]);
-            });
+  var db = req.db,
+    files = [],
+    fields = [],
+    ObjectID = require('mongodb').ObjectID,
+    form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.encoding = "utf-8";
+  form.on('field', function(field, value) {
+    fields.push([field, value]);
+  });
+  form.on('file', function(field, file) {
+    if (file.size !== 0) { // 没上传文件也照吃
+      fs.renameSync(file.path, 'public/images/albums/' + file.name);
+      files.push({
+        src: '/images/albums/' + file.name,
+        name: file.name,
+        instruction: "no instruction for now"
+      });
+    }
+  });
+  form.parse(req, function() {
+    db.collection('albums', function(err, col) {
+      col.update({
+        _id: ObjectID(fields[0][1])
+      }, {
+        $pushAll: {
+          pictures: files
+        }
+      }, function(err, result) {
+        if (err) {
+          console.log(err.message);
+          return;
+        } else
+          res.redirect('/background/albums/' + fields[0][1]);
       });
     });
+  });
 });
 /**
-**  修改相册封面和照片简介
-**/
+ **  修改相册封面和照片简介
+ **/
 router.post('/albums/modifyAlbumInfo/:name', function(req, res) {
   var db = req.db;
   var i = 1;
   var ObjectID = require('mongodb').ObjectID;
   var hiddenAlbum_Id = req.param('hiddenAlbum_Id');
-  var hiddenAlbumCoverSrc  = req.param('hiddenAlbumCoverSrc');
+  var hiddenAlbumCoverSrc = req.param('hiddenAlbumCoverSrc');
   var hiddenPictureNames = req.param('hiddenPictureNames').split("***");
   var hiddenPictureIntroductions = req.param('hiddenPictureIntroductions').split("***");
   var callback = function(err, result) {
-      if (err) {
-          console.log(err.message);
-          return;
-      }
-    };
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+  };
   db.collection('albums', function(err, col) {
     for (i = 1; i < hiddenPictureNames.length; ++i) {
-        col.update({ $and: [{_id: ObjectID(hiddenAlbum_Id)}, {'pictures.name': hiddenPictureNames[i]}] }, {
-            $set: {
-                'pictures.$.instruction' : hiddenPictureIntroductions[i]
-             }
-          }, callback);
+      col.update({
+        $and: [{
+          _id: ObjectID(hiddenAlbum_Id)
+        }, {
+          'pictures.name': hiddenPictureNames[i]
+        }]
+      }, {
+        $set: {
+          'pictures.$.instruction': hiddenPictureIntroductions[i]
+        }
+      }, callback);
+    }
+    col.update({
+      _id: ObjectID(hiddenAlbum_Id)
+    }, {
+      $set: {
+        'cover': hiddenAlbumCoverSrc
       }
-        col.update({_id: ObjectID(hiddenAlbum_Id)}, {$set: {'cover' : hiddenAlbumCoverSrc}}, function(err, result) {
-          if (err) {
-            console.log(err.message);
-            return;
-          }
-        });
+    }, function(err, result) {
+      if (err) {
+        console.log(err.message);
+        return;
+      }
+    });
     res.redirect('/background/albums/' + hiddenAlbum_Id);
   });
 });
 /**
-**  修改相册名称
-**/ 
+ **  修改相册名称
+ **/
 router.post('/modifyAlbumInfo', function(req, res) {
   var db = req.db;
   var i = 1;
   var ObjectID = require('mongodb').ObjectID;
   var hiddenAlbumIds = req.param('hiddenAlbumIds').split("***");
-  var hiddenAlbumNames  = req.param('hiddenAlbumNames').split("***");
+  var hiddenAlbumNames = req.param('hiddenAlbumNames').split("***");
   var callback = function(err, result) {
     if (err) {
-        console.log(err.message);
-        return;
+      console.log(err.message);
+      return;
     }
     console.log(result);
   };
 
   db.collection('albums', function(err, col) {
-      for (i = 1; i < hiddenAlbumIds.length; ++i) {
-        col.update({_id: ObjectID(hiddenAlbumIds[i])}, {
-            $set: {
-                name : hiddenAlbumNames[i]
-             }
-          }, callback);
-      }
+    for (i = 1; i < hiddenAlbumIds.length; ++i) {
+      col.update({
+        _id: ObjectID(hiddenAlbumIds[i])
+      }, {
+        $set: {
+          name: hiddenAlbumNames[i]
+        }
+      }, callback);
+    }
   });
   res.redirect('/background/albums');
+});
+
+router.post('/search-users', function(req, res) {
+  res.redirect("/background/accounts");
+});
+
+router.post('/delete-user', function(req, res) {
+  var username = req.param('username');
+  console.log("username " + username + " has received.");
+  var db = req.db.collection('users');
+  db.remove({
+    username: username
+  }, {
+    safe: true
+  }, function(err, result) {
+    console.log(result);
+  });
+
+  res.redirect("/background/accounts");
 });
 
 module.exports = router;
