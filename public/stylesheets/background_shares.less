@@ -1,20 +1,17 @@
 #background_share {
 	width: 83%;
 	float: right;
-	input#share_add, input#add {
+	input#share_add {
 		margin-bottom: 18px;
-	}
-	input#add {
-		margin-left: 30px;
 	}
 }
 
 .share_details {
-	padding: 10px;
+	padding: 10px 10px 37px;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #aaa;
 	height: 150px;
-	#share_contents{
+	.share_contents{
 		float: right;
 		width: 82%;
 		textarea {
@@ -28,12 +25,8 @@
 				border-bottom: 1px solid	#aaa;
 			}
 		}
-		input {
-			float: right;
-			width: 7%;
-		}		
 	}
-	#share_img {
+	.share_img {
 		float: left;
 		height: 100%;
 		width: 17%;
@@ -42,25 +35,24 @@
 			width: 80%;
 			vertical-align: center;
 		}
-		form {
-			width:  80%;
+		input {
 			position: relative;
-			left: 10px;
-			bottom: 60px;
-			input {
-				width: 66px; 
-			}
+			bottom: -4px;
 		}
 	}
+	& > input {
+		float: right;
+		position: relative;
+		left: 674px;
+	}	
 } 
 
-textarea.id {
-	display: none;
-}
-
-#add_choose, #add_more {
+#add_choose{
 	display:  none;
 	&.active {
 		display: block;
+	}
+	input.uploadInfo {
+		display: none;
 	}
 }

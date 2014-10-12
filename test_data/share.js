@@ -7,7 +7,7 @@ exports.insert = function(db, callback){
     share.insert([
       {
         period: "1",
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_cat.jpg',
         headline: 'cute_cat', 
@@ -17,7 +17,7 @@ exports.insert = function(db, callback){
 
       {
         period: "1",
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_cat2.jpg',
         headline: 'cute_cat2', 
@@ -27,7 +27,7 @@ exports.insert = function(db, callback){
 
       {
         period: '1',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_dog.jpg',
         headline: 'cute_dog', 
@@ -37,7 +37,7 @@ exports.insert = function(db, callback){
 
       {
         period: '1',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_dog2.jpg',
         headline: 'cute_dog2', 
@@ -47,7 +47,7 @@ exports.insert = function(db, callback){
 
       {
         period: '1',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_rabbit.jpg',
         headline: 'cute_rabbit', 
@@ -57,7 +57,7 @@ exports.insert = function(db, callback){
 
       {
         period: '2',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_rabbit2.jpg',
         headline: 'cute_rabbit2', 
@@ -67,7 +67,7 @@ exports.insert = function(db, callback){
 
       {
         period: '2',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_what.jpg',
         headline: 'cute_what', 
@@ -77,11 +77,31 @@ exports.insert = function(db, callback){
 
       {
         period: '2',
-        date: '2014/09/19',
+        date: new Date(),
         author: 'who',
         path: '/images/share/cute_wolf.jpg',
         headline: 'cute_wolf', 
         contents: 'nothingnothinothingnothingnothingnothinothingnothingnothingnothingnothingnothingnothingnothing',
+        summary: 'I dont know, think about it yourself, thanks'
+      },
+
+      {
+        period: '2',
+        date: new Date(),
+        author: 'who',
+        path: '/images/share/cute_rabbit2.jpg',
+        headline: 'cute_rabbit2', 
+        contents: 'nothingnothingnotnothingnothingnothingnothihingnothingnothingnothing',
+        summary: 'I dont know, think about it yourself, thanks'
+      },
+
+      {
+        period: '2',
+        date: new Date(),
+        author: 'who',
+        path: '/images/share/cute_what.jpg',
+        headline: 'cute_what', 
+        contents: 'nothingnothingnothingnothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothinothingnothingnothing',
         summary: 'I dont know, think about it yourself, thanks'
       }
 

@@ -482,10 +482,10 @@ router.get('/foreshows-edit', function(req, res) {
 
 
 /**
- ** 分享交流基本页面
- ** 获得查询到的所有条目的总数，进而确定分期数目，每期5个，最新一期可少于5个
- ** show==0表示所有的内容都不展开
- **/
+** 分享交流基本页面
+** 获得查询到的所有条目的总数，进而确定分期数目，每期5个
+** show==0表示初始时候所有的内容都不展开
+**/
 router.get('/shares', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -495,100 +495,168 @@ router.get('/shares', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  var db = req.db;
-  var record_num;
-  db.collection('share', function(err, col) {
-    col.find(function(err, cursor) {
-      cursor.count(function(err, count) {
-        record_num = count;
-        callback();
+    var db = req.db;
+    var record_num;
+    db.collection('share', function(err, col) {
+      col.find(function(err, cursor) {
+        cursor.count(function(err, count) {
+          record_num = count;
+          callback();
+        });
+      }); 
+    });
+    var callback = function() {
+      res.render('background/shares', {
+        title: '分享交流', 
+        number: Math.floor(record_num / 5),
+        show: 0,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
-    });
-  });
-  var callback = function() {
-    res.render('background/shares', {
-      title: '分享交流',
-      number: Math.floor(record_num / 5) + 1,
-      show: 0,
-      user: req.session.user,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
-    });
-  };
+    };
 });
 
 /**
- ** 分享页面按期显示，通过点击得到当期期数
- **/
-router.post('/share_period', function(req, res) {
-  var serial_number = req.param('id');
+** 分享页面按期显示，通过点击得到当期期数
+**/
+router.post('/share_period/:number', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  var serial_number = req.params.number;
   var record_number, count = 0;
   var db = req.db;
   var share;
   db.collection('share', function(err, col) {
-    col.find({
-      period: serial_number.toString()
-    }, {
-      'limit': 5
-    }).toArray(function(err, docs) {
+    col.find({period: serial_number.toString()},{'limit': 5}).toArray(function(err, docs) {
       if (err) {
         console.log(err.message);
-      } else {
+      }
+      else {
         share = docs;
         callback();
       }
     });
   });
-  db.collection('share', function(err, col) {
-    col.find(function(err, cursor) {
-      cursor.count(function(err, count) {
-        record_number = count;
-        callback();
-      });
-    });
+    db.collection('share', function(err, col) {
+      col.find(function(err, cursor) {
+        cursor.count(function(err, count) {
+          record_number = count;
+          callback();
+        });
+      }); 
   });
   var callback = function() {
     count++;
     if (count == 2) {
       res.render('background/shares', {
-        title: '分享交流',
+        title: '分享交流', 
         share: share,
-        number: Math.floor(record_number / 5) + 1,
-        show: serial_number
+        number: Math.floor(record_number / 5),
+        show: serial_number,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     }
-  };
+ };
 });
 /**
- ** 分享页面修改文本
- **/
-router.post('/share_contents', function(req, res) {
-  var id = req.param('id');
-  var summary = req.param('summary');
-  var contents = req.param('contents');
+** 分享页面修改文本和照片
+**/
+router.post('/modifyTexts/:id', function(req, res) {
+  var ObjectID = require('mongodb').ObjectID;
+  var id = req.params.id;
+  var files = [];
+  var texts = [];
   var db = req.db;
-  db.collection('share').findAndModify({
-      _id: id
-    }, // query
-    [
-      ['_id', 'asc']
-    ], // sort order
-    {
-      summary: summary,
-      contents: contents
-    }, // replacement, replaces only the field "hi"
-    {}, // options
-    function(err, object) {
-      if (err) {
-        console.warn(err.message); // returns error if no matching object found
+  var form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.encoding="utf-8";
+  form.on('field', function(field, value) {
+     texts.push(value);
+  });
+  form.on('file', function(field, file) {
+    if(file.size !== 0) { // 没上传文件也照吃
+        fs.renameSync(file.path, 'public/images/share/' + file.name);
+        files.push({path: '/images/share/' + file.name});
+    }
+  });
+  form.parse(req, function() {
+    db.collection('share', function(err, col) {
+      if (files.length === 0) {
+        col.update({_id: ObjectID(id)}, {$set: { 'summary': texts[0], 'contents': texts[1]}}, function(err, result) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          res.redirect('/background/shares');
+        });
       } else {
-        console.log(object);
-        callback();
-      }
+          col.update({_id: ObjectID(id)}, {$set: { 'summary': texts[0], 'contents': texts[1], 'path': files[0].path}}, function(err, result) {
+            if (err) {
+              console.log(err.message);
+              return;
+            }
+            res.redirect('/background/shares');
+          });
+        }
     });
-  var callback = function() {
-    res.redirect('/background/shares');
-  };
+  });
+});
+/**
+** 分享页面添加新的一期
+**/
+router.post('/addNewPeriod/:number', function(req, res) {
+  var number = req.params.number;
+  var texts = [];
+  var fileNames = [];
+  var arr = [];
+  var db = req.db;
+  var form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.encoding="utf-8";
+  form.on('field', function(field, value) {
+     texts.push(value);
+  });
+  form.on('file', function(field, file) { // 这一步我主要是得到上传文件的位置并移到指定的位置
+    if(file.size !== 0) { // 没上传文件也照吃
+        fs.renameSync(file.path, 'public/images/share/' + file.name);
+    }
+  });
+  form.parse(req, function(err) {
+    fileNames = texts[1].split('***');
+    for (var i = 0; i < 5; ++i ) {
+      if (fileNames[i] != " ")
+        fileNames[i] = '/images/share/' + fileNames[i];
+      else
+        fileNames[i] = '/images/ini.png';
+      arr.push({
+        period: number,
+        date: new Date(),
+        author: texts[0],
+        path: fileNames[i],
+        headline: fileNames[i].replace(/\/images\//, ''), 
+        contents: texts[2 * i + 3],
+        summary: texts[2 * i + 2]
+      });
+    }
+    db.collection('share', function(err, col) {
+      col.insert(arr, function(err, result) {
+        if (err) {
+          console.log(err.message);
+          return;
+        }
+        res.redirect('/background/shares' );
+      });
+    });
+  });
 });
 
 

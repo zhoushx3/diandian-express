@@ -1,41 +1,15 @@
-//
-	后台 分享交流
+// 后台 分享交流    每一期都硬性要求有5张
 
-//
-	add() 子模块是在需要添加新条目时候显示的
-mixin add()
-	.share_details
-		#share_img
-			img(alt="newImg", src="/images/2012.png")
-			form
-				input(type='file', value="换图")
-				input(type='submit', value="确认")
-		#share_contents
-			form(method="post")
-				textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")
-				textarea.contents(name="contents", placeholder="详细描述")
-
-//
-	period(share) 呈现每一期的具体条目，如果条目数目少于5，显示添加新条目的按钮，点击该按钮会呈现出新条目操作，可取消。
 mixin period(share)
-	if (share.length <  5) 
-		input(id="add", type="button", value="添加志愿者分享")
-		#add_more 
-			input(id="add_cancel", type="button", value="取消添加")
-			+add()
 	each item in share
-		.share_details
-			#share_img
+		form.share_details(action="/background/modifyTexts/" + item._id, enctype="multipart/form-data", method="post")
+			.share_img
 				img(alt=item.headline, src=item.path)
-				form
-					input(type='file', value="换图")
-					input(type='submit', value="确认")
-			#share_contents
-				form(method="post", action='/background/share_contents')
-					textarea.id(name="id")=item._id
-					textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")=item.summary
-					textarea.contents(name="contents", placeholder="详细描述")=item.contents
-					input(type='submit', value="保存")
+				input(type='file', value="换图", name="changePhoto")
+			.share_contents
+				textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")=item.summary
+				textarea.contents(name="contents", placeholder="详细描述")=item.contents
+			input(type='submit', value="保存")
 
 
 extends  ../background_layout
@@ -43,16 +17,24 @@ extends  ../background_layout
 block content 
 	#background_share
 		input(id="share_add", type="button", value="添加新一期志愿者分享")
-		#add_choose
+		form#add_choose(action="/background/addNewPeriod/" + (number+1), enctype="multipart/form-data", method="post")
 			input(id="submit_new_period", type="submit", value="提交新的一期")
 			input(id="cancel_new_period", type="button", value="取消提交")
-			-var n = 0
-				while n++ < 5
-					+add()
+			input(id="author_name", type="text", name="author_name", value="author")
+			input.uploadInfo(type="text", name="uploadInfo")
+			-var x = 1
+				while x < 6
+					.share_details
+						.share_img
+							img(alt="defalut", src='/images/ini.png')
+							input.uploadFiles(type='file', value="换图", name="changePhoto" + (x++))
+						.share_contents
+							textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")=" "
+							textarea.contents(name="contents", placeholder="详细描述")=" "
+
 		- var n = number
 			while n > 0
-				form(method="post", action='/background/share_period')
-					textarea.id(name="id")=n
+				form(method="post", action='/background/share_period/' + n)
 					input(type="submit", value="第" + n + "期志愿者分享")
 				if (show == n--)			
 					+period(share)

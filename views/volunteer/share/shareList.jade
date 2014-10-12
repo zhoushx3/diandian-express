@@ -6,4 +6,4 @@ block content
 			li
 				h3
 				a.generalA(href='/volunteer/' + share_item._id)=share_item.headline
-				p=share_item.date + "  from  " + share_item.author
+				p=formatDate(share_item.date) + "  from  " + share_item.author
