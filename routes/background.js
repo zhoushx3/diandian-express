@@ -185,98 +185,6 @@ router.post("/delete_volunteer_form", function(req, res) {
   });
 });
 
-// //wjw
-// router.post('/add-administrator', function(req, res) {
-//   var db = req.db,
-//   name = req.body.administrator-name,
-//   email = req.body.email,
-//   qq = req.body.qq;
-//   db.collection('administrator', function(err, col) {
-//     col.insert({
-//       "name"  : name,
-//       "email" : email,
-//       "qq" : qq
-//     }, function(err, doc) {
-//          if (err) {
-//            console.log("add administrator fail!");
-//          } else {
-//            console.log("add administrator succceed!");
-//            res.redirect("/background#accounts");
-//          }
-//     });
-//   });
-// });
-
-// router.post('/', function(req,res) {
-//   fs.readdir('./public/images/banners', function(err, files) {
-//     var count = files.length;
-//     res.render('banners', {num:count});
-//   });
-// });
-
-// //send the image to server
-// router.post('/bannerssubmit', function(req, res, next) {
-//   fs.readdir('./public/images/banners/', function(err, files) {
-//     var count = files.length + 1;
-//     console.log(req.files);
-//     if (req.files.addImage.size === 0) {
-//       res.redirect('../');
-//       res.send("<br>" + "<br>" + "<br>" + "please choose your file");
-//     }  else {
-//       var tmpPath = req.files.addImage.path;
-//       var targetPath = './public/images/banners' + req.files.addImage.name;
-//       fs.rename(tmpPath, targetPath, function(err) {
-//         if (err) throw err;
-//         fs.unlink(tmpPath, function() {
-//           if (err) throw err;
-//           res.redirect('../');
-//           res.end();
-//         });
-//       });
-//     }
-//   });
-// });
-
-// //load the image from server
-// router.get('/loadimages', function(req, res) { console.log("22222222222!");
-//   fs.readdir('public/images/banners', function(err, files) {
-//     var count = files.length, results = [];
-//     files.forEach(function(filename) {
-//       fs.readFile(filename, function(data) {
-//         var tmpResult = {};
-//         tmpResult.imageName = filename;
-//         tmpResult.imagePath = "/public/images/banners" + filename;
-//         results[count - 1] = tmpResult;
-//         count--;
-//         if (count <= 0) { 
-//           console.log(results);
-//           res.send(results);
-//           res.end();
-//           console.log("Response succceed!");
-//         }
-//       });
-//     });
-//   });
-// });
-
-// //show the image
-// router.get('./showimages/:imaNames', function(req, res) {
-//   var ima = req.params.imaNames;
-//   fs.readFile('public/images/' + ima, 'binary', function(err, file) {
-//     if (error) {
-//       res.writehead(500, {"Content-Type" : "text/plain"});
-//       res.write(error + '\n');
-//       res.end();
-//     } else {
-//       res.writeHead(200, {"Content-Type" : "img/png"});
-//       res.write(file, "binary");
-//       res.end();
-//     }
-//   });
-// });
-
-// //wjw
-
 router.get('/news', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -324,23 +232,6 @@ router.get('/volunteers_apply', function(req, res) {
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
-  });
-});
-
-router.get('/banners', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  res.render('background/banners', {
-    title: 'banners',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
   });
 });
 
@@ -920,6 +811,76 @@ router.post('/modifyAlbumInfo', function(req, res) {
     }
   });
   res.redirect('/background/albums');
+});
+/*
+**  后台横幅管理基本页面
+*/
+router.get('/banners', function(req,res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  var db = req.db;
+  var banners = [];
+  db.collection('carousels', function(err, col) {
+    col.find().toArray(function(err, docs) {
+      banners = docs;
+      res.render('background/banners', {
+        banners: banners,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    });
+  });
+});
+
+/*
+**  后台横幅 添加横幅
+*/
+router.post('/bannersubmitt', function(req, res) {
+  var db = req.db;
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(req, fields, files) {
+    if (files.addImage.size !== 0) {
+      var tmpPath = files.addImage.path;
+      var targetPath = './public/images/banners/' + files.addImage.name;
+      fs.rename(tmpPath, targetPath);
+      db.collection('carousels', function(err, col) {
+        col.update({src: '/images/banners/' + files.addImage.name}, {src: '/images/banners/' + files.addImage.name, link: '/'}, {upsert: true, w:1}, function(err, result) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+        });
+      });
+    }
+    res.redirect('/background/banners');
+  });
+});
+
+/*
+**  后台横幅 删除横幅 删除数据库条目 以及存储位置的原文件
+*/
+router.post('/deleteBanner', function(req, res) {
+  var db = req.db;
+  var banner = req.param('hiddenBanner');
+  db.collection('carousels', function(err, col) {
+    col.remove({src: banner}, {w: 1}, function(err, numberOfRemoved) {
+      if(err) {
+        console.log(err.message);
+        return;
+      }
+      else {
+        console.log(numberOfRemoved);
+        res.redirect('/background/banners');
+      }
+    });
+  });
 });
 
 router.post('/search-users', function(req, res) {

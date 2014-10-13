@@ -1,11 +1,23 @@
 extends  ../background_layout
 
 block content
-	form(method= 'post', action= 'background/bannerssubmit')
-		input#add-banner(type= 'file', name= 'addImage', size= '28')
-		button.btn(type = 'submit') 上传 
-	div#warning
-		p 亲爱的管理员，请注意：
-		p .上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过5个。
-		p .请上传不大于4M的图片，且宽高比为1：3。
-	div#div-image
+	#background_banners
+		form(method= 'post', action= '/background/bannersubmitt', enctype='multipart/form-data')
+			input#add-banner(type= 'file', name= 'addImage', size= '28')
+			input.btn(type = 'submit', value='上传')  
+		div#warning
+			p 亲爱的管理员，请注意：
+			p .上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过5个。
+			p .请上传不大于4M的图片，且宽高比为3：1。
+		div#div-image
+			-var number = banners.length
+				while (number > 0)
+					div
+						img(src=banners[--number].src, alt=banners[number].src)
+						input.delete(type="button", value="delete")
+
+		form#delete_banner(action="/background/deleteBanner", method="post")
+			p="do you really want to delete it ? "
+			input.yes(type="submit", value="yes")
+			input.no(type="button", value="no")
+			input.hiddenBanner(type="text", name="hiddenBanner", value="")
