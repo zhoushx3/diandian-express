@@ -285,7 +285,9 @@ router.get('/passwords', function(req, res) {
     error: req.flash('error').toString()
   });
 });
-
+/**
+** 后台 捐赠明细
+**/
 router.get('/donations', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -300,6 +302,133 @@ router.get('/donations', function(req, res) {
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
+  });
+});
+/**
+** 后台 捐赠明细   添加操作    不会检查直接插入 !~!~!~!~
+**/
+router.get('/addToDonation', function(req, res) {
+  var db = req.db;
+  var texts = req.query.texts;
+  if (texts[0] === '0') {
+    db.collection('donations', function(err, col) {
+      col.insert({
+        type: 0,
+        donator: texts[4],
+        amount: texts[5],
+        // 必须传入月份数减一 
+        date: new Date(texts[1], texts[2]-1, texts[3])
+      }, {save: true}, function(err, result) {
+        if (err) {
+          res.send('非限定性捐款 no');
+        }
+        else {
+          res.send('非限定性捐款 ok');
+        }
+      });
+    });
+  }
+  else if (texts[0] === '1') {
+    db.collection('donations', function(err, col) {
+      col.insert({
+        type: 1,
+        donator: texts[4],
+        amount: texts[5],
+        date: new Date(texts[1], texts[2]-1, texts[3]),
+        note: texts[6]
+      }, {save: true}, function(err, result) {
+        if (err) {
+          res.send('限定性捐款 no');
+        }
+        else {
+          res.send('限定性捐款 ok');
+        }
+      });
+    });
+  }
+  else {
+    db.collection('donations', function(err, col) {
+      col.insert({
+        type: 2,
+        donator: texts[4],
+        goods: texts[5],
+        date: new Date(texts[1], texts[2]-1, texts[3]),
+        note: texts[6]
+      }, {save: true}, function(err, result) {
+        if (err) {
+          res.send('物资捐款 no');
+        }
+        else {
+          res.send('物资捐款 ok');
+        }
+      });
+    });
+  }
+});
+/**
+** 后台 捐赠明细   历史记录
+**/
+router.get('/donationHistory', function(req, res) {
+  var db = req.db;
+  var type = req.query.type;
+  var year = req.query.year;
+  var month = req.query.month;
+  var donationHistory;
+  db.collection('donations', function(err, col) {
+    col.find({'type': parseInt(type), 'date': {$gte: new Date(year, month-1, 1), $lt: new Date(year, month, 1)}}).toArray(function(err, docs) {
+      donationHistory = docs;
+      res.send(donationHistory);
+    });
+  });
+});
+/**
+** 后台 捐赠明细   批量填写 非限定性捐款
+**/
+router.post('/sendUnlimitedRecords', function(req, res) {
+  var db = req.db;
+  var donators = req.body.donators;
+  var amounts = req.body.amounts;
+  var count = 0;
+  var callback = function(err, results) {
+    ++count;
+    if (count === donators.length)
+      res.send("sendUnlimitedRecords success");
+  };
+  db.collection('donations', function(err, col) {
+    for (var i = 0; i < donators.length; ++i) {
+      col.insert({
+        type: 0,
+        donator: donators[i],
+        amount: amounts[i],
+        date: new Date()
+      }, {save: true}, callback);
+    }
+  });
+});
+/**
+** 后台 捐赠明细   批量填写 限定性捐款
+**/
+router.post('/sendlimitedRecords', function(req, res) {
+  var db = req.db;
+  var donators = req.body.donators;
+  var amounts = req.body.amounts;
+  var notes = req.body.notes;
+  var count = 0;
+  var callback = function(err, results) {
+    ++count;
+    if (count === donators.length)
+      res.send("sendlimitedRecords success");
+  };
+  db.collection('donations', function(err, col) {
+    for (var i = 0; i < donators.length; ++i) {
+      col.insert({
+        type: 1,
+        donator: donators[i],
+        amount: amounts[i],
+        date: new Date(),
+        note: notes[i],
+      }, {save: true}, callback);
+    }
   });
 });
 
@@ -407,7 +536,6 @@ router.get('/shares', function(req, res) {
       });
     };
 });
-
 /**
 ** 分享页面按期显示，通过点击得到当期期数
 **/
@@ -549,8 +677,6 @@ router.post('/addNewPeriod/:number', function(req, res) {
     });
   });
 });
-
-
 /**
  **  后台点点相册
  **/

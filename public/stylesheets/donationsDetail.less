@@ -1,6 +1,7 @@
-.historyRecord {
+.historyRecord, .newRecord {
 	color: #808000;
 	margin-left: 10px;
+	cursor: pointer;
 }
 
 span {
@@ -17,6 +18,16 @@ p {
 	line-height: 3em;
 }
 
+input.donate_year, input.donate_month, input.donate_day {
+	width: 40px;
+	border: 1px solid grey;
+	border-radius: 3px;
+}
+
+input.type {
+	display: none;
+}
+
 .donator {
 	width: 70px;
 	border: 1px solid grey;
@@ -30,7 +41,7 @@ p {
 }
 
 .material {
-	width: 500px;
+	width: 390px;
 	border: 1px solid grey;
 	border-radius: 3px;	
 }
@@ -77,12 +88,7 @@ p {
 	height: 100px;	
 }
 
-#unlimited-mul {
-	background-color: #CCCC99;
-	padding: 20px;	
-}
-
-#limited-mul {
+#unlimited-mul, #limited-history, #limited-mul, #unlimited-history, #material-history {
 	background-color: #CCCC99;
 	padding: 20px;	
 }
@@ -115,4 +121,13 @@ p {
 
 .modal-footer-footer .right-btn {
 	margin-left: 400px;
+}
+
+.donation-history {
+	background-color: white;
+	max-height: 1000px;
+	word-spacing: 5px;
+	li {
+		text-align: left;
+	}
 }
