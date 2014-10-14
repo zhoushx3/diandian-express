@@ -26,65 +26,116 @@ block content
 			h3 限定性捐款
 			p 时间: #{year}年#{month}月#{day}日
 		div.modal-body-body
-			p 请将捐款人/单位及其捐款金额(元)用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
-			p 陈小姐 100
-			p 李先生 1200
+			p 请将捐款人/单位及其捐款金额(元)/目的 用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
+			p 陈小姐 100 建立图书馆
+			p 李先生 1200 建造公教楼
 			textarea
 		div.modal-footer-footer
 			button(data-dismiss='modal', aria-hidden='true') 取消
 			button.right-btn 发布
 
+	div#unlimited-history.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		h3 非限定性捐款
+		select(name="0")
+			-var i = 2012
+				while (i <= year)
+					option=i++ + "年"
+		select(name="0")
+			-var i = 1
+				while (i <= 12)
+					option=i++ + "月"
+		ul.donation-history
+
+	div#limited-history.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		h3 限定性捐款
+		select(name="1")
+			-var i = 2012
+				while (i <= year)
+					option=i++ + "年"
+		select(name="1")
+			-var i = 1
+				while (i <= 12)
+					option=i++ + "月"
+		ul.donation-history
+
+	div#material-history.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		h3 限定性捐款
+		select(name="2")
+			-var i = 2012
+				while (i <= year)
+					option=i++ + "年"
+		select(name="2")
+			-var i = 1
+				while (i <= 12)
+					option=i++ + "月"
+		ul.donation-history
 
 	div#donations-body
 		div#unlimited-donations
 			div#unlimited-donations-header
 				h3(style='display: inline-block') 非限定性捐款
-				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				a.historyRecord(style="text-decoration: underline" name="0" data-toggle="modal" href='#unlimited-history') 历史记录
 				
 			div#unlimited-donations-wrapper.wrapper
-				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
-				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
-				a.historyRecord(style="text-decoration: underline" data-toggle="modal" href='#unlimited-mul') 批量填写
+				span <input class="type", value="0"></input>
+				span <input class="donate_year" placeholder='#{year}'></input> 年 
+				span <input class="donate_month" placeholder='#{month}'></input> 月 
+				span <input class="donate_day" placeholder='#{day}'></input> 日 
+				span <input class="donator" placeholder="捐款人", value="haha"></input>
+				span  捐赠人民币 <input class="donate-money" placeholder="金额"></input> 元。
+				a.newRecord(style="text-decoration: underline" data-toggle="modal" href='#unlimited-mul') 批量填写
 
 			div#unlimited-donations-btn.donations-btn
-				a(href='#') <button>取消</button>
-				a(href='#') <button>发布</button>
+				button.cancel="清空"
+				button.send="发布"
 
 		hr
 
 		div#limited-donations
 			div#limited-donations-header
 				h3(style='display: inline-block') 限定性捐款 
-				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				a.historyRecord(style="text-decoration: underline" name="1" data-toggle="modal" href='#limited-history') 历史记录
 				
 			div#limited-donations-wrapper.wrapper
-				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
-				span 捐赠人民币<input class="donate-money" placeholder="金额"></input>元。
-				a.historyRecord(style="text-decoration: underline" data-toggle="modal" href='#limited-mul') 批量填写
+				span <input class="type", value="1"></input>
+				span <input class="donate_year" placeholder='#{year}'></input> 年 
+				span <input class="donate_month" placeholder='#{month}'></input> 月 
+				span <input class="donate_day" placeholder='#{day}'></input> 日 
+				span <input class="donator" placeholder="捐款人"></input>
+				span  捐赠人民币 <input class="donate-money" placeholder="金额"></input> 元
+				span 用于<input class="donate-use" placeholder="捐赠"></input>
+				a.newRecord(style="text-decoration: underline" data-toggle="modal" href='#limited-mul') 批量填写
 
 			div#limited-donations-btn.donations-btn
-				a(href='#') <button>取消</button>
-				a(href='#') <button>发布</button>
+				button.cancel="清空"
+				button.send="发布"
 
 		hr
 
 		div#material-donations
 			div#material-donations-header
 				h3(style='display: inline-block') 物资捐款 
-				a.historyRecord(style="text-decoration: underline" href='#') 查看历史记录
+				a.historyRecord(style="text-decoration: underline" name="2" data-toggle="modal" href='#material-history') 历史记录
 				
 			div#material-donations-wrapper.wrapper
-				span #{year}年#{month}月#{day}日,<input class="donator" placeholder="捐款人"></input>
-				span 捐赠<input class="material" placeholder="请输入所捐赠的物资"></input>
+				span <input class="type", value="2"></input>
+				span <input class="donate_year" placeholder='#{year}'></input> 年 
+				span <input class="donate_month" placeholder='#{month}'></input> 月 
+				span <input class="donate_day" placeholder='#{day}'></input> 日 
+				span <input class="donator" placeholder="捐款人"></input>
+				span  捐赠 <input class="material" placeholder="请输入所捐赠的物资"></input>
 				p 用于<input class="use"></input>。
 				p#remarks *物资用途为选填项
 
 			div#material-donations-btn.donations-btn
-				a(href='#') <button>取消</button>
-				a(href='#') <button>发布</button>
+				button.cancel="清空"
+				button.send="发布"
 
 		hr
-
+	//
 		div#custom-donations
 			div#custom-donations-header
 				h3(style='display: inline-block') 手动填写
