@@ -298,6 +298,7 @@
 		$.post("pass_volunteer_form", {
 			IDCardNo: id
 		});
+		location.reload();
 	}
 
 
@@ -310,10 +311,10 @@
 	});
 
 	$(".volunteer_delete_confirm_button").click(function(){
-		console.log(preDeleteVolunteer);
 		$.post("delete_volunteer_form", {
 			IDCardNo: preDeleteVolunteer
 		});
+		location.reload();
 	});
 
 })();;(function() {
