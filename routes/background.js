@@ -162,8 +162,9 @@ router.post("/upload_volunteer_form", function(req, res) {
 // pass volunteer form
 router.post("/pass_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
+  console.log(req.body);
   db.update({
-    username: req.body.username
+    IDCardNo: req.body.IDCardNo
   }, {
     $set: {
       "isPassed": true
