@@ -466,7 +466,7 @@ input.sort_ok {
 #make_sure.active {
   display: block;
 }
-#make_sure div {
+#make_sure form {
   position: relative;
   top: 23%;
   left: 42%;
@@ -474,80 +474,278 @@ input.sort_ok {
   height: 70px;
   background-color: rgba(107, 231, 135, 0.85);
 }
-#make_sure div .yes {
+#make_sure form .yes {
   margin: 0 20px;
   float: left;
 }
-#make_sure div .no {
+#make_sure form .no {
   margin: 0 20px;
   float: right;
+}
+input.hiddenAlbumName,
+input.hiddenPictureName,
+input.hiddenAlbumId,
+input.hiddenPictureIntroductions,
+input.hiddenPictureNames,
+input.hiddenAlbumCoverSrc,
+input.hiddenAlbum_Id,
+input.hiddenAlbumIds,
+input.hiddenAlbumNames {
+  display: none;
+}
+/**
+**添加新相册操作/新照片操作
+**/
+@keyframes myfirst {
+  from {
+    transform: scale(0.1, 0.1);
+  }
+  to {
+    transform: scale(1, 1);
+  }
+}
+#add_album,
+#add_new_photos {
+  display: none;
+  width: 1000px;
+  height: 1000px;
+}
+#add_album.active,
+#add_new_photos.active {
+  display: block;
+}
+#add_album form,
+#add_new_photos form {
+  position: absolute;
+  border: 10px solid green;
+  background-color: white;
+  left: 40%;
+  top: 40%;
+}
+#add_album form h3,
+#add_new_photos form h3 {
+  text-align: center;
+}
+#add_album form input.go,
+#add_new_photos form input.go {
+  float: left;
+  padding: 10px;
+  margin-top: 10px;
+}
+#add_album form input.cancel,
+#add_new_photos form input.cancel {
+  float: right;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+#background_banners {
+  width: 80%;
+  float: right;
+}
+#background_banners img {
+  width: 100%;
+  max-height: 200px;
+  margin: 20px 0;
+}
+#background_banners input.delete {
+  float: right;
+}
+#delete_banner {
+  display: none;
+  position: fixed;
+  left: 45%;
+  top: 30%;
+  width: 200px;
+  border: 10px solid green;
+  background-color: white;
+}
+#delete_banner.active {
+  display: block;
+}
+#delete_banner input.yes {
+  float: left;
+}
+#delete_banner input.no {
+  float: right;
+}
+#delete_banner input.hiddenBanner {
+  display: none;
+}
+
+.historyRecord,
+.newRecord {
+  color: #808000;
+  margin-left: 10px;
+  cursor: pointer;
+}
+span {
+  color: black;
+}
+p {
+  color: black;
+}
+.wrapper {
+  padding: 15px;
+  background-color: #CCCC99;
+  line-height: 3em;
+}
+input.donate_year,
+input.donate_month,
+input.donate_day {
+  width: 40px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+input.type {
+  display: none;
+}
+.donator {
+  width: 70px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.donate-money {
+  width: 70px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.material {
+  width: 390px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.use {
+  width: 672px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+.donations-btn {
+  margin-left: 624px;
+}
+#donations-body {
+  margin-left: 200px;
+}
+#remarks {
+  color: grey;
+  margin-left: 27px;
+  margin-top: -18px;
+  font-size: 10px;
+}
+#donations-body button {
+  margin-left: 20px;
+  margin-top: 10px;
+  width: 80px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#custom-donations-wrapper input {
+  margin-left: 30px;
+  margin-top: -2px;
+}
+#customtext {
+  resize: none;
+  width: 810px;
+  height: 100px;
+}
+#unlimited-mul,
+#limited-history,
+#limited-mul,
+#unlimited-history,
+#material-history {
+  background-color: #CCCC99;
+  padding: 20px;
+}
+.modal-header-header {
+  text-align: center;
+}
+.modal-header-header p {
+  margin-left: -10px;
+}
+.modal-body-body {
+  line-height: 0.8em;
+}
+.modal-body-body textarea {
+  width: 546px;
+  height: 170px;
+  resize: none;
+}
+.modal-footer-footer button {
+  width: 80px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+.modal-footer-footer .right-btn {
+  margin-left: 400px;
+}
+.donation-history {
+  background-color: white;
+  max-height: 1000px;
+  word-spacing: 5px;
+}
+.donation-history li {
+  text-align: left;
 }
 
 #background_share {
   width: 83%;
   float: right;
 }
-#background_share input#share_add,
-#background_share input#add {
+#background_share input#share_add {
   margin-bottom: 18px;
 }
-#background_share input#add {
-  margin-left: 30px;
-}
 .share_details {
-  padding: 10px;
+  padding: 10px 10px 37px;
   margin-bottom: 10px;
   border-bottom: 1px solid #aaa;
   height: 150px;
 }
-.share_details #share_contents {
+.share_details .share_contents {
   float: right;
   width: 82%;
 }
-.share_details #share_contents textarea {
+.share_details .share_contents textarea {
   float: left;
   min-width: 90%;
   max-width: 90%;
   height: 80px;
 }
-.share_details #share_contents textarea.summary {
+.share_details .share_contents textarea.summary {
   height: 40px;
   margin-bottom: 3px;
   border-bottom: 1px solid	#aaa;
 }
-.share_details #share_contents input {
-  float: right;
-  width: 7%;
-}
-.share_details #share_img {
+.share_details .share_img {
   float: left;
   height: 100%;
   width: 17%;
 }
-.share_details #share_img img {
+.share_details .share_img img {
   height: 100%;
   width: 80%;
   vertical-align: center;
 }
-.share_details #share_img form {
-  width: 80%;
+.share_details .share_img input {
   position: relative;
-  left: 10px;
-  bottom: 60px;
+  bottom: -4px;
 }
-.share_details #share_img form input {
-  width: 66px;
+.share_details > input {
+  float: right;
+  position: relative;
+  left: 674px;
 }
-textarea.id {
+#add_choose {
   display: none;
 }
-#add_choose,
-#add_more {
-  display: none;
-}
-#add_choose.active,
-#add_more.active {
+#add_choose.active {
   display: block;
+}
+#add_choose input.uploadInfo {
+  display: none;
 }
 
 .background_volunteer_apply_header {
@@ -648,104 +846,6 @@ textarea.id {
 #monthly-reports.finance #records li,
 #projects-expenses.finance #records li {
   display: none;
-}
-
-.historyRecord {
-  color: #808000;
-  margin-left: 10px;
-}
-span {
-  color: black;
-}
-p {
-  color: black;
-}
-.wrapper {
-  padding: 15px;
-  background-color: #CCCC99;
-  line-height: 3em;
-}
-.donator {
-  width: 70px;
-  border: 1px solid grey;
-  border-radius: 3px;
-}
-.donate-money {
-  width: 70px;
-  border: 1px solid grey;
-  border-radius: 3px;
-}
-.material {
-  width: 500px;
-  border: 1px solid grey;
-  border-radius: 3px;
-}
-.use {
-  width: 672px;
-  border: 1px solid grey;
-  border-radius: 3px;
-}
-.donations-btn {
-  margin-left: 624px;
-}
-#donations-body {
-  margin-left: 200px;
-}
-#remarks {
-  color: grey;
-  margin-left: 27px;
-  margin-top: -18px;
-  font-size: 10px;
-}
-#donations-body button {
-  margin-left: 20px;
-  margin-top: 10px;
-  width: 80px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-#custom-donations-wrapper input {
-  margin-left: 30px;
-  margin-top: -2px;
-}
-#customtext {
-  resize: none;
-  width: 810px;
-  height: 100px;
-}
-#unlimited-mul {
-  background-color: #CCCC99;
-  padding: 20px;
-}
-#limited-mul {
-  background-color: #CCCC99;
-  padding: 20px;
-}
-.modal-header-header {
-  text-align: center;
-}
-.modal-header-header p {
-  margin-left: -10px;
-}
-.modal-body-body {
-  line-height: 0.8em;
-}
-.modal-body-body textarea {
-  width: 546px;
-  height: 170px;
-  resize: none;
-}
-.modal-footer-footer button {
-  width: 80px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-.modal-footer-footer .right-btn {
-  margin-left: 400px;
 }
 
 #dynamic-news {
@@ -995,6 +1095,7 @@ h2 {
   height: 280px;
 }
 #myCarousel .item img {
+  max-height: 280px;
   width: 100%;
 }
 .home-right {

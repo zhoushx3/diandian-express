@@ -182,27 +182,17 @@
 ;(function() {
 // background_albums_details
 	if(location.pathname.indexOf('/background/albums/') > -1) {
+		$('.save').click(function() {
+			$('.hiddenPictureNames').attr('value', "");
+			$('.hiddenAlbumCoverSrc').attr('value', $('#album_cover img').attr('src'));
+			for (var i = 0; i < $('.ui-state-default').children('textarea').length; ++i) {
+				$('.hiddenPictureIntroductions').attr('value', $('.hiddenPictureIntroductions').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).val());
+				$('.hiddenPictureNames').attr('value', $('.hiddenPictureNames').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).attr('name'));
+			}
+		});
 		// jquery UI --- sortable 
-				$( "#album_pitures_list" ).sortable();
-		// $(.add) click event is to add a new img , here without copy event
-				$('.add').click(function() { 
-					$('#album_pitures_list').prepend(	
-						'<div class="ui-state-default  ui-sortable-handle">' +
-							'<img src="../../images/ini.png"/>' + 
-						 	' <textarea> </textarea>' +
-						  	'<div class="img_property">' +
-						   		'<input type="button" value="删除照片？" class="delete"/>' +
-						    	'<input type="button" value="设为封面？" class="setCover"/>'  +
-						 	'</div>'  +
-						  	'<div class="new_img_load">' + 
-						  		'<input type="file"/>'  +
- 						    	'<input type="button" value="删除照片？" class="delete"/>'  +
-						  	'</div>'  +
-						'</div>'
-					);
-				});
-
-// ! .live()	.delegate() ...http://api.jquery.com/live/ in order to bind events to any matched elements even prepend or  append 
+				// $( "#album_pitures_list" ).sortable();
+		// ! .live()	.delegate() ...http://api.jquery.com/live/ to bind events to any matched elements even prepend or  append 
 		// $(img).hover used to show 2 button.
 				$(document).delegate(".ui-state-default img","mouseover",  function(event) {
 					$(event.target).parent().children('.img_property').addClass('active');
@@ -215,24 +205,28 @@
 				$(document).delegate(".setCover", "click", function(event) {
 					$('#album_cover > img').attr('src', $(event.target).parent().parent().children('img').attr('src'));
 				});
+		// $(.add) click event is to add a new img , here without copy event
+				$('.add').click(function() {
+					$('#add_new_photos').addClass('active').children('form').css("animation", "myfirst 2s");
+				});
 	}
 
 // background_albums
 	if (location.pathname == '/background/albums') {
-				$( "#albums_list_show" ).sortable();
-
-		// $(.add) click event is to add a new img 
-				$('.add').click(function() {
-					$('#albums_list_show').prepend(
-						'<div class="ui-state-default ui-sortable-handle">' +
-							'<a href="#"><img src="/images/album_cover_ini.png" /></a>' +
-						 	'<textarea> </textarea>' +
-						 	'<div>' +
-							    '<input type="button" value="@" class="delete"/>' + 
-						 	'</div>' +
-						'</div>'
-					);
-				});
+				// $( "#albums_list_show" ).sortable();
+		// $(.add) click event is to add new imgs 
+			$('.add').click(function() {
+				$('#add_album').addClass('active').children('form').css("animation", "myfirst 2s");
+			});
+		// $('.save_all') click event is to save album_names
+			$('.save_all').click(function() {
+				$('.hiddenAlbumIds').attr('value', "");
+				$('.hiddenAlbumNames').attr('value', "");
+				for (var i = 0; i < $('.ui-state-default').children('textarea').length; ++i) {
+					$('.hiddenAlbumIds').attr('value', $('.hiddenAlbumIds').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).attr('title'));
+					$('.hiddenAlbumNames').attr('value', $('.hiddenAlbumNames').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).val());
+				}
+			});
 	}
 
 // background_albums and background_albums_details comon events
@@ -242,6 +236,8 @@
 					$('#make_sure').addClass('active');
 
 					$(document).delegate('.yes', 'click', function() {
+						$('.hiddenAlbumName').attr('value', $(event.target).parent().parent().children('textarea').attr('title'));
+						$('.hiddenAlbumId').attr('value', $(event.target).parent().parent().children('textarea').attr('name'));
 						$('#make_sure').removeClass('active');
 						$(event.target).parent().parent().remove();
 						// ! event.target returns a DOM then $() get a jquery object. 
@@ -253,6 +249,180 @@
 						$('#make_sure').removeClass('active');
 					});
 				});
+		// $(.cancel) click event  cancel to add an new album or add new photos
+ 				$('.cancel').click(function() {
+ 					$(this).parent().parent().removeClass('active').children('form').css("animation", "");
+				});
+	}
+})();
+;(function() {
+	if (location.pathname == '/background/banners') {
+		$('.delete').click(function(event) {
+			$('#delete_banner').toggleClass('active');
+			
+			$('.yes').click(function() {
+				$('.hiddenBanner').attr('value', $(event.target).parent().children('img').attr('src'));
+			});
+
+			$('.no').click(function() {
+				$('#delete_banner').toggleClass('active');
+			});
+		});
+
+	}
+})();;(function() {
+	if (location.pathname == '/background/donations') {
+		// 将输入框的值通过ajax传给服务器
+		$('.send').click(function() {
+				var texts = [];
+				var $input = $(this).parent().parent().find('input');
+				for (var i = 0; i < $input.length; ++i) {
+					if ($input.eq(i).val() === '') {
+						window.alert('请填完整所有输入框');
+						return;						
+					}
+					texts.push($input.eq(i).val());
+				}
+				$.ajax({
+					type: 'get',
+					url: '/background/addToDonation',
+					data: {texts: texts},
+					success: function(data) {
+						if(data)
+							window.alert('success');
+					}
+				});
+		});
+		// 将输入框初始化
+		$('.cancel').click(function() {
+			$(this).parent().parent().find('input').val('');
+		});
+		var getHistory = function(event) {
+			var type = $(event.target).attr('name');
+			var year = $("select  option:selected").eq(0+parseInt(type)*2).text().replace(/[^0-9]/, "");
+			var month = $("select  option:selected").eq(1+parseInt(type)*2).text().replace(/[^0-9]/, "");
+			$.ajax({
+				type: 'get',
+				url: '/background/donationHistory',
+				data: {type: type, year: year, month: month},
+				success: function(data) {
+					if (data) {
+						for (var i  = 0; i < data.length; ++i)
+							$('.donation-history').append('<li>'  + '    ' + getDonationString(data[i]) + '</li>');
+					}
+				}
+			});
+		};
+		// 不知道这个函数怎么直接拿来用
+		var getDonationString = function(donation) {
+			if (!donation)
+				return '';
+			switch (donation.type) {
+				case 0:
+					return donation.donator + '捐款' + donation.amount + '元';
+				case 1:
+					return donation.donator + '捐款' + donation.amount + '元' + '用于' + donation.note;
+				case 2:
+					return donation.donator + '捐赠' + donation.goods + '用于' + donation.note;
+			}
+			return '';
+		};
+		// 点击历史记录 
+		$('.historyRecord').click(function(event) {
+			$('.donation-history').children('li').remove();
+			getHistory(event);
+		});
+		// 检测下拉列表值的变化
+		$('select').change(function(event) {
+			$('.donation-history').children('li').remove();
+			getHistory(event);
+		});
+		// 非限定性捐款 批量填写
+		$('#unlimited-mul button.right-btn').click(function(event) {
+			var records = $(this).parent().parent().find('textarea').val().split('\n');
+			var donators = [];
+			var amounts = [];
+			var flag = 0;
+			for (var i = 0; i < records.length; ++i) {
+				flag = 0;
+				for (var j = 0; j < records[i].split(" ").length; ++j)  {
+					if (records[i].split(" ")[j] !== "" && flag === 0) {
+						++flag;
+						donators.push(records[i].split(" ")[j]);
+					}
+					else if (records[i].split(" ")[j] !== "" && flag === 1) {
+						amounts.push(records[i].split(" ")[j]);
+						++flag;
+						break;
+					}
+					else ;
+				}
+				if (flag === 1) {
+					window.alert('请不要有多余空行\n捐款者与捐款金额用空格键隔开');
+					return;
+				}
+			}
+			$.ajax({
+				type: "post",
+				url: '/background/sendUnlimitedRecords',
+				data: {
+					donators: donators,
+					amounts: amounts,
+				},
+				success: function(data) {
+					if (data)
+						window.alert(data);
+					else
+						window.alert('failed');
+				}
+			});
+		});
+		// 限定性捐款 批量填写
+		$('#limited-mul button.right-btn').click(function(event) {
+			var records = $(this).parent().parent().find('textarea').val().split('\n');
+			var donators = [];
+			var amounts = [];
+			var notes = [];
+			var flag = 0;
+			for (var i = 0; i < records.length; ++i) {
+				flag = 0;
+				for (var j = 0; j < records[i].split(" ").length; ++j)  {
+					if (records[i].split(" ")[j] !== "" && flag === 0) {
+						++flag;
+						donators.push(records[i].split(" ")[j]);
+					}
+					else if (records[i].split(" ")[j] !== "" && flag === 1) {
+						amounts.push(records[i].split(" ")[j]);
+						++flag;
+					}
+					else if (records[i].split(" ")[j] !== "" && flag === 2) {
+						notes.push(records[i].split(" ")[j]);
+						++flag;
+						break;
+					}
+				}
+				if (flag === 2) {
+					window.alert('请不要有多余空行\n捐款者与捐款金额与目的分别用空格键隔开');
+					return;
+				}
+			}
+			$.ajax({
+				type: "post",
+				url: '/background/sendlimitedRecords',
+				data: {
+					donators: donators,
+					amounts: amounts,
+					notes: notes,
+				},
+				success: function(data) {
+					if (data)
+						window.alert(data);
+					else
+						window.alert('failed');
+				}
+			});
+		});
+
 	}
 })();;(function(){
 
@@ -317,6 +487,25 @@
 	});
 
 })();;(function() {
+	if (location.pathname == '/background/shares' || location.pathname.indexOf( "/background/share_period") > -1) {
+		$('#share_add').click(function() {
+			$('#add_choose').addClass('active');
+		});
+		$('#cancel_new_period').click(function() {
+			$('#add_choose').removeClass('active');	
+		});
+
+	 $('#submit_new_period').click(function() {
+	 	$('.uploadInfo').attr('value', '');
+	 	for (var i = 0; i < 5; ++i) {
+	 		if ($('.uploadFiles').eq(i).val() === "")
+	 			$('.uploadInfo').attr('value', $('.uploadInfo').attr('value') + " ***");
+	 		else
+	 			$('.uploadInfo').attr('value', $('.uploadInfo').attr('value') + $('.uploadFiles').eq(i).val() + "***");
+	 	}
+	 });
+	}
+})();;(function() {
 	var preDeleteVolunteer;
 
 	function setPreDeleteVolunteer(id) {
@@ -346,19 +535,7 @@
 		location.reload();
 	});
 
-})();;(function() {
-  $.getJSON('background/loadimages?jsoncallback=?', function(data) {
-    alert('3');
-    for (var i = 0; i < 3; ++i) {
-      alert('3');
-      var banner = $("<img>").src("show" + data[i].imageName);
-      banner.id = data[i].imageName;
-      banner.style.zIndex = 1;
-      $("#div-image").append(banner);
-    }
-  });
-})();
-;(function(){
+})();;(function(){
   if (location.pathname == '/' || location.pathname == '/news' || location.pathname  == '/volunteer/join-us'  || location.pathname == '/volunteer/apply' ) {
     var scroller = $('#donation-scroller');
     var inner = scroller.find('.inner');
@@ -520,21 +697,6 @@
 		selectYear.onchange = getPictures;
 		for (var y = 0; y < monthLi.length; y++) 
 			monthLi[y].onclick = setMonths;
-	}
-})();;(function() {
-	if (location.pathname == '/background/shares' || location.pathname == "/background/share_period") {
-		$('#share_add').click(function() {
-			$('#add_choose').addClass('active');
-		});
-		$('#cancel_new_period').click(function() {
-			$('#add_choose').removeClass('active');	
-		});
-		$('#add').click(function() {
-			$('#add_more').addClass('active');
-		});
-		$('#add_cancel').click(function() {
-			$('#add_more').removeClass('active');
-		});
 	}
 })();;(function() {
 	var form = $("#signin-wrapper form");
