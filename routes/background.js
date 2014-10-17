@@ -185,23 +185,6 @@ router.post("/delete_volunteer_form", function(req, res) {
   });
 });
 
-router.get('/news', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  res.render('background/news', {
-    title: 'news',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
-
 router.get('/volunteers_apply', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -235,6 +218,22 @@ router.get('/volunteers_apply', function(req, res) {
   });
 });
 
+router.get('/news', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  res.render('background/news', {
+    title: 'news',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
 router.get('/accounts', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -1008,7 +1007,131 @@ router.post('/deleteBanner', function(req, res) {
     });
   });
 });
-
+/*
+**  后台资助申请
+*/
+router.get('/funds_apply', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/');
+  }
+  var db = req.db;
+  db.collection('fundLabels', function(err, labels) {
+    labels.find().toArray(function(err, doc) {
+      var label = [];
+      label = doc;
+      db.collection('fundsApply', function(err, col) {
+        col.find().toArray(function(err, docs) {
+          var fundsApply = [];
+          var fundsPassed = [];
+          var fundsUnPassed = [];
+          assert.equal(null, err);
+          for (var i in docs) {
+            if (docs[i].type === "Pass")
+              fundsPassed.push(docs[i]);
+            else if (docs[i].type === 'unPass')
+              fundsUnPassed.push(docs[i]);
+            else
+              fundsApply.push(docs[i]);
+          }
+          res.render('background/funds_apply', {
+            title: 'fundsApply',
+            labels: label,
+            fundsApply: fundsApply,
+            fundsPassed: fundsPassed,
+            fundsUnPassed: fundsUnPassed,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+          });
+        });
+      });
+    });
+  });
+});
+/*
+**  后台资助申请 获得某份具体申请
+*/
+router.post('/getFundInfo', function(req, res) {
+  var fundsID = req.body.fundsID;
+  var db = req.db;
+  var ObjectID = require('mongodb').ObjectID;
+  db.collection('fundsApply', function(err, col) {
+    col.findOne({_id: ObjectID(fundsID)}, function(err, item) {
+      if (err) {
+        res.send(null);
+      } else {
+        res.send(item);
+      }
+    });
+  });
+});
+/*
+**  后台资助申请 否决 通过
+*/
+router.get('/passFund', function(req, res) {
+  var fundsID = req.query.fundsID;
+  var type = req.query.type;
+  var db = req.db;
+  var ObjectID = require('mongodb').ObjectID;
+  db.collection('fundsApply', function(err, col) {
+    col.update({_id: ObjectID(fundsID)}, {$set: {'type': type}}, function(err, item) {
+      if (err) {
+        res.send(null);
+      } else {
+        res.send('ok');
+      }
+    });
+  });
+});
+/*
+**  后台资助申请 增标签
+*/
+router.post('/modifyLabels', function(req, res) {
+  var ObjectID = require('mongodb').ObjectID;
+  var db = req.db;
+  var fundsID = req.body.fundsID;
+  var label = req.body.label;
+  db.collection('fundsApply', function(err, cols) {
+    cols.update({_id: ObjectID(fundsID)}, {$addToSet: {'label': {$each: label}}}, function(err, result) {
+      db.collection('fundLabels', function(err, col) {
+        col.update({}, {$addToSet: {'label': {$each: label}}}, function(err, results) {
+          res.send('success');
+        });
+      });
+    });
+  });
+});
+/*
+**  后台资助申请 删标签 历史标签会遗留
+*/
+router.post('/deleteLable', function(req, res) {
+  var ObjectID = require('mongodb').ObjectID;
+  var db = req.db;
+  var fundsID = req.body.fundsID;
+  var theLabel = req.body.theLabel;
+  db.collection('fundsApply', function(err, cols) {
+    cols.update({_id: ObjectID(fundsID)}, {$pull: {'label': theLabel}}, function(err, result) {
+        res.send('success');
+    });
+  });
+});
+/*
+**  后台资助申请 通过标签看表
+*/
+router.get('/getFundsByLabel', function(req, res) {
+  var db = req.db;
+  var label = req.query.theLabel;
+  db.collection('fundsApply', function(err, col) {
+    col.find({'label': label}).toArray(function(err, docs) {
+      res.send(docs);
+    });
+  });
+});
 router.post('/search-users', function(req, res) {
   res.redirect("/background/accounts");
 });

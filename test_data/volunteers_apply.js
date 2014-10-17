@@ -3,7 +3,7 @@ exports.insert = function(db, callback){
     if (err){
       throw new Error('volunteers_apply获取失败！');
     }
-    console.log("New volunteers_apply collection!");
+    console.log("插入volunteers_apply成功!");
     if (callback) {
       callback();
     }

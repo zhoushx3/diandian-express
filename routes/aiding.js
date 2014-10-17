@@ -26,47 +26,54 @@ router.get('/apply', function(req, res) {
 
 router.post('/apply/submit', function(req, res) {
   var db = req.db,
+    date  = new Date(),
     name = req.body.name,
     gender = req.body.gender,
+    nation = req.body.nation,
     birthYear = req.body.birthYear,
     birthMonth = req.body.birthMonth,
     school = req.body.school,
     classic = req.body.class,
     fee = req.body.fee,
-    server = req.body.server,
+    watcher = req.body.watcher,
     age = req.body.age,
     IDCardNo = req.body.IDCardNo,
+    work = req.body.work,
     cellphone = req.body.cellphone,
     other = req.body.else,
     income = req.body.income,
-    possetion = req.body.possetion,
+    posession = req.body.posession,
     nowAddress = req.body.nowAddress,
     homeAddress = req.body.homeAddress,
     reason = req.body.reason;
-  db.collection('singleAiding', function(err, col) {
+  db.collection('fundsApply', function(err, col) {
     col.insert({
       "name": name,
       "gender": gender,
+      "nation": nation,
       "birth-year": birthYear,
       "birth-month": birthMonth,
       "school": school,
       "class": classic,
       "fee": fee,
-      "server": server,
+      "watcher": watcher,
       "age": age,
       "ID-cardNo": IDCardNo,
+      "work": work,
       "cellphone": cellphone,
       "else": other,
       "income": income,
-      "possetion": possetion,
-      "now-address": nowAddress,
       "home-address": homeAddress,
-      "reason": reason
+      "now-address": nowAddress,
+      "posession": posession,
+      "reason": reason,
+      "date": date,
+      "type": "unchecked",
+      "label": []
     }, function(err, doc) {
       if (err) {
         console.log("Something wrong happened in adding imformation to the aiding database.");
       } else {
-        console.log("Add a new apply.");
         res.redirect("/aiding");
       }
     });
