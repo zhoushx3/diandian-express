@@ -1285,7 +1285,7 @@ router.post('/profile', function(req, res) {
       } else {
         console.log(result);
         if (doc.role == "admin" && doc.username !== username) {
-          req.flash("success", "管理员用户名修改成功")
+          req.flash("success", "管理员用户名修改成功");
           res.redirect("/logout");
         } else if ((doc.role == "admin" && doc.username == username) || doc.role == "user") {
           res.redirect("/background/accounts");
