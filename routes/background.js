@@ -235,6 +235,7 @@ router.get('/news', function(req, res) {
     error: req.flash('error').toString()
   });
 });
+
 router.get('/accounts', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -286,8 +287,8 @@ router.get('/passwords', function(req, res) {
   });
 });
 /**
-** 后台 捐赠明细
-**/
+ ** 后台 捐赠明细
+ **/
 router.get('/donations', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -305,8 +306,8 @@ router.get('/donations', function(req, res) {
   });
 });
 /**
-** 后台 捐赠明细   添加操作    不会检查直接插入 !~!~!~!~
-**/
+ ** 后台 捐赠明细   添加操作    不会检查直接插入 !~!~!~!~
+ **/
 router.get('/addToDonation', function(req, res) {
   var db = req.db;
   var texts = req.query.texts;
@@ -317,48 +318,49 @@ router.get('/addToDonation', function(req, res) {
         donator: texts[4],
         amount: texts[5],
         // 必须传入月份数减一 
-        date: new Date(texts[1], texts[2]-1, texts[3])
-      }, {save: true}, function(err, result) {
+        date: new Date(texts[1], texts[2] - 1, texts[3])
+      }, {
+        save: true
+      }, function(err, result) {
         if (err) {
           res.send('非限定性捐款 no');
-        }
-        else {
+        } else {
           res.send('非限定性捐款 ok');
         }
       });
     });
-  }
-  else if (texts[0] === '1') {
+  } else if (texts[0] === '1') {
     db.collection('donations', function(err, col) {
       col.insert({
         type: 1,
         donator: texts[4],
         amount: texts[5],
-        date: new Date(texts[1], texts[2]-1, texts[3]),
+        date: new Date(texts[1], texts[2] - 1, texts[3]),
         note: texts[6]
-      }, {save: true}, function(err, result) {
+      }, {
+        save: true
+      }, function(err, result) {
         if (err) {
           res.send('限定性捐款 no');
-        }
-        else {
+        } else {
           res.send('限定性捐款 ok');
         }
       });
     });
-  }
-  else {
+  } else {
     db.collection('donations', function(err, col) {
       col.insert({
         type: 2,
         donator: texts[4],
         goods: texts[5],
-        date: new Date(texts[1], texts[2]-1, texts[3]),
+        date: new Date(texts[1], texts[2] - 1, texts[3]),
         note: texts[6]
-      }, {save: true}, function(err, result) {
+      }, {
+        save: true
+      }, function(err, result) {
         if (err) {
           res.send('物资捐款 no');
-        }
-        else {
+        } else {
           res.send('物资捐款 ok');
         }
       });
@@ -366,8 +368,8 @@ router.get('/addToDonation', function(req, res) {
   }
 });
 /**
-** 后台 捐赠明细   历史记录
-**/
+ ** 后台 捐赠明细   历史记录
+ **/
 router.get('/donationHistory', function(req, res) {
   var db = req.db;
   var type = req.query.type;
@@ -375,15 +377,21 @@ router.get('/donationHistory', function(req, res) {
   var month = req.query.month;
   var donationHistory;
   db.collection('donations', function(err, col) {
-    col.find({'type': parseInt(type), 'date': {$gte: new Date(year, month-1, 1), $lt: new Date(year, month, 1)}}).toArray(function(err, docs) {
+    col.find({
+      'type': parseInt(type),
+      'date': {
+        $gte: new Date(year, month - 1, 1),
+        $lt: new Date(year, month, 1)
+      }
+    }).toArray(function(err, docs) {
       donationHistory = docs;
       res.send(donationHistory);
     });
   });
 });
 /**
-** 后台 捐赠明细   批量填写 非限定性捐款
-**/
+ ** 后台 捐赠明细   批量填写 非限定性捐款
+ **/
 router.post('/sendUnlimitedRecords', function(req, res) {
   var db = req.db;
   var donators = req.body.donators;
@@ -401,13 +409,15 @@ router.post('/sendUnlimitedRecords', function(req, res) {
         donator: donators[i],
         amount: amounts[i],
         date: new Date()
-      }, {save: true}, callback);
+      }, {
+        save: true
+      }, callback);
     }
   });
 });
 /**
-** 后台 捐赠明细   批量填写 限定性捐款
-**/
+ ** 后台 捐赠明细   批量填写 限定性捐款
+ **/
 router.post('/sendlimitedRecords', function(req, res) {
   var db = req.db;
   var donators = req.body.donators;
@@ -427,7 +437,9 @@ router.post('/sendlimitedRecords', function(req, res) {
         amount: amounts[i],
         date: new Date(),
         note: notes[i],
-      }, {save: true}, callback);
+      }, {
+        save: true
+      }, callback);
     }
   });
 });
@@ -502,10 +514,10 @@ router.get('/foreshows-edit', function(req, res) {
 
 
 /**
-** 分享交流基本页面
-** 获得查询到的所有条目的总数，进而确定分期数目，每期5个
-** show==0表示初始时候所有的内容都不展开
-**/
+ ** 分享交流基本页面
+ ** 获得查询到的所有条目的总数，进而确定分期数目，每期5个
+ ** show==0表示初始时候所有的内容都不展开
+ **/
 router.get('/shares', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -515,30 +527,30 @@ router.get('/shares', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-    var db = req.db;
-    var record_num;
-    db.collection('share', function(err, col) {
-      col.find(function(err, cursor) {
-        cursor.count(function(err, count) {
-          record_num = count;
-          callback();
-        });
-      }); 
-    });
-    var callback = function() {
-      res.render('background/shares', {
-        title: '分享交流', 
-        number: Math.floor(record_num / 5),
-        show: 0,
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+  var db = req.db;
+  var record_num;
+  db.collection('share', function(err, col) {
+    col.find(function(err, cursor) {
+      cursor.count(function(err, count) {
+        record_num = count;
+        callback();
       });
-    };
+    });
+  });
+  var callback = function() {
+    res.render('background/shares', {
+      title: '分享交流',
+      number: Math.floor(record_num / 5),
+      show: 0,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  };
 });
 /**
-** 分享页面按期显示，通过点击得到当期期数
-**/
+ ** 分享页面按期显示，通过点击得到当期期数
+ **/
 router.post('/share_period/:number', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -553,29 +565,32 @@ router.post('/share_period/:number', function(req, res) {
   var db = req.db;
   var share;
   db.collection('share', function(err, col) {
-    col.find({period: serial_number.toString()},{'limit': 5}).toArray(function(err, docs) {
+    col.find({
+      period: serial_number.toString()
+    }, {
+      'limit': 5
+    }).toArray(function(err, docs) {
       if (err) {
         console.log(err.message);
-      }
-      else {
+      } else {
         share = docs;
         callback();
       }
     });
   });
-    db.collection('share', function(err, col) {
-      col.find(function(err, cursor) {
-        cursor.count(function(err, count) {
-          record_number = count;
-          callback();
-        });
-      }); 
+  db.collection('share', function(err, col) {
+    col.find(function(err, cursor) {
+      cursor.count(function(err, count) {
+        record_number = count;
+        callback();
+      });
+    });
   });
   var callback = function() {
     count++;
     if (count == 2) {
       res.render('background/shares', {
-        title: '分享交流', 
+        title: '分享交流',
         share: share,
         number: Math.floor(record_number / 5),
         show: serial_number,
@@ -584,11 +599,11 @@ router.post('/share_period/:number', function(req, res) {
         error: req.flash('error').toString()
       });
     }
- };
+  };
 });
 /**
-** 分享页面修改文本和照片
-**/
+ ** 分享页面修改文本和照片
+ **/
 router.post('/modifyTexts/:id', function(req, res) {
   var ObjectID = require('mongodb').ObjectID;
   var id = req.params.id;
@@ -597,20 +612,29 @@ router.post('/modifyTexts/:id', function(req, res) {
   var db = req.db;
   var form = new formidable.IncomingForm();
   form.keepExtensions = true;
-  form.encoding="utf-8";
+  form.encoding = "utf-8";
   form.on('field', function(field, value) {
-     texts.push(value);
+    texts.push(value);
   });
   form.on('file', function(field, file) {
-    if(file.size !== 0) { // 没上传文件也照吃
-        fs.renameSync(file.path, 'public/images/share/' + file.name);
-        files.push({path: '/images/share/' + file.name});
+    if (file.size !== 0) { // 没上传文件也照吃
+      fs.renameSync(file.path, 'public/images/share/' + file.name);
+      files.push({
+        path: '/images/share/' + file.name
+      });
     }
   });
   form.parse(req, function() {
     db.collection('share', function(err, col) {
       if (files.length === 0) {
-        col.update({_id: ObjectID(id)}, {$set: { 'summary': texts[0], 'contents': texts[1]}}, function(err, result) {
+        col.update({
+          _id: ObjectID(id)
+        }, {
+          $set: {
+            'summary': texts[0],
+            'contents': texts[1]
+          }
+        }, function(err, result) {
           if (err) {
             console.log(err.message);
             return;
@@ -618,20 +642,28 @@ router.post('/modifyTexts/:id', function(req, res) {
           res.redirect('/background/shares');
         });
       } else {
-          col.update({_id: ObjectID(id)}, {$set: { 'summary': texts[0], 'contents': texts[1], 'path': files[0].path}}, function(err, result) {
-            if (err) {
-              console.log(err.message);
-              return;
-            }
-            res.redirect('/background/shares');
-          });
-        }
+        col.update({
+          _id: ObjectID(id)
+        }, {
+          $set: {
+            'summary': texts[0],
+            'contents': texts[1],
+            'path': files[0].path
+          }
+        }, function(err, result) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          res.redirect('/background/shares');
+        });
+      }
     });
   });
 });
 /**
-** 分享页面添加新的一期
-**/
+ ** 分享页面添加新的一期
+ **/
 router.post('/addNewPeriod/:number', function(req, res) {
   var number = req.params.number;
   var texts = [];
@@ -640,18 +672,18 @@ router.post('/addNewPeriod/:number', function(req, res) {
   var db = req.db;
   var form = new formidable.IncomingForm();
   form.keepExtensions = true;
-  form.encoding="utf-8";
+  form.encoding = "utf-8";
   form.on('field', function(field, value) {
-     texts.push(value);
+    texts.push(value);
   });
   form.on('file', function(field, file) { // 这一步我主要是得到上传文件的位置并移到指定的位置
-    if(file.size !== 0) { // 没上传文件也照吃
-        fs.renameSync(file.path, 'public/images/share/' + file.name);
+    if (file.size !== 0) { // 没上传文件也照吃
+      fs.renameSync(file.path, 'public/images/share/' + file.name);
     }
   });
   form.parse(req, function(err) {
     fileNames = texts[1].split('***');
-    for (var i = 0; i < 5; ++i ) {
+    for (var i = 0; i < 5; ++i) {
       if (fileNames[i] != " ")
         fileNames[i] = '/images/share/' + fileNames[i];
       else
@@ -661,7 +693,7 @@ router.post('/addNewPeriod/:number', function(req, res) {
         date: new Date(),
         author: texts[0],
         path: fileNames[i],
-        headline: fileNames[i].replace(/\/images\//, ''), 
+        headline: fileNames[i].replace(/\/images\//, ''),
         contents: texts[2 * i + 3],
         summary: texts[2 * i + 2]
       });
@@ -672,7 +704,7 @@ router.post('/addNewPeriod/:number', function(req, res) {
           console.log(err.message);
           return;
         }
-        res.redirect('/background/shares' );
+        res.redirect('/background/shares');
       });
     });
   });
@@ -939,9 +971,9 @@ router.post('/modifyAlbumInfo', function(req, res) {
   res.redirect('/background/albums');
 });
 /*
-**  后台横幅管理基本页面
-*/
-router.get('/banners', function(req,res) {
+ **  后台横幅管理基本页面
+ */
+router.get('/banners', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
     return res.redirect('/signin');
@@ -966,8 +998,8 @@ router.get('/banners', function(req,res) {
 });
 
 /*
-**  后台横幅 添加横幅
-*/
+ **  后台横幅 添加横幅
+ */
 router.post('/bannersubmitt', function(req, res) {
   var db = req.db;
   var form = new formidable.IncomingForm();
@@ -977,7 +1009,15 @@ router.post('/bannersubmitt', function(req, res) {
       var targetPath = './public/images/banners/' + files.addImage.name;
       fs.rename(tmpPath, targetPath);
       db.collection('carousels', function(err, col) {
-        col.update({src: '/images/banners/' + files.addImage.name}, {src: '/images/banners/' + files.addImage.name, link: '/'}, {upsert: true, w:1}, function(err, result) {
+        col.update({
+          src: '/images/banners/' + files.addImage.name
+        }, {
+          src: '/images/banners/' + files.addImage.name,
+          link: '/'
+        }, {
+          upsert: true,
+          w: 1
+        }, function(err, result) {
           if (err) {
             console.log(err.message);
             return;
@@ -990,18 +1030,21 @@ router.post('/bannersubmitt', function(req, res) {
 });
 
 /*
-**  后台横幅 删除横幅 删除数据库条目 以及存储位置的原文件
-*/
+ **  后台横幅 删除横幅 删除数据库条目 以及存储位置的原文件
+ */
 router.post('/deleteBanner', function(req, res) {
   var db = req.db;
   var banner = req.param('hiddenBanner');
   db.collection('carousels', function(err, col) {
-    col.remove({src: banner}, {w: 1}, function(err, numberOfRemoved) {
-      if(err) {
+    col.remove({
+      src: banner
+    }, {
+      w: 1
+    }, function(err, numberOfRemoved) {
+      if (err) {
         console.log(err.message);
         return;
-      }
-      else {
+      } else {
         console.log(numberOfRemoved);
         res.redirect('/background/banners');
       }
@@ -1009,8 +1052,8 @@ router.post('/deleteBanner', function(req, res) {
   });
 });
 /*
-**  后台资助申请
-*/
+ **  后台资助申请
+ */
 router.get('/funds_apply', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -1055,14 +1098,16 @@ router.get('/funds_apply', function(req, res) {
   });
 });
 /*
-**  后台资助申请 获得某份具体申请
-*/
+ **  后台资助申请 获得某份具体申请
+ */
 router.post('/getFundInfo', function(req, res) {
   var fundsID = req.body.fundsID;
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   db.collection('fundsApply', function(err, col) {
-    col.findOne({_id: ObjectID(fundsID)}, function(err, item) {
+    col.findOne({
+      _id: ObjectID(fundsID)
+    }, function(err, item) {
       if (err) {
         res.send(null);
       } else {
@@ -1072,15 +1117,21 @@ router.post('/getFundInfo', function(req, res) {
   });
 });
 /*
-**  后台资助申请 否决 通过
-*/
+ **  后台资助申请 否决 通过
+ */
 router.get('/passFund', function(req, res) {
   var fundsID = req.query.fundsID;
   var type = req.query.type;
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   db.collection('fundsApply', function(err, col) {
-    col.update({_id: ObjectID(fundsID)}, {$set: {'type': type}}, function(err, item) {
+    col.update({
+      _id: ObjectID(fundsID)
+    }, {
+      $set: {
+        'type': type
+      }
+    }, function(err, item) {
       if (err) {
         res.send(null);
       } else {
@@ -1090,17 +1141,31 @@ router.get('/passFund', function(req, res) {
   });
 });
 /*
-**  后台资助申请 增标签
-*/
+ **  后台资助申请 增标签
+ */
 router.post('/modifyLabels', function(req, res) {
   var ObjectID = require('mongodb').ObjectID;
   var db = req.db;
   var fundsID = req.body.fundsID;
   var label = req.body.label;
   db.collection('fundsApply', function(err, cols) {
-    cols.update({_id: ObjectID(fundsID)}, {$addToSet: {'label': {$each: label}}}, function(err, result) {
+    cols.update({
+      _id: ObjectID(fundsID)
+    }, {
+      $addToSet: {
+        'label': {
+          $each: label
+        }
+      }
+    }, function(err, result) {
       db.collection('fundLabels', function(err, col) {
-        col.update({}, {$addToSet: {'label': {$each: label}}}, function(err, results) {
+        col.update({}, {
+          $addToSet: {
+            'label': {
+              $each: label
+            }
+          }
+        }, function(err, results) {
           res.send('success');
         });
       });
@@ -1108,27 +1173,35 @@ router.post('/modifyLabels', function(req, res) {
   });
 });
 /*
-**  后台资助申请 删标签 历史标签会遗留
-*/
+ **  后台资助申请 删标签 历史标签会遗留
+ */
 router.post('/deleteLable', function(req, res) {
   var ObjectID = require('mongodb').ObjectID;
   var db = req.db;
   var fundsID = req.body.fundsID;
   var theLabel = req.body.theLabel;
   db.collection('fundsApply', function(err, cols) {
-    cols.update({_id: ObjectID(fundsID)}, {$pull: {'label': theLabel}}, function(err, result) {
-        res.send('success');
+    cols.update({
+      _id: ObjectID(fundsID)
+    }, {
+      $pull: {
+        'label': theLabel
+      }
+    }, function(err, result) {
+      res.send('success');
     });
   });
 });
 /*
-**  后台资助申请 通过标签看表
-*/
+ **  后台资助申请 通过标签看表
+ */
 router.get('/getFundsByLabel', function(req, res) {
   var db = req.db;
   var label = req.query.theLabel;
   db.collection('fundsApply', function(err, col) {
-    col.find({'label': label}).toArray(function(err, docs) {
+    col.find({
+      'label': label
+    }).toArray(function(err, docs) {
       res.send(docs);
     });
   });
@@ -1150,6 +1223,76 @@ router.post('/delete-user', function(req, res) {
   });
 
   res.redirect("/background/accounts");
+});
+
+router.get('/profile', function(req, res) {
+  var editUser;
+  var username = req.param('username');
+  var db = req.db.collection('users');
+  db.findOne({
+    username: username
+  }, function(err, doc) {
+    editUser = doc;
+
+    //把该用户的信息传进去
+    res.render('background/profile', {
+      title: "账户编辑",
+      editUser: editUser,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
+router.post('/profile', function(req, res) {
+  var oriUsername = req.body.oriusername,
+    username = req.body.username,
+    email = req.body.email,
+    nickname = req.body.nickname,
+    gender = req.body.gender,
+    birthday = req.body.birthday,
+    job = req.body.job,
+    phone = req.body.phone,
+    QQ = req.body.QQ,
+    weibo = req.body.weibo,
+    about = req.body.about,
+    db = req.db.collection('users');
+
+  db.findOne({
+    username: oriUsername
+  }, function(err, doc) {
+    db.update({
+      username: oriUsername
+    }, {
+      $set: {
+        "username": username,
+        "email": email,
+        "profile": {
+          "nickname": nickname,
+          "gender": doc.profile.gender,
+          "birthday": birthday,
+          "job": job,
+          "phone": phone,
+          "QQ": QQ,
+          "weibo": weibo,
+          "about": about
+        }
+      }
+    }, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        if (doc.role == "admin" && doc.username !== username) {
+          req.flash("success", "管理员用户名修改成功")
+          res.redirect("/logout");
+        } else if ((doc.role == "admin" && doc.username == username) || doc.role == "user") {
+          res.redirect("/background/accounts");
+        }
+      }
+    });
+  });
 });
 
 module.exports = router;
