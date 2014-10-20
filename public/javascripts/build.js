@@ -64,6 +64,8 @@
 	$("#profile-goback").click(function() {
 		location.href="/background/accounts";
 	});
+
+	
 })();;(function() {
 	if (location.pathname == '/news/activity') {
 		$('li').click(function( event ) {

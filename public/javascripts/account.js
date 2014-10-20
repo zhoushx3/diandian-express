@@ -38,4 +38,6 @@
 	$("#profile-goback").click(function() {
 		location.href="/background/accounts";
 	});
+
+	
 })();
