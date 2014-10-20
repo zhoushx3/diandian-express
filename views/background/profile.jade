@@ -18,7 +18,7 @@ block content
           input#profile-email(type='text', value="#{editUser.email}", name='email')
       .field
           span.field-name *密码：
-          input#profile-password(type='password', value="#{editUser.password}", name='password')
+          input#profile-password(type='text', name='password', placeholder="留空则表示不修改")
       .field
         span.field-name 出生年月：
         input(type='text', value="#{editUser.profile.birthday}", name='birthday')
@@ -43,6 +43,16 @@ block content
           div#extra-info(style="margin-left:80px;font-size:13px;color:red;")
             注: *项为必填项，若要修改管理员的用户名，成功后将自动登出
 
+      div#modify-user-confirm.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+        div.modal-header 
+          h3 修改用户信息
+        div.modal-body
+          h4 确定要修改该用户吗？
+        div.modal-footer
+          button#modifyUser.btn.btn-large.btn-primary(type="submit") 是的
+          button.btn.btn-large.btn-primary(data-dismiss='modal', aria-hidden='true') 不了
+
     .operation
-      button#profile-submit(type='submit' username="#{editUser.username}").btn.btn-large.btn-primary 提交
+      a#profile-submit.btn.btn-large.btn-primary(data-toggle="modal" href='#modify-user-confirm') 提交
       a#profile-goback.btn.btn-large.btn-primary 返回

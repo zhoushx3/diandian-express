@@ -5,6 +5,7 @@ var express = require('express'),
   fs = require('fs'),
   bodyParser = require('body-parser'),
   assert = require('assert'),
+  crypto = require('crypto'),
   DOCS_PATH = 'docs/',
   VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
   MAXFILESZIZE = 4 * 1024 * 1024,
@@ -1262,11 +1263,22 @@ router.post('/profile', function(req, res) {
   db.findOne({
     username: oriUsername
   }, function(err, doc) {
+    //检查是否修改了密码
+    var password;
+    if (req.body.password === "") {
+      password = doc.password;
+    } else {
+      var md5 = crypto.createHash('md5');
+      password = md5.update(req.body.password).digest('hex');
+    }
+
+    //更新数据
     db.update({
       username: oriUsername
     }, {
       $set: {
         "username": username,
+        "password": password,
         "email": email,
         "profile": {
           "nickname": nickname,
