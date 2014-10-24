@@ -75,7 +75,6 @@ router.post('/', function(req, res) {
 			return res.redirect('/');
 		});
 	});
-
 });
 
 module.exports = router;

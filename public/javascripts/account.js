@@ -34,10 +34,24 @@
 		$(this).attr("href", "/background/profile?username=" + $(this).attr("username"));
 	});
 
+	/*用户信息填写逻辑*/
+	$("#profile-submit").click(function(event) {
+		if ($("#profile-username").val() === "" || $("#addAdmin-username").val() === "") {
+			$(this).removeAttr("href");
+			alert("用户名不能为空");
+		} else if($("#profile-email").val() === "" || $("#addAdmin-email").val() === "") {
+			$(this).removeAttr("href");
+			alert("邮箱不能为空");
+		} else if($("#addAdmin-password").val() === "") {
+			$(this).removeAttr("href");
+			alert("密码不能为空");
+		} else {
+			$(this).attr("href", "#modify-user-confirm");		
+		}
+	});
+
 	/*其他逻辑*/
 	$("#profile-goback").click(function() {
 		location.href="/background/accounts";
-	});
-
-	
+	});	
 })();

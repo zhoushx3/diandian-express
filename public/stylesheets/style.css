@@ -123,20 +123,11 @@ h3.projectH3 {
 }
 #search-users button {
   margin-bottom: 10px;
-  height: 32px;
-  width: 100px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
+  width: 97px;
 }
-#account-viewer button {
+#add-admin {
   margin-bottom: 20px;
   margin-left: 670px;
-  height: 32px;
-  width: 100px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
 }
 #account-viewer h3 {
   margin-bottom: -25px;
@@ -156,7 +147,7 @@ h3.projectH3 {
 #account-user hr {
   border: 1px solid #C4C400;
   width: 559px;
-  margin-top: -37px;
+  margin-top: 14px;
   margin-left: 275px;
 }
 #account-viewer a:hover {
@@ -206,6 +197,70 @@ h3.projectH3 {
 #activity_headline h2 {
   margin-bottom: 20px;
   background: #686868;
+}
+
+#addAdmin-application {
+  background-color: #FFFFFF;
+  padding: 20px 40px 40px 40px;
+  font-size: 16px;
+}
+#addAdmin-application > h1 {
+  text-align: center;
+  font-size: 26px;
+}
+#addAdmin-application fieldset {
+  margin-top: 20px;
+}
+#addAdmin-application .field {
+  padding: 5px 0;
+}
+#addAdmin-application input,
+#addAdmin-application textarea {
+  background-color: #E6E7E9;
+}
+#addAdmin-application input[type="checkbox"],
+#addAdmin-application input[type="radio"] {
+  margin: 0 5px 4px 0;
+}
+#addAdmin-application input.input-large {
+  width: 530px;
+}
+#addAdmin-application label {
+  margin: 0 15px 0 0;
+  display: inline;
+  font-size: inherit;
+}
+#addAdmin-application .field .field-name {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+#addAdmin-application input {
+  margin: 0;
+}
+#addAdmin-nickname {
+  float: right;
+  margin-top: -230px;
+}
+#addAdmin-job {
+  float: right;
+  margin-top: -190px;
+}
+#addAdmin-phone {
+  float: right;
+  margin-top: -150px;
+}
+#addAdmin-QQ {
+  float: right;
+  margin-top: -110px;
+}
+#addAdmin-weibo {
+  float: right;
+  margin-top: -70px;
+}
+#addAdmin-about {
+  float: right;
+  margin-top: -30px;
 }
 
 #album_pitures_list {
@@ -334,6 +389,11 @@ h3.projectH3 {
   max-height: 1000px;
   width: 850px;
   overflow: auto;
+}
+#background-alert-flash {
+  text-align: center;
+  width: 813px;
+  margin-left: 173px;
 }
 
 #backgroundFinace {
@@ -1659,6 +1719,45 @@ h2 {
   width: 15px;
 }
 
+#profile-application {
+  background-color: #FFFFFF;
+  padding: 20px 40px 40px 40px;
+  font-size: 16px;
+}
+#profile-application > h1 {
+  text-align: center;
+  font-size: 26px;
+}
+#profile-application fieldset {
+  margin-top: 20px;
+}
+#profile-application .field {
+  padding: 5px 0;
+}
+#profile-application input,
+#profile-application textarea {
+  background-color: #E6E7E9;
+}
+#profile-application input[type="checkbox"],
+#profile-application input[type="radio"] {
+  margin: 0 5px 4px 0;
+}
+#profile-application input.input-large {
+  width: 530px;
+}
+#profile-application label {
+  margin: 0 15px 0 0;
+  display: inline;
+  font-size: inherit;
+}
+#profile-application .field .field-name {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+#profile-application input {
+  margin: 0;
+}
 #profile-nickname {
   float: right;
   margin-top: -160px;
@@ -1679,7 +1778,12 @@ h2 {
   float: right;
 }
 #profile-submit {
-  margin-right: 20px;
+  margin-right: 10px;
+  margin-bottom: 100px;
+  float: right;
+}
+#profile-goback {
+  float: right;
 }
 #modify-user-confirm {
   padding: 10px;

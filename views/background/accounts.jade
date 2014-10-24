@@ -3,12 +3,12 @@ extends  ../background_layout
 block content 
   form#search-users(name= 'search-users' method= 'POST', action= '/background/search-users')
     input(type= 'text' name= 'words')
-    button(type= 'submit') 搜索
+    button.btn.btn-middle.btn-primary(type= 'submit') 搜索
 
   div#account-viewer
     div#account-admin
       h3 管理员
-      button 添加管理员
+      a#add-admin(href="/background/addAdmin").btn.btn-middle.btn-primary 添加管理员
       hr
       div#account-admin-list
         table(style="table-layout:fixed;text-align:center;" border="1")
@@ -30,7 +30,6 @@ block content
 
     div#account-user
       h3 普通用户
-      button 查看黑名单
       hr
       div#account-user-list
         table(style="table-layout:fixed;text-align:center;" border="1")

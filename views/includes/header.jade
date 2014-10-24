@@ -4,7 +4,7 @@
               a(href="#") #{user.username}
               a(href="/logout") 退出
         - if (user && user.role == 'user')
-              a(href="/profile") #{user.username}
+              a(href="#") #{user.username}
               a(href="/logout") 退出
         - if (!user)
               a(href="/signin") 登陆
