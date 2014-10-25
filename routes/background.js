@@ -5,6 +5,7 @@ var express = require('express'),
   fs = require('fs'),
   bodyParser = require('body-parser'),
   assert = require('assert'),
+  User = require('../collections/accounts'),
   crypto = require('crypto'),
   DOCS_PATH = 'docs/',
   VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
@@ -22,12 +23,7 @@ router.get('/', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background_layout', {
-    title: '后台',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
+  res.redirect('/background/accounts');
 });
 
 router.get('/finances', function(req, res) {
@@ -282,22 +278,6 @@ router.get('/accounts', function(req, res) {
   });
 });
 
-router.get('/passwords', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  res.render('background/passwords', {
-    title: 'passwords',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
 /**
  ** 后台 捐赠明细
  **/
@@ -1132,6 +1112,14 @@ router.post('/getFundInfo', function(req, res) {
  **  后台资助申请 否决 通过
  */
 router.get('/passFund', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/');
+  }
   var fundsID = req.query.fundsID;
   var type = req.query.type;
   var db = req.db;
@@ -1208,6 +1196,14 @@ router.post('/deleteLable', function(req, res) {
  **  后台资助申请 通过标签看表
  */
 router.get('/getFundsByLabel', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/');
+  }
   var db = req.db;
   var label = req.query.theLabel;
   db.collection('fundsApply', function(err, col) {
@@ -1218,13 +1214,9 @@ router.get('/getFundsByLabel', function(req, res) {
     });
   });
 });
-router.post('/search-users', function(req, res) {
-  res.redirect("/background/accounts");
-});
 
 router.post('/delete-user', function(req, res) {
   var username = req.param('username');
-  console.log("username " + username + " has received.");
   var db = req.db.collection('users');
   db.remove({
     username: username
@@ -1238,6 +1230,14 @@ router.post('/delete-user', function(req, res) {
 });
 
 router.get('/profile', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/');
+  }
   var editUser;
   var username = req.param('username');
   var db = req.db.collection('users');
@@ -1257,6 +1257,7 @@ router.get('/profile', function(req, res) {
   });
 });
 
+//编辑用户
 router.post('/profile', function(req, res) {
   var oriUsername = req.body.oriusername,
     username = req.body.username,
@@ -1315,6 +1316,104 @@ router.post('/profile', function(req, res) {
         }
       }
     });
+  });
+});
+
+router.get('/addAdmin', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/');
+  }
+
+  res.render('background/addAdmin', {
+    title: "添加管理员",
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+//添加管理员
+router.post('/addAdmin', function(req, res) {
+  //检查两次输入的密码是否一致
+  var md5_password = crypto.createHash('md5'),
+    password = md5_password.update(req.body.password).digest('hex');
+  var md5_password_re = crypto.createHash('md5'),
+    password_re = md5_password_re.update(req.body['password-repeat']).digest('hex');
+  if (password != password_re) {
+    req.flash('error', '两次输入的密码不一致');
+    return res.redirect('/background/addAdmin');
+  }
+
+  var username = req.body.username,
+    email = req.body.email,
+    nickname = req.body.nickname,
+    gender = req.body.gender,
+    birthday = req.body.birthday,
+    job = req.body.job,
+    phone = req.body.phone,
+    QQ = req.body.QQ,
+    weibo = req.body.weibo,
+    about = req.body.about,
+    date = new Date(),
+    month = date.getMonth() + 1;
+
+  var newUser = new User({
+    "username": username,
+    "email": email,
+    "password": password,
+    "createdAt": date.getFullYear() + '-' + month + '-' + date.getDate(),
+    "role": 'admin',
+    "profile": {
+      "nickname": nickname,
+      "gender": gender,
+      "birthday": birthday,
+      "job": job,
+      "phone": phone,
+      "QQ": QQ,
+      "weibo": weibo,
+      "photo": '/images/photo/default.jpg',
+      "about": about
+    }
+  });
+
+  User.get(newUser.username, function(err, user) {
+    if (user) {
+      req.flash('error', '该用户已存在');
+      return res.redirect('/background/addAdmin');
+    }
+
+    newUser.save(function(err, user) {
+      if (err) {
+        req.flash('error', '插入users数据库失败');
+        return res.redirect('/background/addAdmin');
+      }
+      return res.redirect('/background/accounts');
+    });
+  });
+});
+
+//搜索用户
+router.post('/search-users', function(req, res) {
+  var username = req.param('keyword');
+  var user;
+  var account_admin = [];
+  var account_user = [];
+  //从数据库获取用户
+  var db = req.db.collection('users');
+  db.findOne({
+    username: username
+  }, function(err, doc) {
+    if (err) {
+      console.log(err);
+    } else {
+      user = doc;
+      res.send(user);
+    } 
   });
 });
 

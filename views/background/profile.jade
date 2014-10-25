@@ -1,7 +1,7 @@
 extends  ../background_layout
 
 block content
-   form#volunteer-application.application(name='volunteerApplication' method='post')
+   form#profile-application.application(name='volunteerApplication' method='post')
     h1 用户信息编辑
     fieldset
       legend 个人信息
@@ -37,7 +37,7 @@ block content
       .field#profile-weibo
           span.field-name 微博：
           input(type='text', value="#{editUser.profile.weibo}", name='weibo')
-      .field
+      .field#profile-about
           span.field-name 关于自己：
           textarea(type='text', name='about',style="resize:none;") #{editUser.profile.about}
           div#extra-info(style="margin-left:80px;font-size:13px;color:red;")
@@ -54,5 +54,5 @@ block content
           button.btn.btn-large.btn-primary(data-dismiss='modal', aria-hidden='true') 不了
 
     .operation
-      a#profile-submit.btn.btn-large.btn-primary(data-toggle="modal" href='#modify-user-confirm') 提交
       a#profile-goback.btn.btn-large.btn-primary 返回
+      a#profile-submit.btn.btn-large.btn-primary(data-toggle="modal" href='#modify-user-confirm') 提交

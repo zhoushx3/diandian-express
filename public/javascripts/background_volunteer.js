@@ -9,7 +9,7 @@
 		$.post("pass_volunteer_form", {
 			IDCardNo: id
 		});
-		location.reload();
+		//location.reload();
 	}
 
 
@@ -25,7 +25,7 @@
 		$.post("delete_volunteer_form", {
 			IDCardNo: preDeleteVolunteer
 		});
-		location.reload();
+		//location.reload();
 	});
 
 })();
