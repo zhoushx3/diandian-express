@@ -1203,9 +1203,6 @@ router.get('/getFundsByLabel', function(req, res) {
     });
   });
 });
-router.post('/search-users', function(req, res) {
-  res.redirect("/background/accounts");
-});
 
 router.post('/delete-user', function(req, res) {
   var username = req.param('username');
@@ -1336,7 +1333,7 @@ router.post('/addAdmin', function(req, res) {
     password = md5_password.update(req.body.password).digest('hex');
   var md5_password_re = crypto.createHash('md5'),
     password_re = md5_password_re.update(req.body['password-repeat']).digest('hex');
-  if(password != password_re) {
+  if (password != password_re) {
     req.flash('error', '两次输入的密码不一致');
     return res.redirect('/background/addAdmin');
   }
@@ -1386,6 +1383,26 @@ router.post('/addAdmin', function(req, res) {
       }
       return res.redirect('/background/accounts');
     });
+  });
+});
+
+//搜索用户
+router.post('/search-users', function(req, res) {
+  var username = req.param('keyword');
+  var user;
+  var account_admin = [];
+  var account_user = [];
+  //从数据库获取用户
+  var db = req.db.collection('users');
+  db.findOne({
+    username: username
+  }, function(err, doc) {
+    if (err) {
+      console.log(err);
+    } else {
+      user = doc;
+      res.send(user);
+    } 
   });
 });
 
