@@ -7,9 +7,11 @@ var express = require('express'),
   assert = require('assert'),
   crypto = require('crypto'),
   DOCS_PATH = 'docs/',
-  VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
+  PICTURES_NEWS_PATH = 'public/images/picture_news/',
+//  VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
   MAXFILESZIZE = 4 * 1024 * 1024,
-  MAXHEADIMGSZIZE = 2 * 1024 * 1024;
+  MAX_PICTURES_NEWS_SIZE = 15 * 1024 * 1024;
+//  MAXHEADIMGSZIZE = 2 * 1024 * 1024;
 
 
 /* GET About page. */
@@ -153,7 +155,6 @@ router.post("/upload_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
   var volunteerApply = volunteer_apply(req.body);
   // insert volunteerApply
-  console.log(volunteerApply);
   db.insert(volunteerApply, function(err, item) {
     assert.equal(null, err);
   });
@@ -163,7 +164,6 @@ router.post("/upload_volunteer_form", function(req, res) {
 // pass volunteer form
 router.post("/pass_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
-  console.log(req.body);
   db.update({
     IDCardNo: req.body.IDCardNo
   }, {
@@ -171,19 +171,16 @@ router.post("/pass_volunteer_form", function(req, res) {
       "isPassed": true
     }
   }, function(err, item) {
-    res.location("volunteers_apply");
+    res.redirect('volunteers_apply');
   });
 });
 
 router.post("/delete_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
-  console.log(req.body);
-  db.remove({
+  db.findAndRemove({
     IDCardNo: req.body.IDCardNo
-  }, {
-    w: 1
   }, function(err, item) {
-    res.redirect("/");
+    res.redirect('volunteers_apply');
   });
 });
 
@@ -194,7 +191,7 @@ router.get('/volunteers_apply', function(req, res) {
   }
   if (req.session.user.role != 'admin') {
     req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
+    return res.redirect('/');
   }
   var db = req.db.collection('volunteers_apply');
   db.find().toArray(function(err, docs) {
@@ -208,7 +205,6 @@ router.get('/volunteers_apply', function(req, res) {
         volunteersApply.push(docs[i]);
       }
     }
-
     res.render('background/volunteers_apply', {
       title: 'volunteers_apply ',
       volunteersApply: volunteersApply,
@@ -219,7 +215,7 @@ router.get('/volunteers_apply', function(req, res) {
     });
   });
 });
-
+// 图片新闻 部分
 router.get('/news', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -229,14 +225,87 @@ router.get('/news', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background/news', {
-    title: 'news',
+  var db = req.db.collection('pictures');
+  db.find().toArray(function(err, docs){
+    var data = docs;
+    res.render('background/news', {
+      title: 'news',
+      pictureNews: data,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
+router.get('/news-edit', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  res.render('background/news-edit', {
+    title: 'news-edit',
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
 });
 
+router.post('/upload_picture_news', function(req, res) {
+  var db = req.db.collection('pictures');
+  // using formidable
+  var form = new formidable.IncomingForm();
+  form.uploadDir = PICTURES_NEWS_PATH; // set upload dir
+  form.keepExtensions = true; // 保留后缀
+  form.maxFieldSize = MAXFILESZIZE; // file size
+  form.parse(req, function(err, fields, files) {
+    if (err) {
+      // expection handling
+      res.locals.error = err;
+      console.log(err);
+      return;
+    }
+    var newPictureNews = newPicture_news(fields, files);
+    db.findOne(
+      {src: '/images/pircture_news' + files.newsImage.name},
+      function(err, docs) {
+        if (docs) {
+          res.redirect('news');
+        } else {
+          db.insert(newPictureNews, function(err, item) {
+            assert.equal(null, err);
+            console.log(item);
+            // 重命名 文件
+            fs.renameSync(files.newsImage.path,  PICTURES_NEWS_PATH + files.newsImage.name);
+            res.redirect('news');
+          });
+        }
+      });
+  });
+
+
+  function newPicture_news(fields,files) {
+    var date = new Date();
+    var day = date.getDate(),
+    month = date.getMonth() + 1,
+    year = date.getFullYear();
+    return {
+      createdAt: (year + "/" + month + "/" + day),
+      createdBy: fields.newsCreator,
+      src: '/images/picture_news/' + files.newsImage.name,
+      title: fields.newsTitle,
+      note: fields.newNote
+    };
+  }
+
+});
+
+
+//
 router.get('/accounts', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
