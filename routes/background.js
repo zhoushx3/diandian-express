@@ -155,10 +155,22 @@ router.post("/upload_volunteer_form", function(req, res) {
   var db = req.db.collection('volunteers_apply');
   var volunteerApply = volunteer_apply(req.body);
   // insert volunteerApply
-  db.insert(volunteerApply, function(err, item) {
-    assert.equal(null, err);
+  db.find({IDCardNo: volunteerApply.IDCardNo}).toArray(function(err, docs) {
+    if(err) {
+      console.log(err);
+    } else {
+        // 完成不可重复申请 未做重复申请提醒
+        if(docs.length == 0) {
+         db.insert(volunteerApply, function(err, item) {
+           assert.equal(null, err);
+          });
+         res.redirect("/volunteer/apply");
+        } else {
+          res.redirect("/volunteer/apply");
+        }
+      }
   });
-  res.redirect("/volunteer/apply");
+
 });
 
 // pass volunteer form
