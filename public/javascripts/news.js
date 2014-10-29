@@ -19,13 +19,16 @@
 
     $('.right').on('click', function(){
       var container = $('#pictures .picture-list-inner'),
+          imgsScroll = $("#pictures .picture-list-inner img").length,
           now = parseInt(container.css('margin-left'));
-      if (-now + 416 * 2 >= parseInt(container.css('width')))
+      if (-now + 516 >= imgsScroll * 101)
           $('#pictures .right').hide();
-      container.animate({
+      else {
+        container.animate({
           marginLeft: now - 416 + 'px'
-      }, 'slow');
-      $('#pictures .left').show();
+        }, 'slow');
+        $('#pictures .left').show();
+      }
     });
   }
   String.prototype.startWith = function(compareStr){

@@ -326,8 +326,14 @@ h3.projectH3 {
   bottom: 85px;
   left: 385px;
 }
+#backgroundNav {
+  height: 100%;
+}
 #backgroundNav li {
   background-color: #08FC8C;
+}
+#backgroundNav .down-bottom {
+  height: 135px;
 }
 #background-content {
   float: right;
@@ -691,6 +697,60 @@ input.type {
   text-align: left;
 }
 
+#dynamic-news {
+  margin-left: 200px;
+  padding: 10px;
+}
+#add-news {
+  margin-top: -10px;
+  margin-bottom: 35px;
+  margin-left: 677px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#dynamic-news .news-title {
+  width: 310px;
+  font-size: 20px;
+  float: left;
+}
+#dynamic-news .news-date {
+  width: 380px;
+  float: left;
+}
+#dynamic-news a {
+  margin-left: 5px;
+  color: #808000;
+  text-decoration: underline;
+}
+
+#add-picture-news {
+  margin-top: -10px;
+  margin-bottom: 35px;
+  margin-left: 677px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+.picture-news-edit {
+  float: right;
+}
+.picture-news-delete {
+  float: right;
+}
+
+#news-editor #upload-image {
+  width: inherit;
+}
+#news-editor #picture_news_submit {
+  width: inherit;
+  float: right;
+}
+
 #background_share {
   width: 83%;
   float: right;
@@ -846,35 +906,6 @@ input.type {
 #monthly-reports.finance #records li,
 #projects-expenses.finance #records li {
   display: none;
-}
-
-#dynamic-news {
-  margin-left: 200px;
-  padding: 10px;
-}
-#add-news {
-  margin-top: -10px;
-  margin-bottom: 35px;
-  margin-left: 677px;
-  width: 100px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-#dynamic-news .news-title {
-  width: 310px;
-  font-size: 20px;
-  float: left;
-}
-#dynamic-news .news-date {
-  width: 380px;
-  float: left;
-}
-#dynamic-news a {
-  margin-left: 5px;
-  color: #808000;
-  text-decoration: underline;
 }
 
 #finance {

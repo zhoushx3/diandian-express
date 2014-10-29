@@ -8,8 +8,9 @@
 	function passVolunteer(id){
 		$.post("pass_volunteer_form", {
 			IDCardNo: id
+		}, function(){
+			location.reload();
 		});
-		location.reload();
 	}
 
 
@@ -24,8 +25,9 @@
 	$(".volunteer_delete_confirm_button").click(function(){
 		$.post("delete_volunteer_form", {
 			IDCardNo: preDeleteVolunteer
+		}, function(){
+			location.reload();
 		});
-		location.reload();
 	});
 
 })();
