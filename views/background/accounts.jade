@@ -1,54 +1,57 @@
 extends  ../background_layout
 
 block content 
-  form#search-users(name= 'search-users' method= 'POST', action= '/background/search-users')
-    input(type= 'text' name= 'words')
-    button(type= 'submit') 搜索
+  div#search-users
+    input#search-keyword(type= 'text' name= 'keyword' placeholder="输入关键字")
+    button#search-user.btn.btn-middle.btn-primary() 搜索
 
   div#account-viewer
     div#account-admin
       h3 管理员
-      button 添加管理员
+      a#add-admin(href="/background/addAdmin").btn.btn-middle.btn-primary 添加管理员
       hr
       div#account-admin-list
         table(style="table-layout:fixed;text-align:center;" border="1")
-          tr(style="font-weight: bold;")
-            td(width="100px") 用户名
-            td(width="200px") 邮箱
-            td(width="50px") 性别
-            td(width="100px") QQ
-            td(width="100px") 微博
-            td(width="100px") 操作
-          for admin in account_admin
-            tr
-              td.account-username(width="100px") #{admin.username}
-              td(width="200px") #{admin.email}
-              td(width="50px") #{admin.profile.gender}
-              td(width="100px") #{admin.profile.QQ}
-              td(width="100px") #{admin.profile.weibo}
-              td(width="100px") <a>编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
+          thead
+            tr(style="font-weight: bold;")
+              td(width="100px") 用户名
+              td(width="200px") 邮箱
+              td(width="50px") 性别
+              td(width="100px") QQ
+              td(width="100px") 微博
+              td(width="100px") 操作
+          tbody
+            for admin in account_admin
+              tr
+                td.account-username(width="100px") #{admin.username}
+                td(width="200px") #{admin.email}
+                td(width="50px") #{admin.profile.gender}
+                td(width="100px") #{admin.profile.QQ}
+                td(width="100px") #{admin.profile.weibo}
+                td(width="100px") <a class="editUser" username="#{admin.username}">编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
 
     div#account-user
       h3 普通用户
-      button 查看黑名单
       hr
       div#account-user-list
         table(style="table-layout:fixed;text-align:center;" border="1")
-          tr(style="font-weight: bold;")
-            td(width="100px") 用户名
-            td(width="200px") 邮箱
-            td(width="50px") 性别
-            td(width="100px") QQ
-            td(width="100px") 微博
-            td(width="100px") 操作
-          for user in account_user
-            tr
-              td.account-username(width="100px") #{user.username}
-              td(width="200px") #{user.email}
-              td(width="50px") #{user.profile.gender}
-              td(width="100px") #{user.profile.QQ}
-              td(width="100px") #{user.profile.weibo}
-              td(width="100px") <a>编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
+          thead
+            tr(style="font-weight: bold;")
+              td(width="100px") 用户名
+              td(width="200px") 邮箱
+              td(width="50px") 性别
+              td(width="100px") QQ
+              td(width="100px") 微博
+              td(width="100px") 操作
+          tbody
+            for user in account_user
+              tr
+                td.account-username(width="100px") #{user.username}
+                td(width="200px") #{user.email}
+                td(width="50px") #{user.profile.gender}
+                td(width="100px") #{user.profile.QQ}
+                td(width="100px") #{user.profile.weibo}
+                td(width="100px") <a class="editUser" username="#{user.username}">编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
 
   div#delete-user-confirm.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
     button.close(type='button', data-dismiss='modal', aria-hidden='true') X
@@ -57,5 +60,5 @@ block content
     div.modal-body
       h4 确定要删除该用户吗？
     div.modal-footer
-      button#deleteUser(data-dismiss='modal', aria-hidden='true') 确定
-      button(data-dismiss='modal', aria-hidden='true') 取消
+      button#deleteUser.btn.btn-large.btn-primary(data-dismiss='modal', aria-hidden='true') 是的
+      button.btn.btn-large.btn-primary(data-dismiss='modal', aria-hidden='true') 不了

@@ -11,6 +11,11 @@ html
 
     #background
       include includes/background_navigator
+      div#background-alert-flash
+        - if (success)
+          div.alert-success= success
+        - if (error)
+          div.alert-error= error
       block content
       .clear
 

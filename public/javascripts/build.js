@@ -25,6 +25,9 @@
     }
 })();
 ;(function() {
+	/*删除用户逻辑*/
+	var account_admin = [];
+	var account_user = [];
 	var username;
 	$(".deleteUser").click(function() {
 		username = $(this).parent().parent().find(".account-username")[0].innerText;
@@ -39,20 +42,88 @@
 				username: username
 			}
 		}).done(function() {
-			console.log("username " + username +" has been post to the server.");
-			$("#account-user-list table tr").each(function(){
-				if($(this).children(":first").text() == username) {
+			console.log("username " + username + " has been post to the server.");
+			$("#account-user-list table tr").each(function() {
+				if ($(this).children(":first").text() == username) {
 					$(this).empty();
 				}
 			});
 
-			$("#account-admin-list table tr").each(function(){
-				if($(this).children(":first").text() == username) {
+			$("#account-admin-list table tr").each(function() {
+				if ($(this).children(":first").text() == username) {
 					$(this).empty();
 				}
 			});
 		});
 	});
+
+	/*编辑用户逻辑*/
+	$(".editUser").each(function() {
+		$(this).attr("href", "/background/profile?username=" + $(this).attr("username"));
+	});
+
+	/*用户信息填写逻辑*/
+	$("#profile-submit").click(function(event) {
+		if ($("#profile-username").val() === "" || $("#addAdmin-username").val() === "") {
+			$(this).removeAttr("href");
+			alert("用户名不能为空");
+		} else if ($("#profile-email").val() === "" || $("#addAdmin-email").val() === "") {
+			$(this).removeAttr("href");
+			alert("邮箱不能为空");
+		} else if ($("#addAdmin-password").val() === "") {
+			$(this).removeAttr("href");
+			alert("密码不能为空");
+		} else {
+			$(this).attr("href", "#modify-user-confirm");
+		}
+	});
+
+	/*搜索用户逻辑*/
+	$("#search-user").click(function() {
+		if ($("#search-keyword").val() === "") {
+			alert("关键字不能为空");
+			return;
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/background/search-users",
+				async: false,
+				data: {
+					keyword: $("#search-keyword").val()
+				}
+			}).success(function(msg) {
+				//如果是管理员
+				if (msg.role == 'admin') {
+					$("#account-user-list table tbody").empty();
+					$("#account-admin-list table tbody").empty();
+					appendMsg("#account-admin-list table tbody",msg);
+				} else if (msg.role == 'user') { //如果是普通用户
+					$("#account-admin-list table tbody").empty();
+					$("#account-user-list table tbody").empty();
+					appendMsg("#account-user-list table tbody",msg);
+				} else { //如果搜索不到该用户
+					alert("找不到该用户");
+				}
+			});
+		}
+	});
+
+	/*其他逻辑*/
+	$("#profile-goback").click(function() {
+		location.href = "/background/accounts";
+	});
+
+	function appendMsg(id, msg) {
+		var str = "<tr><td>" + msg.username + "</td>"+
+				  "<td>" + msg.email + "</td>" + 
+				  "<td>" + msg.profile.gender + "</td>" + 
+				  "<td>" + msg.profile.QQ + "</td>" +
+				  "<td>" + msg.profile.weibo + "</td>" + 
+				  "<td><a class='editUser' href='/background/profile?username=" + 
+				  msg.username + "'>编辑</a>  <a class='deleteUser' data-toggle='modal' href='#delete-user-confirm'>删除</a></td></tr>";
+
+		$(id).append(str);
+	}
 })();;(function() {
 	if (location.pathname == '/news/activity') {
 		$('li').click(function( event ) {
@@ -486,7 +557,132 @@
 		}
 	});
 
-})();;(function() {
+})();;(function() {    
+	if (location.pathname === "/background/funds_apply") {
+		var fundsID;
+		$(document).delegate('a.view_fund_apply', 'click', function() {
+			fundsID = $(this).attr('name');
+			$.ajax({
+				type: 'post',
+				url: '/background/getFundInfo',
+				data: {fundsID: fundsID},
+				success: function(data) {
+					if (data) {
+						var count = 0;
+						for (var i in data) {
+							if (count !== 20)
+								$('#fund .modal-body span').eq(count++).text(data[i]);
+						}
+						$('#labels').children().remove();
+						$('.labelList').val('');
+						for (var j = 0; j < data.label.length; ++j) {
+							$('#labels').append('<button class="label btn">' + data.label[j] + '</button>');
+						}
+					} else {
+						window.alert('retrieve failed');
+					}
+				}
+			});
+		});
+
+		// 增标签
+		$('input.edit').click(function() {
+			var labels = $(this).prev().val().split(' ');
+			var label = [];
+			for (var k = 0; k < labels.length; ++k) {
+				if (labels[k] !== '')
+					label.push(labels[k]);
+			}
+			if (label.length !== 0)
+				$.ajax({
+					type: 'post',
+					url: '/background/modifyLabels',
+					data: {label: label, fundsID: fundsID},
+					success: function(data) {
+						location.reload();
+					},
+				});
+			else
+				location.reload();
+		});
+
+		// 删标签
+		$(document).delegate('button.label.btn', 'click', function() {
+			var theLabel = $(this).text();
+			$(this).remove();
+			window.alert(theLabel);
+			$.ajax({
+				type: 'post',
+				url: '/background/deleteLable',
+				data: {fundsID: fundsID, theLabel: theLabel},
+				success: function(data) {
+					console.log(data);
+				}
+			});
+		});
+		// 标记通过	
+		$('a.pass_uncheckedFund_apply').click(function(event) {
+			$('a.fund_pass_confirm_button').click(function() {
+				var fundsID = $(event.target).attr('name');
+				console.log(fundsID);
+				$.ajax({
+					type: 'get',
+					url: '/background/passFund',
+					data: {fundsID: fundsID, type: 'Pass'},
+					success: function(data) {
+						console.log(data);		
+						location.reload();
+					}
+				});
+			});
+		});
+		// 标记不通过
+		$('a.dispass_Fund_apply').click(function(event) {
+			$('a.fund_delete_confirm_button').click(function() {
+				var fundsID = $(event.target).attr('name');
+				console.log(fundsID);
+				$.ajax({
+					type: 'get',
+					url: '/background/passFund',
+					data: {fundsID: fundsID, type: 'unPass'},
+					success: function(data) {
+						console.log(data);		
+						location.reload();
+					}
+				});
+			});
+		});
+
+		$('select').change(function(event) {
+			callback(event);
+		});
+
+		var callback = function(event) {
+			$('#funds_byLables').children('a').remove();
+			var label = $(event.target).children('option:selected').val();
+			$.ajax({
+				type: 'get',
+				url: '/background/getFundsByLabel',
+				data: {theLabel: label},
+				success: function(data) {
+					if (data) {
+						$('#funds_byLables').children().remove();
+						for (var i  = 0; i < data.length; ++i)
+							$("<a class='view_fund_apply', role='button', data-toggle='modal', href='#fund'>"  + data[i].name +  '</a>').appendTo('#funds_byLables').attr('name', data[i]._id);
+					}
+				}
+			});
+		};
+	}
+// $(a).click(function() {
+// 	$(b).click(function() {
+// 		.....因为两次点击a(而且是不一样的a),之后再点击b，b响应了2次，而且用到a的event.target也不一样的;
+//			.....是不是事件会累计绑定
+// 	});
+// });
+})();
+
+;(function() {
 	if (location.pathname == '/background/shares' || location.pathname.indexOf( "/background/share_period") > -1) {
 		$('#share_add').click(function() {
 			$('#add_choose').addClass('active');
@@ -516,7 +712,7 @@
 		$.post("pass_volunteer_form", {
 			IDCardNo: id
 		});
-		location.reload();
+		//location.reload();
 	}
 
 
@@ -532,7 +728,7 @@
 		$.post("delete_volunteer_form", {
 			IDCardNo: preDeleteVolunteer
 		});
-		location.reload();
+		//location.reload();
 	});
 
 })();;(function(){
