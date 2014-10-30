@@ -23,11 +23,7 @@ router.get('/', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-<<<<<<< HEAD
-  res.redirect('/background/donations');
-=======
   res.redirect('/background/accounts');
->>>>>>> 76c83a6509e87db981e8e470097c366a2b7cb63b
 });
 
 router.get('/finances', function(req, res) {
