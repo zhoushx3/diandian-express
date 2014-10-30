@@ -21,12 +21,7 @@ router.get('/', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background_layout', {
-    title: '后台',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
+  res.redirect('/background/donations');
 });
 
 router.get('/finances', function(req, res) {
@@ -475,11 +470,19 @@ router.get('/foreshows', function(req, res) {
     req.flash('error', '请用管理员账号登陆后台');
     return res.redirect('/ ');
   }
-  res.render('background/foreshows', {
-    title: 'foreshows',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  var db = req.db;
+  var activity = [];
+  db.collection('activity', function(err, col) {
+    col.find({}).toArray(function(err, docs) {
+      activity = docs;
+      res.render('background/foreshows', { // 放在外边里面不一样，异步的关系？
+        title: 'foreshows',
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString(),
+        activity: activity,
+      });
+    });
   });
 });
 
@@ -497,6 +500,35 @@ router.get('/foreshows-edit', function(req, res) {
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
+  });
+});
+/*
+** 后台活动预告 修改截止时间  
+*/
+router.get('/modifyDestTime', function(req, res) {
+  var db = req.db;
+  var year = req.query.year;
+  var month = req.query.month;
+  var day = req.query.day;
+  var id = req.query.id;
+  var ObjectID = require('mongodb').ObjectID;
+  db.collection('activity', function(err, col) {
+    col.update({_id: ObjectID(id)}, {$set : {'dest_time': new Date(year, month-1, day)}}, function(err, result) {
+      res.send('ok');
+    });
+  });
+});
+/*
+** 后台活动预告 删除活动预告  
+*/
+router.post('/deleteForeshow', function(req, res) {
+  var db = req.db;
+  var id = req.body.id;
+  var ObjectID = require('mongodb').ObjectID;
+  db.collection('activity', function(err, col) {
+    col.remove({_id: ObjectID(id)}, function(err, result) {
+      res.send("ok");
+    });
   });
 });
 
