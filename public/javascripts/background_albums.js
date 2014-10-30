@@ -9,8 +9,6 @@
 				$('.hiddenPictureNames').attr('value', $('.hiddenPictureNames').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).attr('name'));
 			}
 		});
-		// jquery UI --- sortable 
-				// $( "#album_pitures_list" ).sortable();
 		// ! .live()	.delegate() ...http://api.jquery.com/live/ to bind events to any matched elements even prepend or  append 
 		// $(img).hover used to show 2 button.
 				$(document).delegate(".ui-state-default img","mouseover",  function(event) {
