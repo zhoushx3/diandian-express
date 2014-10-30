@@ -6,13 +6,19 @@ block content
 	-var month = now.getMonth()+1
 	-var day = now.getDate()
 
+	div#warning-every-fault.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-body-body
+			h3(style="border-bottom:1px solid #fff") warning
+			h3(style="text-align:center")请将空格补齐
+
 	div#unlimited-mul.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
 		div.modal-header-header
 			h3 非限定性捐款
 			p 时间: #{year}年#{month}月#{day}日
 		div.modal-body-body
-			p 请将捐款人/单位及其捐款金额(元)用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
+			p.remiding 请将捐款人/单位及其捐款金额(元)用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
 			p 陈小姐 100
 			p 李先生 1200
 			textarea
@@ -26,7 +32,7 @@ block content
 			h3 限定性捐款
 			p 时间: #{year}年#{month}月#{day}日
 		div.modal-body-body
-			p 请将捐款人/单位及其捐款金额(元)/目的 用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
+			p.remiding 请将捐款人/单位及其捐款金额(元)/目的 用<span style="color: orange">空格键</span>隔开，其他捐款用<span style="color: orange">回车键”↵“</span>添加。如：
 			p 陈小姐 100 建立图书馆
 			p 李先生 1200 建造公教楼
 			textarea
@@ -127,8 +133,7 @@ block content
 				span <input class="donate_day" placeholder='#{day}'></input> 日 
 				span <input class="donator" placeholder="捐款人"></input>
 				span  捐赠 <input class="material" placeholder="请输入所捐赠的物资"></input>
-				p 用于<input class="use"></input>。
-				p#remarks *物资用途为选填项
+				p 用于<input class="use"></input>
 
 			div#material-donations-btn.donations-btn
 				button.cancel="清空"
