@@ -4,6 +4,5 @@ block content
 	ul#shareList
 		each share_item in share
 			li
-				h3
-				a.generalA(href='/volunteer/' + share_item._id)=share_item.headline
-				p=formatDate(share_item.date) + "  from  " + share_item.author
+				a.generalA(href='/volunteer/' + share_item._id)=share_item.headline  
+				p=formatDate(share_item.date) + "  from  " + share_item.author 

@@ -1,12 +1,20 @@
 extends  ../layout
 
 block content
-  #activity_headline
-    h2 活动预告
-    ul
-      each item in items
-        li=item.headline
+	#activity_headline
+		h2 活动预告
+		ul
+			each item in items
+				li.foreshow=item.headline
 
-  include activity_content
-  +activity_content(items)
-
+	#activity_content
+		each item in items
+			#contents
+				h2=formatDate(item.dest_time) + '  ' + item.logo
+				p="时间 " + formatDate(item.create_time) + '  作者 ' + item.author + ' 来源 ' + item.source
+				p="内容摘要: " + item.summary
+				p="活动目的: " + item.destination
+				p="活动内容: " + item.contents
+				p="主办单位: " + item.host
+				p="承办单位: " + item.guest
+				p="协办单位: " + item.help

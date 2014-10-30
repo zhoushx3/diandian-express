@@ -1,5 +1,5 @@
 (function(){
-	function	isEverythingFilled() {
+	function isEverythingFilled() {
 		var input = $("[value='']");
 		for (var i = 0; i < input.length; i++) {
 			if (input.val() === '') {

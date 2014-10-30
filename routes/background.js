@@ -154,7 +154,7 @@ router.post("/upload_volunteer_form", function(req, res) {
       console.log(err);
     } else {
         // 完成不可重复申请 未做重复申请提醒
-        if(docs.length == 0) {
+        if(docs.length === 0) {
          db.insert(volunteerApply, function(err, item) {
            assert.equal(null, err);
           });
