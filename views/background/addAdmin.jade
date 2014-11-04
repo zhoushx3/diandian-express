@@ -1,0 +1,66 @@
+extends  ../background_layout
+
+block content
+   form#addAdmin-application.application(name='volunteerApplication' method='post')
+    h1 添加管理员
+    fieldset
+      legend 个人信息
+      .field
+        label
+          span.field-name *用户名：
+          input#addAdmin-username(type='text', name='username', maxlength='20', datatype='s1-20')
+      .field
+          span.field-name *邮箱：
+          input#addAdmin-email(type='text', name='email')
+      .field
+          span.field-name *密码：
+          input#addAdmin-password(type='password', name='password')
+      .field
+          span.field-name 重复密码：
+          input#addAdmin-password-repeat(type='password', name='password-repeat')
+      .field
+          span.field-name 性别：
+          label
+          input(type='radio', name='gender', value='male', checked='')
+          | 男
+          label
+          input(type='radio', name='gender', value='female')
+          | 女
+      .field
+        span.field-name 出生年月：
+        input(type='text', name='birthday', placeholder='格式为XX-XX-XX')
+      .field#addAdmin-nickname
+          span.field-name 昵称：
+          input(type='text', name='nickname')
+      .field#addAdmin-job
+          span.field-name 职业：
+          input(type='text', name='job')
+      .field#addAdmin-phone
+          span.field-name 电话：
+          input(type='text', name='phone')
+      .field#addAdmin-QQ
+          span.field-name QQ：
+          input(type='text', name='QQ')
+      .field#addAdmin-weibo
+          span.field-name 微博：
+          input(type='text', name='weibo')
+      .field#addAdmin-about
+          span.field-name 关于自己：
+          textarea(type='text', name='about',style="resize:none;")
+          div#extra-info(style="margin-left:80px;font-size:13px;color:red;")
+            注: *项为必填项
+
+      div#modify-user-confirm.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+        div.modal-header 
+          h3 添加管理员
+        div.modal-body
+          h4 确定要添加此管理员吗？
+        div.modal-footer
+          button#modifyUser.btn.btn-large.btn-primary(type="submit") 是的
+          button.btn.btn-large.btn-primary(data-dismiss='modal', aria-hidden='true') 不了
+
+    .operation
+      a#profile-goback.btn.btn-large.btn-primary 返回
+      a#profile-submit.btn.btn-large.btn-primary(data-toggle="modal" href='#modify-user-confirm') 提交
+      

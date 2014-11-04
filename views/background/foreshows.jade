@@ -1,72 +1,57 @@
 extends  ../background_layout
 
 block content
+	div#deleteForeshow.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		.modal-body
+			p 确定要删除该活动预告吗？
+		.modal-footer
+			button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+			button.deleteForeshow.btn(data-dismiss='modal', aria-hidden='true') 是
+
+	div#modifySuccess.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		.modal-body
+			p 保存成功
+
 	div#foreshows-view
 		a(href='./foreshows-edit')
 			button#add-foreshows 添加活动预告
 
-		div.foreshow-item
-			hr
-			span.foreshow-title 英格兰公投
+		each item in activity
+			div.foreshow-item
+				input.hide(type="text", value=item._id)
+				hr
+				span.foreshow-title=item.headline
 
-			span.foreshow-href
-				a(href='#') 删除
-				a(href='./foreshows-edit') 编辑
+				span.foreshow-href
+					a.delete(data-toggle="modal" href='#deleteForeshow') 删除
+					a(href='./foreshows-edit') 编辑
 
-			div.foreshow-start-date
-				span 发布时间: 
-				span.foreshow-start-year 2014 <span>年 </span>
-				span.foreshow-start-month 9 <span>月 </span>
-				span.foreshow-start-day 22 <span>日</span>
+				div.foreshow-start-date
+					span='发布时间:' + formatDate(item.create_time) 
 
-			div.foreshow-end-date
-				span 截止时间: 
-				span.foreshow-end-year 2014 <span>年 </span>
-				span.foreshow-end-month 9 <span>月 </span>
-				span.foreshow-end-day 23 <span>日</span>
-				button.foreshow-end-date-edit 修改
-			hr
-
-		div.foreshow-item
-			hr
-			span.foreshow-title 王菲谢霆锋复合
-
-			span.foreshow-href
-				a(href='#') 删除
-				a(href='./foreshows-edit') 编辑
-
-			div.foreshow-start-date
-				span 发布时间: 
-				span.foreshow-start-year 2014 <span>年 </span>
-				span.foreshow-start-month 9 <span>月 </span>
-				span.foreshow-start-day 22 <span>日</span>
-
-			div.foreshow-end-date
-				span 截止时间: 
-				span.foreshow-end-year 2014 <span>年 </span>
-				span.foreshow-end-month 9 <span>月 </span>
-				span.foreshow-end-day 23 <span>日</span>
-				button.foreshow-end-date-edit 修改
-			hr
-
-		div.foreshow-item
-			hr
-			span.foreshow-title 李娜退役
-
-			span.foreshow-href
-				a(href='#') 删除
-				a(href='./foreshows-edit') 编辑
-
-			div.foreshow-start-date
-				span 发布时间: 
-				span.foreshow-start-year 2014 <span>年 </span>
-				span.foreshow-start-month 9 <span>月 </span>
-				span.foreshow-start-day 22 <span>日</span>
-
-			div.foreshow-end-date
-				span 截止时间: 
-				span.foreshow-end-year 2014 <span>年 </span>
-				span.foreshow-end-month 9 <span>月 </span>
-				span.foreshow-end-day 23 <span>日</span>
-				button.foreshow-end-date-edit 修改
-			hr
+				div.foreshow-end-date
+					span 截止时间: 
+						<input type="text", value=#{item.dest_time.getFullYear()}></input>年
+						<input type="text", value=#{item.dest_time.getMonth()+1}></input>月
+						<input type="text", value=#{item.dest_time.getDate()}></input>日
+					button.foreshow-end-date-edit(data-toggle="modal" href='#modifySuccess') 保存修改
+				hr
+//
+	{
+		headline: '雷锋预告',
+		dest_time: new Date(2014, 3, 10),
+		create_time: new Date(2014, 2, 11),
+		logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
+		author: '阿平 ',
+		source: '点点公益',
+		summary: '这是在逗我',
+		destination: '目标是逗你',
+		contents: '期西方文明的伟大人物',
+		host: '阿里巴巴',
+		guest: '腾讯',
+		help: '百度'
+	}

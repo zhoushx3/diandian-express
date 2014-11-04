@@ -4,9 +4,9 @@
 		$('.send').click(function() {
 				var texts = [];
 				var $input = $(this).parent().parent().find('input');
-				for (var i = 0; i < $input.length; ++i) {
+				for (var i = 1; i < $input.length; ++i) {
 					if ($input.eq(i).val() === '') {
-						window.alert('请填完整所有输入框');
+						$('#warning-every-fault').modal();
 						return;						
 					}
 					texts.push($input.eq(i).val());
@@ -17,7 +17,9 @@
 					data: {texts: texts},
 					success: function(data) {
 						if(data)
-							window.alert('success');
+							$('#operation-success').modal();
+						else
+							$('#operation-fail').modal();
 					}
 				});
 		});
@@ -86,7 +88,7 @@
 					else ;
 				}
 				if (flag === 1) {
-					window.alert('请不要有多余空行\n捐款者与捐款金额用空格键隔开');
+					$(this).parent().prev().find('.remiding').css('color', 'red');
 					return;
 				}
 			}
@@ -99,9 +101,9 @@
 				},
 				success: function(data) {
 					if (data)
-						window.alert(data);
+						$('#operation-success').modal();
 					else
-						window.alert('failed');
+						$('#operation-fail').modal();
 				}
 			});
 		});
@@ -144,9 +146,9 @@
 				},
 				success: function(data) {
 					if (data)
-						window.alert(data);
+						$('#operation-success').modal();
 					else
-						window.alert('failed');
+						$('#operation-fail').modal();
 				}
 			});
 		});

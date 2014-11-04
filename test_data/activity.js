@@ -6,8 +6,8 @@ exports.insert = function(db, callback){
     col.insert([
       {
         headline: '雷锋预告',
-        dest_time: '2014.03.16',
-        create_time: '2014/03.11',
+        dest_time: new Date(2014, 3, 10),
+        create_time: new Date(2014, 2, 11),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
         source: '点点公益',
@@ -21,8 +21,8 @@ exports.insert = function(db, callback){
 
       {
         headline :'快乐游园',
-        dest_time: '2014.03.18',
-        create_time: '2014/03.12',
+        dest_time: new Date(2014, 4, 2),
+        create_time: new Date(2014, 3, 2),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
         source: '点点公益',
@@ -36,8 +36,8 @@ exports.insert = function(db, callback){
 
       {
         headline: '公益课堂',
-        dest_time: '2014.03.20',
-        create_time: '2014/03.13',
+        dest_time: new Date(2014, 1, 2),
+        create_time: new Date(2014, 0, 2),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
         source: '点点公益',

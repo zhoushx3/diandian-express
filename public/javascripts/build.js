@@ -26,6 +26,8 @@
 })();
 ;(function() {
 	/*删除用户逻辑*/
+	var account_admin = [];
+	var account_user = [];
 	var username;
 	$(".deleteUser").click(function() {
 		username = $(this).parent().parent().find(".account-username")[0].innerText;
@@ -60,17 +62,79 @@
 		$(this).attr("href", "/background/profile?username=" + $(this).attr("username"));
 	});
 
-	/*其他逻辑*/
-	$("#profile-goback").click(function() {
-		location.href="/background/accounts";
+	/*用户信息填写逻辑*/
+	$("#profile-submit").click(function(event) {
+		if ($("#profile-username").val() === "" || $("#addAdmin-username").val() === "") {
+			$(this).removeAttr("href");
+			alert("用户名不能为空");
+		} else if ($("#profile-email").val() === "" || $("#addAdmin-email").val() === "") {
+			$(this).removeAttr("href");
+			alert("邮箱不能为空");
+		} else if ($("#addAdmin-password").val() === "") {
+			$(this).removeAttr("href");
+			alert("密码不能为空");
+		} else {
+			$(this).attr("href", "#modify-user-confirm");
+		}
 	});
 
-	
+	/*搜索用户逻辑*/
+	$("#search-user").click(function() {
+		if ($("#search-keyword").val() === "") {
+			alert("关键字不能为空");
+			return;
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/background/search-users",
+				async: false,
+				data: {
+					keyword: $("#search-keyword").val()
+				}
+			}).success(function(msg) {
+				//如果是管理员
+				if (msg.role == 'admin') {
+					$("#account-user-list table tbody").empty();
+					$("#account-admin-list table tbody").empty();
+					appendMsg("#account-admin-list table tbody",msg);
+				} else if (msg.role == 'user') { //如果是普通用户
+					$("#account-admin-list table tbody").empty();
+					$("#account-user-list table tbody").empty();
+					appendMsg("#account-user-list table tbody",msg);
+				} else { //如果搜索不到该用户
+					alert("找不到该用户");
+				}
+			});
+		}
+	});
+
+	/*其他逻辑*/
+	$("#profile-goback").click(function() {
+		location.href = "/background/accounts";
+	});
+
+	function appendMsg(id, msg) {
+		var str = "<tr><td>" + msg.username + "</td>"+
+				  "<td>" + msg.email + "</td>" + 
+				  "<td>" + msg.profile.gender + "</td>" + 
+				  "<td>" + msg.profile.QQ + "</td>" +
+				  "<td>" + msg.profile.weibo + "</td>" + 
+				  "<td><a class='editUser' href='/background/profile?username=" + 
+				  msg.username + "'>编辑</a>  <a class='deleteUser' data-toggle='modal' href='#delete-user-confirm'>删除</a></td></tr>";
+
+		$(id).append(str);
+	}
 })();;(function() {
 	if (location.pathname == '/news/activity') {
+		$('#activity_content #contents').css('display', 'none');
+		$('#activity_content #contents').eq(0).css('display', 'block');
+		$('li.foreshow').eq(0).addClass('active');
+
 		$('li').click(function( event ) {
 			$('li').removeClass('active');
 			$(this).addClass('active');
+			$('#activity_content #contents').css('display', 'none');
+			$('#activity_content #contents').eq($(this).index()).css('display', 'block');
 		});
 	}
 })();;(function() {
@@ -172,25 +236,11 @@
 			selectYear[y].onclick = setYear;
 	}
 })();;(function() {
-    if (location.pathname == '/background'){
-        var showProperTab = function() {
-            var hash = location.hash;
-            if (hash === ""){}
-                //location.hash = '#donations';
-            else {
-                $('#background-content .tab-pane.active').removeClass('active');
-                $('#background-content ' + location.hash).addClass('active');
-                $('#backgroundNav li').removeClass('active');
-                $('#backgroundNav a[href=' + location.hash + ']').parent().addClass('active');
-            }
-        };
-        $(window).on('load', function() {
-            showProperTab();
-        });
-        $(window).on('hashchange', function() { //forword, back
-            showProperTab();
-        });
-    }
+    var pathname = location.pathname;
+    if (pathname.indexOf('/background') > -1)
+        $('a.hrefTracer[href=\"\/background\/'+pathname.split('/')[2]+'\"]').css('background-color', 'orange');
+    else
+        $('a.hrefTracer[href=\"\/'+pathname.split('/')[1]+'\"]').css('background-color', 'orange');
 })();
 ;(function() {
 // background_albums_details
@@ -203,8 +253,6 @@
 				$('.hiddenPictureNames').attr('value', $('.hiddenPictureNames').attr('value') + "***" + $('.ui-state-default').children('textarea').eq(i).attr('name'));
 			}
 		});
-		// jquery UI --- sortable 
-				// $( "#album_pitures_list" ).sortable();
 		// ! .live()	.delegate() ...http://api.jquery.com/live/ to bind events to any matched elements even prepend or  append 
 		// $(img).hover used to show 2 button.
 				$(document).delegate(".ui-state-default img","mouseover",  function(event) {
@@ -289,9 +337,9 @@
 		$('.send').click(function() {
 				var texts = [];
 				var $input = $(this).parent().parent().find('input');
-				for (var i = 0; i < $input.length; ++i) {
+				for (var i = 1; i < $input.length; ++i) {
 					if ($input.eq(i).val() === '') {
-						window.alert('请填完整所有输入框');
+						$('#warning-every-fault').modal();
 						return;						
 					}
 					texts.push($input.eq(i).val());
@@ -302,7 +350,9 @@
 					data: {texts: texts},
 					success: function(data) {
 						if(data)
-							window.alert('success');
+							$('#operation-success').modal();
+						else
+							$('#operation-fail').modal();
 					}
 				});
 		});
@@ -371,7 +421,7 @@
 					else ;
 				}
 				if (flag === 1) {
-					window.alert('请不要有多余空行\n捐款者与捐款金额用空格键隔开');
+					$(this).parent().prev().find('.remiding').css('color', 'red');
 					return;
 				}
 			}
@@ -384,9 +434,9 @@
 				},
 				success: function(data) {
 					if (data)
-						window.alert(data);
+						$('#operation-success').modal();
 					else
-						window.alert('failed');
+						$('#operation-fail').modal();
 				}
 			});
 		});
@@ -429,9 +479,9 @@
 				},
 				success: function(data) {
 					if (data)
-						window.alert(data);
+						$('#operation-success').modal();
 					else
-						window.alert('failed');
+						$('#operation-fail').modal();
 				}
 			});
 		});
@@ -499,6 +549,43 @@
 		}
 	});
 
+})();;(function() {
+	if (location.pathname == '/background/foreshows') {
+		var dest_id;
+		$('button.foreshow-end-date-edit').click(function() {
+			var year = $(this).prev().find('input').eq(0).val();
+			var month = $(this).prev().find('input').eq(1).val();
+			var day = $(this).prev().find('input').eq(2).val();
+			dest_id= $(this).parent().parent().find('.hide').attr('value');
+			$.ajax({
+				type: 'get',
+				url: '/background/modifyDestTime',
+				data: 
+				{
+					id: dest_id,
+					year: year,
+					month: month,
+					day: day
+				},
+				success: function(data) {}
+			});
+		});
+		// 删除前先设置id
+		$('.foreshow-href a.delete').click(function() {
+			dest_id = $(this).parent().parent().find('.hide').attr('value');
+		});
+		// 删除活动预告
+		$('button.deleteForeshow.btn').click(function(){
+			$.ajax({
+				type: 'post',
+				url: '/background/deleteForeshow',
+				data: {id : dest_id},
+				success: function(data) {
+					location.href = '/background/foreshows';
+				}
+			});
+		});
+	}
 })();;(function() {    
 	if (location.pathname === "/background/funds_apply") {
 		var fundsID;
@@ -901,7 +988,7 @@
 		}
 	});
 })();;(function(){
-	function	isEverythingFilled() {
+	function isEverythingFilled() {
 		var input = $("[value='']");
 		for (var i = 0; i < input.length; i++) {
 			if (input.val() === '') {
