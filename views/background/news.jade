@@ -9,7 +9,7 @@ block content
 			p.picture-news-title #{i.title}
 			p.picture-news-date #{i.createdAt}
 			img.picture-news-img.img-rounded(src='#{i.src}' width='200px' height='180px') 
-			a.picture-news-delete.btn.btn-danger(role='button', data-toggle='modal' href='#delete-picture-news') 删除
+			a.picture-news-delete.btn.btn-danger(role='button', data-toggle='modal' href='#delete-picture-news' picturesrc='#{i.src}') 删除
 			a.picture-news-edit.btn(href='./news-edit') 编辑
 			hr
 
@@ -21,4 +21,4 @@ block content
 			p 你确定要删除该条图片新闻么？
 		.modal-footer
 			button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-			a.btn.btn-danger 删除
+			a.btn.btn-danger.picture-delete-confirm 删除

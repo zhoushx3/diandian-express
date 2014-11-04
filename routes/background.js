@@ -316,8 +316,20 @@ router.post('/upload_picture_news', function(req, res) {
 
 });
 
+// delete picture
+router.post('/delete_picture', function(req, res) {
+  var db = req.db.collection('pictures');
+  db.remove({src: req.body.src},
+    function(err, item){
+      if(err) {
+        console.log(err);
+      } else {
+        res.redirect('news');
+      }
+    });
+});
 
-//
+
 router.get('/accounts', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');

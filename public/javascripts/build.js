@@ -624,7 +624,22 @@
 // });
 })();
 
-;(function() {
+;(function(){
+	var preDeletePictureSrc;
+	function setPreDeletePicture(itemSrc){
+		preDeletePictureSrc = itemSrc;
+	}
+
+	$(".picture-news-delete").click(function(){
+		setPreDeletePicture($(this).attr("picturesrc"));
+	});
+	$(".picture-delete-confirm").click(function(){
+		$.post("delete_picture" ,{
+			src: preDeletePictureSrc}, function(){
+				location.reload();
+		});
+	});
+})();;(function() {
 	if (location.pathname == '/background/shares' || location.pathname.indexOf( "/background/share_period") > -1) {
 		$('#share_add').click(function() {
 			$('#add_choose').addClass('active');
