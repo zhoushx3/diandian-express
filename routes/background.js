@@ -246,6 +246,19 @@ router.get('/news', function(req, res) {
   });
 });
 
+router.post('/update_picture', function(req, res){
+  var db = req.db.collection('pictures');
+  console.log(req.query);
+  db.update({src: req.query.src}, {$set: {title: req.body.title, note: req.body.note}}, function(err, item){
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(item);
+      res.redirect('news');
+    }
+  });
+});
+
 router.get('/news-edit', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -253,7 +266,7 @@ router.get('/news-edit', function(req, res) {
   }
   if (req.session.user.role != 'admin') {
     req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
+    return res.redirect('/');
   }
   res.render('background/news-edit', {
     title: 'news-edit',
