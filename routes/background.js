@@ -336,6 +336,7 @@ router.post('/delete_picture', function(req, res) {
         res.redirect('news');
       }
     });
+    fs.unlink("public" + req.body.src);
 });
 
 
