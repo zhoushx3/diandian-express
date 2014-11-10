@@ -2,9 +2,9 @@ extends  ../background_layout
 
 block content
   #backgroundVolunteersApply
-   h2 志愿者申请 
+   h3(style="text-align: center") 志愿者申请 
    hr
-   .background_volunteer_apply_header 未审核
+   h3.background_volunteer_apply_header 未审核
    hr
    #volunteer_unchecked
        for volunteer in volunteersApply
@@ -17,32 +17,32 @@ block content
                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
                h3#myViewHeader #{volunteer.username}申请表
              .modal-body
-               span.field-name 姓名：
-                 p #{volunteer.username}
-               span.field-name 性别：
-                 p #{volunteer.gender}
-               span.field-name 出生年月：
-                 p #{volunteer.birthYear} / #{volunteer.birthMonth}
-               span.field-name 籍贯：
-                 p #{volunteer.province}
-               span.field-name 政治面貌：
-                 p #{volunteer.politicalStatus}
-               span.field-name 工作单位：
-                 p #{volunteer.workUnit}
-               span.field-name 职务：
-                 p #{volunteer.position}
-               span.field-name 身份证号：
-                 p #{volunteer.IDCardNo}
-               span.field-name 特长：
-                 p #{volunteer.speciality}
-               span.field-name 通讯地址：
-                 p #{volunteer.address}
-               span.field-name 邮政编码：
-                 p #{volunteer.postcode}
-               span.field-name 手机：
-                 p #{volunteer.phone}
-               span.field-name Email：
-                 p #{volunteer.email}
+               p.field-name 姓名：
+                 span #{volunteer.username}
+               p.field-name 性别：
+                 span #{volunteer.gender}
+               p.field-name 出生年月：
+                 span #{volunteer.birthYear} / #{volunteer.birthMonth}
+               p.field-name 籍贯：
+                 span #{volunteer.province}
+               p.field-name 政治面貌：
+                 span #{volunteer.politicalStatus}
+               p.field-name 工作单位：
+                 span #{volunteer.workUnit}
+               p.field-name 职务：
+                 span #{volunteer.position}
+               p.field-name 身份证号：
+                 span #{volunteer.IDCardNo}
+               p.field-name 特长：
+                 span #{volunteer.speciality}
+               p.field-name 通讯地址：
+                 span #{volunteer.address}
+               p.field-name 邮政编码：
+                 span #{volunteer.postcode}
+               p.field-name 手机：
+                 span #{volunteer.phone}
+               p.field-name Email：
+                 span #{volunteer.email}
                legend 志愿相关
                if volunteer.languages != null
                  ol 熟悉的语言：
@@ -78,51 +78,50 @@ block content
                  p #{volunteer.opinions}
 
              .modal-footer
-                 button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-                 a.volunteer_pass_button.btn.btn-primary(volunteer ='#{volunteer.IDCardNo}') Pass
+                 button.btn(data-dismiss='modal', aria-hidden='true') 取消
+                 a.volunteer_pass_button.btn.btn-primary(volunteer ='#{volunteer.IDCardNo}') 通过 
 
    hr 
-   .background_volunteer_apply_header 已审核
+   h3.background_volunteer_apply_header 已审核
    hr
    #volunteer_checked
        for volunteer in volunteersPassed
          .volunteer_apply_item
-           li #{volunteer.username} #{volunteer.time}
-             a.delete_volunteers_button.btn.btn-danger(volunteer="#{volunteer.IDCardNo}" role='button', data-toggle='modal' href='#delete_volunteers') 删除
-             a.view_volunteers_apply_button.btn(volunteer="#{volunteer.IDCardNo}" href='##{volunteer.IDCardNo}', role='button', data-toggle='modal') View
+           a.view_volunteers_apply_button.generalA(style="line-height: 30px" volunteer="#{volunteer.IDCardNo}" href='##{volunteer.IDCardNo}', role='button', data-toggle='modal') #{volunteer.username} #{volunteer.time}
+           a.delete_volunteers_button.btn.btn-danger(volunteer="#{volunteer.IDCardNo}" role='button', data-toggle='modal' href='#delete_volunteers') 删除
            .modal.hide.fade(id= '#{volunteer.IDCardNo}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
              .modal-header
                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
                h3#myViewHeader #{volunteer.username}申请表
              .modal-body
-               span.field-name 姓名：
-                 p #{volunteer.username}
-               span.field-name 性别：
-                 p #{volunteer.gender}
-               span.field-name 出生年月：
-                 p #{volunteer.birthYear} / #{volunteer.birthMonth}
-               span.field-name 省：
-                 p #{volunteer.province}
-               span.field-name 市：
-                 p #{volunteer.city}
-               span.field-name 政治面貌：
-                 p #{volunteer.politicalStatus}
-               span.field-name 工作单位：
-                 p #{volunteer.workUnit}
-               span.field-name 职务：
-                 p #{volunteer.position}
-               span.field-name 身份证号：
-                 p #{volunteer.IDCardNo}
-               span.field-name 特长：
-                 p #{volunteer.speciality}
-               span.field-name 通讯地址：
-                 p #{volunteer.address}
-               span.field-name 邮政编码：
-                 p #{volunteer.postcode}
-               span.field-name 手机：
-                 p #{volunteer.phone}
-               span.field-name Email：
-                 p #{volunteer.email}
+               p.field-name 姓名：
+                 span #{volunteer.username}
+               p.field-name 性别：
+                 span #{volunteer.gender}
+               p.field-name 出生年月：
+                 span #{volunteer.birthYear} / #{volunteer.birthMonth}
+               p.field-name 省：
+                 span #{volunteer.province}
+               p.field-name 市：
+                 span #{volunteer.city}
+               p.field-name 政治面貌：
+                 span #{volunteer.politicalStatus}
+               p.field-name 工作单位：
+                 span #{volunteer.workUnit}
+               p.field-name 职务：
+                 span #{volunteer.position}
+               p.field-name 身份证号：
+                 span #{volunteer.IDCardNo}
+               p.field-name 特长：
+                 span #{volunteer.speciality}
+               p.field-name 通讯地址：
+                 span #{volunteer.address}
+               p.field-name 邮政编码：
+                 span #{volunteer.postcode}
+               p.field-name 手机：
+                 span #{volunteer.phone}
+               p.field-name Email：
+                 span #{volunteer.email}
                legend 志愿相关
                if volunteer.languages != null
                  ol 熟悉的语言：
@@ -164,5 +163,5 @@ block content
     .modal-body
        p 你确定要删除该名志愿者么？（未通过审核的志愿者计入不符合条件；通过审核后的志愿者若删除计入退出。）
     .modal-footer
-       button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+       button.btn(data-dismiss='modal', aria-hidden='true') 取消
        a.volunteer_delete_confirm_button.btn.btn-danger 删除

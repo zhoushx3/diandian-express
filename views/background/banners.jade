@@ -1,23 +1,27 @@
 extends  ../background_layout
 
 block content
+	div#deletebanner.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		.modal-body
+			p 确定要删除该横幅吗?
+		.modal-footer
+			button.no.btn(data-dismiss='modal', aria-hidden='true')  取消 
+			button.yes.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 删除
+			input.hiddenBanner(style="display: none" type="text", name="hiddenBanner", value="")
+
 	#background_banners
 		form(method= 'post', action= '/background/bannersubmitt', enctype='multipart/form-data')
 			input#add-banner(type= 'file', name= 'addImage', size= '28')
-			input.btn(type = 'submit', value='上传')  
+			input.btn(type = 'submit', value='上传')
 		div#warning
 			p 亲爱的管理员，请注意：
-			p 上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过5个。
-			p 请上传不大于4M的图片，且宽高比为3：1。
+			p 上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过<span style="color: red"> 5 </span>	个。
+			p 请上传不大于1M的图片，且宽高比为<span style="color: red"> 904：280 </span>。
 		div#div-image
 			-var number = banners.length
 				while (number > 0)
 					div
 						img(src=banners[--number].src, alt=banners[number].src)
-						input.delete(type="button", value="delete")
-
-		form#delete_banner(action="/background/deleteBanner", method="post")
-			p="do you really want to delete it ? "
-			input.yes(type="submit", value="yes")
-			input.no(type="button", value="no")
-			input.hiddenBanner(type="text", name="hiddenBanner", value="")
+						input.delete.btn.btn-danger(style="background-color: gray; color: #fff" type="button", value="删除" data-toggle="modal" href='#deletebanner')

@@ -134,7 +134,7 @@
 			$('li').removeClass('active');
 			$(this).addClass('active');
 			$('#activity_content #contents').css('display', 'none');
-			$('#activity_content #contents').eq($(this).index()).css('display', 'block');
+			$('#activity_content #contents').eq($(this).index()/2).css('display', 'block');
 		});
 	}
 })();;(function() {
@@ -152,7 +152,7 @@
       localStorage.age = $("#age").val();
       localStorage.ID = $("#ID-cardNo").val();
       localStorage.work = $("#work").val();
-      localStorage.phone = $("#phone").val();
+      localStorage.phone = $("#cellphone").val();
       localStorage.else = $("#else").val();
       localStorage.income = $("#income").val();
       localStorage.pocession = $("#pocession").val();
@@ -174,7 +174,7 @@
       $("#age").val(localStorage.age);
       $("#ID-cardNo").val(localStorage.ID);
       $("#work").val(localStorage.work);
-      $("#phone").val(localStorage.phone);
+      $("#cellphone").val(localStorage.phone);
       $("#income").val(localStorage.income);
       $("#income").val(localStorage.income);
       $("#pocession").val(localStorage.pocession);
@@ -183,24 +183,6 @@
       $("#reason").val(localStorage.reason);
     });
   } 
-})();;(function() {
-	if (location.pathname.indexOf('/news/album/') > -1) {
-		$('.select_img').click(function() {
-			$(this).parent().next().addClass('active');
-		});
-
-		$('.off').click(function() {
-			$(this).parent().removeClass('active');
-		});
-
-		$('.left').click(function() {
-			$(this).parent().removeClass('active').prev().prev().addClass('active');
-		});
-
-		$('.right').click(function() {
-			$(this).parent().removeClass('active').next().next().addClass('active');
-		});
-	}
 })();;(function() {
 	if (location.pathname == '/finance/annually-reports') {
 		var x, year = 2012;
@@ -236,13 +218,6 @@
 			selectYear[y].onclick = setYear;
 	}
 })();;(function() {
-    var pathname = location.pathname;
-    if (pathname.indexOf('/background') > -1)
-        $('a.hrefTracer[href=\"\/background\/'+pathname.split('/')[2]+'\"]').css('background-color', 'orange');
-    else
-        $('a.hrefTracer[href=\"\/'+pathname.split('/')[1]+'\"]').css('background-color', 'orange');
-})();
-;(function() {
 // background_albums_details
 	if(location.pathname.indexOf('/background/albums/') > -1) {
 		$('.save').click(function() {
@@ -318,18 +293,20 @@
 })();
 ;(function() {
 	if (location.pathname == '/background/banners') {
-		$('.delete').click(function(event) {
-			$('#delete_banner').toggleClass('active');
-			
-			$('.yes').click(function() {
+			$('.delete').click(function(event) {
 				$('.hiddenBanner').attr('value', $(event.target).parent().children('img').attr('src'));
 			});
 
-			$('.no').click(function() {
-				$('#delete_banner').toggleClass('active');
+			$('.yes').click(function() {
+				$.ajax({
+					url: "/background/deleteBanner",
+					method: 'post',
+					data: {hiddenBanner: $('.hiddenBanner').attr('value')},
+					success: function(data) {
+						location.reload();
+					}
+				});
 			});
-		});
-
 	}
 })();;(function() {
 	if (location.pathname == '/background/donations') {
@@ -591,6 +568,8 @@
 		var fundsID;
 		$(document).delegate('a.view_fund_apply', 'click', function() {
 			fundsID = $(this).attr('name');
+			$('#fundsName').text($(this).attr('data-name'));
+			$('#fundsName1').text($(this).attr('data-name'));
 			$.ajax({
 				type: 'post',
 				url: '/background/getFundInfo',
@@ -605,7 +584,7 @@
 						$('#labels').children().remove();
 						$('.labelList').val('');
 						for (var j = 0; j < data.label.length; ++j) {
-							$('#labels').append('<button class="label btn">' + data.label[j] + '</button>');
+							$('#labels').append('<button class="label">' + data.label[j] + '</button>');
 						}
 					} else {
 						window.alert('retrieve failed');
@@ -636,10 +615,9 @@
 		});
 
 		// 删标签
-		$(document).delegate('button.label.btn', 'click', function() {
+		$(document).delegate('button.label', 'click', function() {
 			var theLabel = $(this).text();
 			$(this).remove();
-			window.alert(theLabel);
 			$.ajax({
 				type: 'post',
 				url: '/background/deleteLable',
@@ -651,9 +629,8 @@
 		});
 		// 标记通过	
 		$('a.pass_uncheckedFund_apply').click(function(event) {
+			$(this).parent().parent().find('.close').click();
 			$('a.fund_pass_confirm_button').click(function() {
-				var fundsID = $(event.target).attr('name');
-				console.log(fundsID);
 				$.ajax({
 					type: 'get',
 					url: '/background/passFund',
@@ -667,9 +644,8 @@
 		});
 		// 标记不通过
 		$('a.dispass_Fund_apply').click(function(event) {
+			$(this).parent().parent().find('.close').click();
 			$('a.fund_delete_confirm_button').click(function() {
-				var fundsID = $(event.target).attr('name');
-				console.log(fundsID);
 				$.ajax({
 					type: 'get',
 					url: '/background/passFund',
@@ -685,7 +661,7 @@
 		$('select').change(function(event) {
 			callback(event);
 		});
-
+		// 显示标签对应的申请表
 		var callback = function(event) {
 			$('#funds_byLables').children('a').remove();
 			var label = $(event.target).children('option:selected').val();
@@ -697,7 +673,7 @@
 					if (data) {
 						$('#funds_byLables').children().remove();
 						for (var i  = 0; i < data.length; ++i)
-							$("<a class='view_fund_apply', role='button', data-toggle='modal', href='#fund'>"  + data[i].name +  '</a>').appendTo('#funds_byLables').attr('name', data[i]._id);
+							$("<a class='view_fund_apply generalA',role='button', data-toggle='modal', href='#fund'>"  + data[i].name + data[i].date.split(/[-A-Z]/g)[0] + "-" + data[i].date.split(/[-A-Z]/g)[1] + "-" + data[i].date.split(/[-A-Z]/g)[2] + ' </a>').appendTo('#funds_byLables').attr('name', data[i]._id);
 					}
 				}
 			});
@@ -806,7 +782,7 @@
     });
 
     $('#donation-scroller span').on('click', function(){
-      location.href = '/donations';
+      location.href = '/finance/donations';
     });
   }
 })();;(function(){
@@ -851,7 +827,399 @@
 			monthLi[y].onclick = setMonths;
 	}
 })();
-	;(function(){
+	;(function() {
+	// 修改导航栏背景色
+   var pathname = location.pathname;
+   if (pathname.indexOf('/background') > -1)
+      $('a.hrefTracer[href=\"\/background\/'+pathname.split('/')[2]+'\"]').css('background-color', 'orange');
+   else
+      $('a.hrefTracer[href=\"\/'+pathname.split('/')[1]+'\"]').css('background-color', 'orange');
+
+    // 增加查看次数,成功了但是返回error
+    $('a.viewCountTracer').click(function() {
+        	var id = $(this).attr('href').split('/')[3];
+        	$.ajax({
+        		type: 'get',
+        		url: '/news/addViewCount',
+        		data: {id: id}
+        	});
+      });
+    // 增加活动预告查看次数,但是页面没有及时刷新
+    $('li.viewCountTracer').click(function() {
+        var id = $(this).next().text();
+        $.ajax({
+          type: 'get',
+          url: '/news/addActivityViewCount',
+          data: {id: id}
+        });
+    });
+    // 分页及换页操作
+   $('a.page.generalA').click(function() {
+    	$.ajax({
+    		type: 'get',
+    		url: '/news',
+    		data: {page: $(this).attr('data-page')},
+    		success: function(data) {
+    			location.reload();
+    		}
+    	});
+   });
+   // 换页 上一页 
+   $('a.pageBack.generalA').click(function() {
+    	$.ajax({
+    		type: 'get',
+    		url: '/news',
+    		data: {page: $(this).attr('data-page')-1},
+    		success: function(data) {
+    			location.reload();
+    		}
+    	});
+    });
+   // 换页 下一页
+   $('a.pageForward.generalA').click(function() {
+    	$.ajax({
+    		type: 'get',
+    		url: '/news',
+    		data: {page: parseInt($(this).attr('data-page'))+1},
+    		success: function(data) {
+    			location.reload();
+    		}
+    	});
+    });
+  // 页码颜色	
+  $('a.page.generalA[data-page='+$('a.pageForward.generalA').attr('data-page')+']').css('background-color', 'rgba(135, 243, 135, 1)');
+  //  限定上下页出现如果没有上页或下页
+  if ($('a.pageForward.generalA').attr('data-page') === '1')
+  	$('a.pageBack.generalA').css('display', 'none');
+  if ($('a.pageForward.generalA').attr('data-page') === $('a.pageForward.generalA').attr('data-record'))
+  	$('a.pageForward.generalA').css('display', 'none');
+
+  $('#album-list .album').click(function() {
+    window.location.href = $(this).attr('data-href');
+  });
+})();;(function() {
+	var form = $(".formSubmit");
+	form.submit(function(e) {
+		$('.formWarning').hide();
+		hasNull(e);
+		validate(e);
+		$('.formWarning').css('color', 'red').css('font-size', '12px');
+	});
+	// function
+	function hasNull(e) {
+		for (var x = 0; x < 15; ++x)
+			if (isNull($(e.target).find('input[type="text"]').eq(x).val()))
+				$(e.target).find('input[type="text"]').eq(x).after('<span class="formWarning"> *</span>');
+	}
+
+	function validate(e) {
+		var $userName = $(e.target).find('#username'); // 注册用户名
+		var $email = $(e.target).find('#email');                // 注册  邮箱
+		var $password = $(e.target).find('#signup-password');   // 注册  密码
+		var $repeat_password = $(e.target).find('#signup-password-repeat');  // 重复  密码
+		var $name = $(e.target).find('#name');   // 姓名
+		var $nation = $(e.target).find('#nation');  // 民族
+		var $birth_year = $(e.target).find('#birth-year'); // 出生年
+		var $birth_month = $(e.target).find('#birth-month'); // 出生月
+		var $ID_card = $(e.target).find('#ID-cardNo');  // 身份证号
+		var $age = $(e.target).find('#age');  // 年龄
+		var $cellphone = $(e.target).find('#cellphone'); // 手机
+		var $phone = $(e.target).find('#phone'); // 电话号码
+		var $postcode = $(e.target).find('#postcode');  // 邮政编码
+		var $QQ = $(e.target).find('#QQ'); // QQ
+		if ($userName.length !== 0 && (isNull($userName.val()) || !isChinaOrNumbOrLett($userName.val()))) {
+			e.preventDefault();
+			$userName.after('<span class="formWarning"> 只能由汉字、字母、数字组成 </span>');
+		}
+
+		if ($email.length !== 0  && (isNull($email.val()) || !isEmail($email.val()))) {
+			e.preventDefault();
+			$email.after('<span class="formWarning"> 必须是合法邮箱 </span>');
+		}
+		
+		if ($password.length !== 0  && (isNull($password.val()) || !isLengthMathc($password.val(), 6, 12))) {
+			e.preventDefault();
+			$password.after('<span class="formWarning"> 密码长度 6 - 12 位 </span>');
+		}
+
+		if ($repeat_password.length !== 0  && isNull($repeat_password .val())) {
+			e.preventDefault();
+			$repeat_password.after('<span class="formWarning"> 两次密码输入不同 </span>');
+		}
+
+		if ($name.length !== 0  && (isNull($name.val()) || !isChinaOrNumbOrLett($name.val()))) {
+			e.preventDefault();
+			$name.after('<span class="formWarning"> 由汉字、字母、数字组成 </span>');
+		}
+
+		if ($nation.length !== 0 && (isNull($nation.val()) || !nation($nation.val()))) {
+			e.preventDefault();
+			$nation.after('<span class="formWarning"> 必须是属于中华56民族 </span>');
+		}
+
+		if($birth_year.length !== 0  && !isNumber($birth_year.val())) {
+			e.preventDefault();
+			$birth_year.after('<span class="formWarning"> 不合理 </span>');
+		}
+
+		if($birth_month.length !== 0  && !isNumber($birth_month.val())) {
+			e.preventDefault();
+			$birth_month.after('<span class="formWarning"> 不合理 </span>');
+		}
+
+		if($ID_card.length !== 0  && !IdCardRegCheck($ID_card.val())) {
+			e.preventDefault();
+			$ID_card.after('<span class="formWarning"> 不合理 </span>');
+		}
+
+		if($age.length !== 0  && !isNumber($age.val())) {
+			e.preventDefault();
+			$age.after('<span class="formWarning"> 必须是数字 </span>');
+		}
+
+		if($cellphone.length !== 0  && !checkMobile($cellphone.val())) {
+			e.preventDefault();
+			$cellphone.after('<span class="formWarning"> 不合理手机号码 </span>');
+		}
+
+		if($phone.length !== 0  && !checkPhone($phone.val())) {
+			e.preventDefault();	
+			$phone.after('<span class="formWarning"> 不合理电话号码 </span>');
+		}
+
+		if($postcode.length !== 0  && !isZip($postcode.val())) {
+			e.preventDefault();	
+			$postcode.after('<span class="formWarning"> 不是正确的邮政编码 </span>');
+		}
+
+		if($QQ.length !== 0  && !isQQ($QQ.val())) {
+			e.preventDefault();	
+			$QQ.after('<span class="formWarning"> 不正确的QQ号码 </span>');
+		}
+	}
+/*
+用途：检查输入字符串是否为空或者全部都是空格
+如果全是空返回true,否则返回false
+*/
+	function isNull( str ) {
+		if ( str === "" ) return true;
+		var regu = "^[ ]+$";
+		var re = new RegExp(regu);
+		return re.test(str);
+	}
+/*
+用途：检查输入对象的值是否符合E-Mail格式
+如果通过验证返回true,否则返回false
+*/
+	function isEmail( str ){ 
+		var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
+		if(myReg.test(str)) return true;
+		return false;
+	}
+/*
+用途：检查输入字符串是否只由汉字、字母、数字组成
+如果通过验证返回true,否则返回false
+*/
+	function isChinaOrNumbOrLett( s ){//判断是否是汉字、字母、数字组成
+		var regu = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";  
+		var re = new RegExp(regu);
+		if (re.test(s)) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+/*
+判断长度是否符合要求
+符合则返回true
+*/
+	function isLengthMathc(s, l1, l2) {
+		if (!s) return false;
+		if (s.length <  l1 || s.length > l2)
+			return false;
+		return true;
+	}
+
+/*
+用途：检查输入手机号码是否正确
+如果通过验证返回true,否则返回false
+*/
+	function checkMobile( s ){  
+		if (!s) return false;
+		var regu =/^[1][3][0-9]{9}$/;
+		var re = new RegExp(regu);
+		if (re.test(s)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+/*
+用途：判断是否属于56民族,
+如果是则返回true
+*/
+	var nations = ['汉族', '壮族', '满族', '回族', '苗族', '维吾尔族', '土家族' ,'彝族' ,'蒙古族','藏族', '布依族', '侗族', '瑶族', '朝鲜族', '白族', '哈尼族', '哈萨克族', '黎族', '傣族', '畲族', '傈僳族', '仡佬族', '东乡族', '高山族', '拉祜族', '水族', '佤族', '纳西族', '羌族', '土族', '仫佬族', '锡伯族', '柯尔克孜族', '达斡尔族', '景颇族', '毛南族', '撒拉族', '布朗族', '塔吉克族', '阿昌族', '普米族', '鄂温克族', '怒族', '京族', '基诺族', '德昂族', '保安族', '俄罗斯族', '裕固族', '乌兹别克族', '门巴族', '鄂伦春族', '独龙族', '塔塔尔族', '赫哲族', '珞巴族'];
+	function nation(s) {
+		if (!s) return false;
+		for (var i = 0; i < 56; ++i)
+			if (s.split('族')[0]+'族' === nations[i])
+				break;
+		if (i !== 56)
+			return true;
+		return false;
+	}
+/*
+用途：检查输入字符串是否符合正整数格式
+如果通过验证返回true,否则返回false
+*/
+	function isNumber( s ){  
+		var regu = "^[0-9]+$";
+		var re = new RegExp(regu);
+		if (s.search(re) != -1) {
+			return true;
+		} else {
+			return false;
+		}
+	} 
+/*
+用途：检查身份证号
+如果通过验证返回true,否则返回false
+*/
+	function IdCardRegCheck(s)
+	{
+		if (!s) return false;
+		var reg = /^([0-9]{15}|[0-9]{18})$/;
+		var flag = reg.test(s);
+		return flag;
+	}
+/*
+用途：检查输入的电话号码格式是否正确
+如果通过验证返回true,否则返回false
+*/
+	function checkPhone( strPhone ) {
+		if (!strPhone) return false;
+		var phoneRegWithArea = /^[0][1-9]{2,3}-[0-9]{5,10}$/;
+		var phoneRegNoArea = /^[1-9]{1}[0-9]{5,8}$/;
+		if( strPhone.length > 9 ) {
+			if( phoneRegWithArea.test(strPhone) ){
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if( phoneRegNoArea.test( strPhone ) ){
+				return true;
+			} else {
+				return false;
+			} 
+		}
+	}
+/*
+用途：验证邮政编码的有效性
+如果通过验证返回true,否则返回false
+*/
+	function isZip( s ){  
+		if (!s) return false;
+	    var pattern =  /^[1-9]\d{5}$/;  
+	    if(!(pattern.test(s))){  
+	        return false;  
+	    }  
+	    else return true;  
+	} 
+/*
+用途：验证QQ的有效性
+如果通过验证返回true,否则返回false
+*/
+	function isQQ( s )
+	{
+		if (!s) return false;
+		var reg = /^[1-9]\d{4,9}$/; 
+		return reg.test(s);
+	}
+})();;(function() {
+	if (location.pathname.indexOf('/news/album/') > -1) {
+		// slide_pictures_with_modal
+		var index;
+		$('.select_img').click(function() {
+			index = parseInt($(this).attr('data-count'));
+			$('#show_picture h3').text($(this).attr('alt'));
+			$('#show_picture p').text($(this).next().next().text());
+			$('#show_picture .img').css('background', 'url('+$(this).attr('src')+') no-repeat 80%');
+		});
+		
+		$('.left').click(function() {
+			if (index !== 1) {
+				index = parseInt(index) - 1;
+				$('#show_picture h3').text($('.select_img[data-count='+index+']').attr('alt'));
+				$('#show_picture p').text($($('.select_img[data-count='+index+']')).next().next().text());
+				$('#show_picture .img').css('background', 'url('+$('.select_img[data-count='+index+']').attr('src')+') no-repeat 80%');
+			}
+		});
+
+		$('.right').click(function() {
+			if (index !== $('.select_img').length) {
+				index = parseInt(index)+1;
+				$('#show_picture h3').text($('.select_img[data-count='+index+']').attr('alt'));
+				$('#show_picture p').text($($('.select_img[data-count='+index+']')).next().next().text());
+				$('#show_picture .img').css('background', 'url('+$('.select_img[data-count='+index+']').attr('src')+') no-repeat 80%');
+			}
+		});
+	}
+})();;(function(){
+  if (location.pathname == '/news') {
+    $('.picture-list img').on('click', function(){
+      $('#pictures .current').css('background-image', 'url('  + this.src + ')');
+      $('#pictures .title').text(this.title);
+      $('#pictures .note').text($(this).attr('data-note'));
+    });
+    $('#pictures .left').hide();
+    $('.left').on('click', function(){
+      var container = $('#pictures .picture-list-inner'),
+        now = parseInt(container.css('margin-left'));
+      if (now >= -426)
+        $('#pictures .left').hide();
+      container.animate({
+        marginLeft: now + 426 + 'px'
+      }, 'slow');
+      $('#pictures .right').show();
+    });
+
+    $('.right').on('click', function(){
+      var container = $('#pictures .picture-list-inner'),
+          now = parseInt(container.css('margin-left')),
+          num = $('#pictures .picture-list-inner').children('img').length/4;
+      if (-now - 426*(Math.floor(num)-1) >= 0)
+          $('#pictures .right').hide();
+      container.animate({
+          marginLeft: now - 426 + 'px'
+      }, 'slow');
+      $('#pictures .left').show();
+    });
+  }
+  // String.prototype.startWith = function(compareStr){
+  //   return this.indexOf(compareStr) === 0;
+  // };
+  // if (location.pathname.startWith('/news/')) {
+  //   window._bd_share_config={
+  //     "common":{
+  //       "bdSnsKey":{},
+  //       "bdText":"",
+  //       "bdMini":"2",
+  //       "bdMiniList":false,
+  //       "bdPic":"",
+  //       "bdStyle":"1",
+  //       "bdSize":"24"
+  //     },
+  //     "share":{}
+  //   };
+    // with(document)0[
+    //   (getElementsByTagName('head')[0]||body).appendChild(
+    //   createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date()/36e5)
+    // ];
+  // }
+})();
+
+;(function(){
   if (location.pathname == '/news') {
     $('.picture-list img').on('click', function(){
       $('#pictures .current img').attr('src', this.src);
@@ -945,66 +1313,19 @@
 	}
 })();;(function() {
 	var form = $("#signin-wrapper form");
-
 	form.submit(function(e) {
+		$('.formWarning').css('color', 'red').css('font-size', '12px');
+		$('.formWarning').hide();
 		if ($("#username-wrapper input").val() === '') {
 			e.preventDefault();
-			alert("请填写用户名");
-			return;
+			$("#username-wrapper input").after("<span class='formWarning'> 请填写用户名<span>");
 		}
 
 		if ($("#password-wrapper input").val() === '') {
 			e.preventDefault();
-			alert("请填写密码");
-			return;
+			$("#password-wrapper input").after("<span class='formWarning'> 请填写密码</span");
 		}
 	});
-})();;(function() {
-	var form = $("#volunteer-application");
-
-	form.submit(function(e) {
-		if ($("#signup-username").val() === '') {
-			e.preventDefault();
-			alert("请填写用户名");
-			return;
-		}
-
-		if ($("#signup-email").val() === '') {
-			e.preventDefault();
-			alert("请填写邮箱");
-			return;
-		}
-
-		if ($("#signup-password").val() === '') {
-			e.preventDefault();
-			alert("请填写密码");
-			return;
-		}
-
-		if ($("#signup-password-repeat").val() === '') {
-			e.preventDefault();
-			alert("请重复填写密码");
-			return;
-		}
-	});
-})();;(function(){
-	function isEverythingFilled() {
-		var input = $("[value='']");
-		for (var i = 0; i < input.length; i++) {
-			if (input.val() === '') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	$("#volunteer-application").submit(function(e) {
-		if (!isEverythingFilled()) {
-			e.preventDefault();
-			alert("表格未填写完!");
-		}
-	});
-
 })();;(function(){
 	if (location.pathname == '/finance/annually-reports'){
 		var flag = -1;

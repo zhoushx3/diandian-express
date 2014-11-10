@@ -248,12 +248,10 @@ router.get('/news', function(req, res) {
 
 router.post('/update_picture', function(req, res){
   var db = req.db.collection('pictures');
-  console.log(req.query);
   db.update({src: req.query.src}, {$set: {title: req.body.title, note: req.body.note}}, function(err, item){
     if (err) {
       console.log(err);
     } else {
-      console.log(item);
       res.redirect('news');
     }
   });
@@ -299,7 +297,6 @@ router.post('/upload_picture_news', function(req, res) {
         } else {
           db.insert(newPictureNews, function(err, item) {
             assert.equal(null, err);
-            console.log(item);
             // 重命名 文件
             fs.renameSync(files.newsImage.path,  PICTURES_NEWS_PATH + files.newsImage.name);
             res.redirect('news');
@@ -950,7 +947,6 @@ router.post('/albums/uploadAlbum', function(req, res) {
   form.keepExtensions = true;
   form.encoding = "utf-8";
   form.parse(req, function(error, fields, files) {
-    console.log(files.upload);
     if (files.upload.size !== 0) { // 没上传文件也照吃
       new_album_name = fields.new_album_name;
       new_album_src = "public/images/albums/" + files.upload.name;
@@ -1079,7 +1075,6 @@ router.post('/modifyAlbumInfo', function(req, res) {
       console.log(err.message);
       return;
     }
-    console.log(result);
   };
 
   db.collection('albums', function(err, col) {
@@ -1159,7 +1154,7 @@ router.post('/bannersubmitt', function(req, res) {
  */
 router.post('/deleteBanner', function(req, res) {
   var db = req.db;
-  var banner = req.param('hiddenBanner');
+  var banner = req.body.hiddenBanner;
   db.collection('carousels', function(err, col) {
     col.remove({
       src: banner
@@ -1170,7 +1165,6 @@ router.post('/deleteBanner', function(req, res) {
         console.log(err.message);
         return;
       } else {
-        console.log(numberOfRemoved);
         res.redirect('/background/banners');
       }
     });
@@ -1356,7 +1350,6 @@ router.post('/delete-user', function(req, res) {
   }, {
     safe: true
   }, function(err, result) {
-    console.log(result);
   });
 
   res.redirect("/background/accounts");
@@ -1440,7 +1433,6 @@ router.post('/profile', function(req, res) {
       if (err) {
         console.log(err);
       } else {
-        console.log(result);
         if (doc.role == "admin" && doc.username !== username) {
           req.flash("success", "管理员用户名修改成功");
           res.redirect("/logout");

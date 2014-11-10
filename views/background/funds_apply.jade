@@ -6,19 +6,19 @@ block content
 			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
 			h3 Warning
 		.modal-body
-			p 你确定要将这份申请列入"不通过"一列吗？
+			p 你确定<span id="fundsName1" style="color: red"></span>的资助申请表不通过吗？
 		.modal-footer
-			button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-			a.fund_delete_confirm_button.btn 是
+			button.btn.btn-danger(style='background-color: gray' data-dismiss='modal', aria-hidden='true') 取消
+			a.fund_delete_confirm_button.btn 不通过
 	
 	#pass_fund.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		.modal-header
 			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
 			h3 Warning
 		.modal-body
-			p 你确定审核通过这份资助申请吗？（将此列入"通过"一列）
+			p 你确定<span id="fundsName" style="color: red"></span>的资助申请表通过吗？
 		.modal-footer
-			button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+			button.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 取消
 			a.fund_pass_confirm_button.btn 通过
 	
 	#fund.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
@@ -27,57 +27,56 @@ block content
 			h3#myViewHeader 个人资助申请表
 		.modal-body
 			p.field-name.hide <span></span>
-			p.field-name 姓名：<span></span>
-			p.field-name 性别：<span></span>
-			p.field-name 民族：<span></span>
-			p.field-name 出生年月：<span></span>年<span></span>月
-			p.field-name 所在学校：<span></span>
-			p.field-name 所在班级：<span></span>
-			p.field-name 所缴学费：<span></span>
-			p.field-name 监护人姓名：<span></span>
-			p.field-name 年龄：<span></span>
-			p.field-name 身份证号：<span></span>
-			p.field-name 工作单位：<span></span>
-			p.field-name 联系电话：<span></span>
-			p.field-name 其他家庭成员及情况：<span></span>
-			p.field-name 家庭月收入：<span></span>
-			p.field-name 家乡住址：<span></span>
-			p.field-name 现在住址：<span></span>
-			p.field-name 是否有房产、定期存款、基金等固定财产：<span></span>
-			p.field-name 申请助学金理由：<span></span>
+			p.field-name 姓名：<span style="color: #4FB345"></span>
+			p.field-name 性别：<span style="color: #4FB345"></span>
+			p.field-name 民族：<span style="color: #4FB345"></span>
+			p.field-name 出生年月：<span style="color: #4FB345"></span>年<span style="color: #4FB345"></span>月
+			p.field-name 所在学校：<span style="color: #4FB345"></span>
+			p.field-name 所在班级：<span style="color: #4FB345"></span>
+			p.field-name 所缴学费：<span style="color: #4FB345"></span>
+			p.field-name 监护人姓名：<span style="color: #4FB345"></span>
+			p.field-name 年龄：<span style="color: #4FB345"></span>
+			p.field-name 身份证号：<span style="color: #4FB345"></span>
+			p.field-name 工作单位：<span style="color: #4FB345"></span>
+			p.field-name 联系电话：<span style="color: #4FB345"></span>
+			p.field-name 其他家庭成员及情况：<span style="color: #4FB345"></span>
+			p.field-name 家庭月收入：<span style="color: #4FB345"></span>
+			p.field-name 家乡住址：<span style="color: #4FB345"></span>
+			p.field-name 现在住址：<span style="color: #4FB345"></span>
+			p.field-name 是否有房产、定期存款、基金等固定财产：<span style="color: #4FB345"></span>
+			p.field-name 申请助学金理由：<span style="color: #4FB345"></span>
   
 			hr
-			h3 添加标签 标签间用空格隔开
-			input.labelList(type="text")
-			input.edit.btn(type="button", value="保存")
+			h5 添加标签 标签间用空格隔开 <span style="color: red">点击标签删除对应标签</span>
+			input.labelList(style="margin-top: 13px;" type="text")
+			input.edit.btn(style="margin-left: 15px" type="button", value="保存")
 			div#labels
 	
+		.modal-footer
+			a.pass_uncheckedFund_apply.btn(role='button', data-toggle='modal', href='#pass_fund') 通过
+			a.dispass_Fund_apply.btn(role='button', data-toggle='modal', href='#dispass_fund') 不通过
+
 	#backgroundFundsApply
-		h3 资助申请表
+		h3(style="text-align: center") 资助申请表
 		p 未审核
 		#funds_unchecked
 			for fund in fundsApply
 				.fund_apply_item
-					li=fund.name + "  " +  formatDate(fund.date)
-					a.view_fund_apply.btn(name=fund._id, role='button', data-toggle='modal', href='#fund') View
-					a.pass_uncheckedFund_apply.btn(name=fund._id, role='button', data-toggle='modal', href='#pass_fund') 通过
-					a.dispass_Fund_apply.btn(name=fund._id, role='button', data-toggle='modal', href='#dispass_fund') 不通过
-
+					a.view_fund_apply.generalA(data-name=fund.name, name=fund._id, role='button', data-toggle='modal', href='#fund')=fund.name + "  " +  formatDate(fund.date)
+					
 		hr 
 		p 已通过 
 		#funds_passed
 			for fund in fundsPassed
 				.fund_apply_item
-					li=fund.name + "  " +  formatDate(fund.date)
-					a.view_fund_apply.btn(name=fund._id, role='button', data-toggle='modal', href='#fund') View
+					a.view_fund_apply.generalA(name=fund._id, role='button', data-toggle='modal', href='#fund')=fund.name + "  " +  formatDate(fund.date)
 
 		hr 
 		p 未通过
 		#funds_unpassed
 			for fund in fundsUnPassed
 				.fund_apply_item
-					li=fund.name + "  " +  formatDate(fund.date)
-					a.view_fund_apply.btn(name=fund._id, role='button', data-toggle='modal', href='#fund') View
+					a.view_fund_apply.generalA(name=fund._id, role='button', data-toggle='modal', href='#fund')=fund.name + "  " +  formatDate(fund.date)
 
 
 		hr

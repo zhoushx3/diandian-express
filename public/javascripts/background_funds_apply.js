@@ -3,6 +3,8 @@
 		var fundsID;
 		$(document).delegate('a.view_fund_apply', 'click', function() {
 			fundsID = $(this).attr('name');
+			$('#fundsName').text($(this).attr('data-name'));
+			$('#fundsName1').text($(this).attr('data-name'));
 			$.ajax({
 				type: 'post',
 				url: '/background/getFundInfo',
@@ -17,7 +19,7 @@
 						$('#labels').children().remove();
 						$('.labelList').val('');
 						for (var j = 0; j < data.label.length; ++j) {
-							$('#labels').append('<button class="label btn">' + data.label[j] + '</button>');
+							$('#labels').append('<button class="label">' + data.label[j] + '</button>');
 						}
 					} else {
 						window.alert('retrieve failed');
@@ -48,10 +50,9 @@
 		});
 
 		// 删标签
-		$(document).delegate('button.label.btn', 'click', function() {
+		$(document).delegate('button.label', 'click', function() {
 			var theLabel = $(this).text();
 			$(this).remove();
-			window.alert(theLabel);
 			$.ajax({
 				type: 'post',
 				url: '/background/deleteLable',
@@ -63,9 +64,8 @@
 		});
 		// 标记通过	
 		$('a.pass_uncheckedFund_apply').click(function(event) {
+			$(this).parent().parent().find('.close').click();
 			$('a.fund_pass_confirm_button').click(function() {
-				var fundsID = $(event.target).attr('name');
-				console.log(fundsID);
 				$.ajax({
 					type: 'get',
 					url: '/background/passFund',
@@ -79,9 +79,8 @@
 		});
 		// 标记不通过
 		$('a.dispass_Fund_apply').click(function(event) {
+			$(this).parent().parent().find('.close').click();
 			$('a.fund_delete_confirm_button').click(function() {
-				var fundsID = $(event.target).attr('name');
-				console.log(fundsID);
 				$.ajax({
 					type: 'get',
 					url: '/background/passFund',
@@ -97,7 +96,7 @@
 		$('select').change(function(event) {
 			callback(event);
 		});
-
+		// 显示标签对应的申请表
 		var callback = function(event) {
 			$('#funds_byLables').children('a').remove();
 			var label = $(event.target).children('option:selected').val();
@@ -109,7 +108,7 @@
 					if (data) {
 						$('#funds_byLables').children().remove();
 						for (var i  = 0; i < data.length; ++i)
-							$("<a class='view_fund_apply', role='button', data-toggle='modal', href='#fund'>"  + data[i].name +  '</a>').appendTo('#funds_byLables').attr('name', data[i]._id);
+							$("<a class='view_fund_apply generalA',role='button', data-toggle='modal', href='#fund'>"  + data[i].name + data[i].date.split(/[-A-Z]/g)[0] + "-" + data[i].date.split(/[-A-Z]/g)[1] + "-" + data[i].date.split(/[-A-Z]/g)[2] + ' </a>').appendTo('#funds_byLables').attr('name', data[i]._id);
 					}
 				}
 			});

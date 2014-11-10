@@ -28,7 +28,7 @@ block content
                 td(width="50px") #{admin.profile.gender}
                 td(width="100px") #{admin.profile.QQ}
                 td(width="100px") #{admin.profile.weibo}
-                td(width="100px") <a class="editUser" username="#{admin.username}">编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
+                td(width="100px") <a class="editUser generalA" username="#{admin.username}">编辑</a>  <a class="deleteUser generalA" data-toggle="modal" href='#delete-user-confirm'>删除</a>
 
     div#account-user
       h3 普通用户
@@ -51,7 +51,7 @@ block content
                 td(width="50px") #{user.profile.gender}
                 td(width="100px") #{user.profile.QQ}
                 td(width="100px") #{user.profile.weibo}
-                td(width="100px") <a class="editUser" username="#{user.username}">编辑</a>  <a class="deleteUser" data-toggle="modal" href='#delete-user-confirm'>删除</a>
+                td(width="100px") <a class="editUser generalA" username="#{user.username}">编辑</a>  <a class="deleteUser generalA" data-toggle="modal" href='#delete-user-confirm'>删除</a>
 
   div#delete-user-confirm.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
     button.close(type='button', data-dismiss='modal', aria-hidden='true') X
