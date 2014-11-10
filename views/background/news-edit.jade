@@ -1,0 +1,20 @@
+extends  ../background_layout
+
+block content
+	div#news-logo
+		span 图片新闻
+		img(src='/images/logo-small.png')
+	div#news-editor
+		form#news-edit-form(name='newsEditForm' enctype='multipart/form-data' method ="post" action="/background/upload_picture_news")
+			div
+				input#news-title(type='text' name='newsTitle' placeholder = "请在这里输入图片新闻标题")
+
+			div
+				input#news-author(type='text' name= 'newsCreator' placeholder = "输入图片新闻作者姓名")
+
+			div
+				input#news-note(type='text' name='newNote' placeholder="请在这里输入图片新闻简易内容")
+			div
+				p 选择上传的图片文件（不得大于15M）
+				input#upload-image(type='file' name='newsImage' value="xx")
+				input#picture_news_submit(type='submit' name='submit' value='提交')

@@ -9,7 +9,7 @@ var config = require('./config/config');
 var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
-var ueditor = require("ueditor");
+// var ueditor = require("ueditor");
 var app = express();
 
 // view engine setup
@@ -20,7 +20,10 @@ app.use(flash());
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+// modify
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(cookieParser(config.cookieSecret));
 app.use(session({
   secret: settings.cookieSecret,
@@ -33,6 +36,30 @@ app.use(session({
  })
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ueditor
+
+// app.use("/ueditor", ueditor(path.join(__dirname, 'public'), function(req, res, next) {
+//   // ueditor 客户发起上传图片请求
+//   if(req.query.action === 'uploadimage'){
+//     var foo = req.ueditor;
+//     var date = new Data();
+//     var imgname = req.ueditor.filename;
+
+//     var img_url = '/img/'+date.getTime()+imgname;
+//     res.ue_up(img_url); //你只要输入要保存的地址 。保存操作交给ueditor来做
+//   }
+//   //  客户端发起图片列表请求
+//   else if (req.query.action === 'listimage'){
+//     var dir_url = '/images/ueditor/';
+//     res.ue_list(dir_url);  // 客户端会列出 dir_url 目录下的所有图片
+//   }
+//   // 客户端发起其它请求
+//   else {
+//     res.setHeader('Content-Type', 'application/json');
+//     res.redirect('/ueditor/ueditor.config.json');
+//   }
+// }));
 
 
 //template helpers
