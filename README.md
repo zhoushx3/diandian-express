@@ -1,8 +1,3 @@
-任务分配如下：
-赖渊：新闻动态/图片新闻/活动预告
-晓航：志愿者申请/资助申请表/点点相册
-嘉威：横幅管理/修改密码/账户管理
-少雄：捐赠明细/财务报表/分享交流
 
 log:
 
@@ -79,4 +74,3 @@ public/stylesheet/sidebar.less
 views/news/albumList.jade
 
 财务公开
-
