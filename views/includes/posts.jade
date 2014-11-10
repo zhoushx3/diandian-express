@@ -3,13 +3,12 @@ mixin posts(posts)
     h2 最近动态
     each post in posts
       .post
-        a.cover(href='/news/posts/' + post._id)
-          img(alt='cover', src=post.cover)
+        a.viewCountTracer.cover(href='/news/posts/' + post._id, style="background: url(#{post.cover}) no-repeat; background-size: 100%; background-position: center")
         .right
           h3.title
-            a.generalA(href='/news/posts/' + post._id)= post.title
-          h4= formatDate(post.createdAt)
-          p.digest= post.digest
-        .footer
-          a.generalA(href='/news/posts/' + post._id) 详情&gt;|
+          a.viewCountTracer.generalA(href='/news/posts/' + post._id)= post.title
+          h5= formatDate(post.createdAt)
+          a.viewCountTracer.generalB(href='/news/posts/' + post._id)=limitString(post.content)
         .clear
+    a.generalA(href='/news', style="margin:0 265px 0 0; float: right") 更多动态>>>
+   

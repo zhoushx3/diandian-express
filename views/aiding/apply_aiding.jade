@@ -1,8 +1,10 @@
 extends ../layout
 
 block content
-  form#aidingApplication.application.apply-aiding(name='aidingApplication', method="POST", action="/aiding/apply/submit")
-    legend 个人申请资助表格
+  form.formSubmit#aidingApplication.application.apply-aiding(name='aidingApplication', method="POST", action="/aiding/apply/submit")
+    h1 个人申请资助表格
+    fieldset
+      legend 
       .field
         label
           span.field-name 姓名：
@@ -56,7 +58,7 @@ block content
       .field
         label
           span.field-name 联系电话：
-          input#phone(type='text', name='cellphone')
+          input#cellphone(type='text', name='cellphone')
       .field
         label
           span.field-name 其他家庭成员及情况：
@@ -68,7 +70,7 @@ block content
       .field
         label
           span.field-name 是否有房产、定期存款、基金等固定财产：
-          input#posession(type='text', name='posession')
+          textarea#posession(type='text', name='posession')
       .field
         label
           span.field-name 现在住址：
@@ -82,5 +84,5 @@ block content
           span.field-name 申请助学金理由：
           textarea#reason(rows='3', cols='200', name='reason')
       .operation
-        button#submit.btn.btn-large.btn-danger(type = "submit") 提交
+        button#submit.btn.btn-large.btn-danger(style="margin-right: 160px" type = "submit") 提交
         button#reset.btn.btn-large.btn-warning(type = "reset") 重置

@@ -27,7 +27,7 @@
     });
 
     $('#donation-scroller span').on('click', function(){
-      location.href = '/donations';
+      location.href = '/finance/donations';
     });
   }
 })();

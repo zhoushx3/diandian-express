@@ -5,16 +5,17 @@ block content
 		h2 活动预告
 		ul
 			each item in items
-				li.foreshow=item.headline
+				li.foreshow.viewCountTracer=item.headline
+				li(style="display:none")=item._id
 
-	#activity_content
+	#activity_content(style="background: #fff")
 		each item in items
 			#contents
 				h2=formatDate(item.dest_time) + '  ' + item.logo
-				p="时间 " + formatDate(item.create_time) + '  作者 ' + item.author + ' 来源 ' + item.source
-				p="内容摘要: " + item.summary
-				p="活动目的: " + item.destination
-				p="活动内容: " + item.contents
-				p="主办单位: " + item.host
-				p="承办单位: " + item.guest
-				p="协办单位: " + item.help
+				p.summary="时间 : " + formatDate(item.create_time) + '  作者 : ' + item.author + ' 来源 : ' + item.source + '  查看次数 : ' + item.viewCount
+				div
+					p="活动目的: " + item.destination
+					p="活动内容: " + item.contents
+					p="主办单位: " + item.host
+					p="承办单位: " + item.guest
+					p="协办单位: " + item.help

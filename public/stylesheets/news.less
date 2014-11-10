@@ -3,16 +3,12 @@
   margin-bottom: 30px;
   position: relative;
   background-color: #FFF;
-  .current {
+  .current { 
     float: left;
     width: 300px;
     height: 250px;
-    padding: 15px;
+    margin: 15px 0 15px 15px;
     border-right: 0.25pt solid #EAEACA;
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
   .title {
     display: block;
@@ -24,7 +20,7 @@
     height: 280px;
     width: 573px;
     float: right;
-    div:first-child {
+    & > div:first-child {
       padding: 5px 15px 15px 15px;
       height: 160px;
     }
@@ -33,36 +29,27 @@
 	background-color: #F2F2F2;
 	height: 90px;
 	width: 573px;
-	position: absolute;
+	position: relative;
 	bottom: 0px;
 	overflow: hidden;
 	padding: 0px;
-    .left {
-      display: block;
-      height: 100%;
-      width: 5%;
-      position: absolute;
-      top: 0;
-      line-height: 80px;
-      cursor: pointer;
-      left: 5px;
-      display: none;
-    }
-    .right {
-      display: block;
-      height: 100%;
-      width: 5%;
-      position: absolute;
-      top: 0;
-      line-height: 80px;
-      cursor: pointer;
-      right: -7px;
+    p {
+        position: absolute;
+        cursor: pointer;
+        margin: 31px 20px;
+        padding: 3px 9px;
+        border-radius: 3px;
+        border: 1px solid #aaa;
+        background: #aaa;
+        &.right {
+          right: 0;          
+        }
     }
     .picture-list-outer {
       position: absolute;
-      left: 20px;
+      left: 60px;
       height: 85px;
-      width: 90%;
+      width: 75%;
       overflow: hidden;
       margin: 0 10px;
     }
@@ -73,8 +60,9 @@
     }
     img {
       height: 100%;
-      width: 100px;
+      width: 103px;
       margin: 2px;
+      border-radius: 4px;
       cursor: pointer;
     }
     img:first-child {
@@ -85,45 +73,47 @@
 
 #album-list {
   float: right;
-  height: 624px;	
+  height: 870px;	
   width: 220px;
   background-color: #ffffff;
-  .container {
-	width: 100%;
-	height: 1000px;
-	overflow: auto;
+  & > div {
+    height: 830px;
+    overflow: auto;
   }
   .album {
-	position: relative;
-	width: 90%;
-	margin: 0;
-	padding: 10px 0 0 12px;
-	height: 160px;
-    img {
-      width: 100%;
+    position: relative;
+    width: 90%;
+    margin: 0 10px 15px 10px;
+    height: 151px;
+    cursor: pointer;
+    &:hover .name {
+      display: block;
     }
-    h3 {
-      width: 100%;
+    & .name {
+      line-height: 35px;
+      font-size: 20px;
+      width: 198px;
       text-align: center;
-      font-size: 14px;
       position: absolute;
-      bottom: 20px;
-      background-color: #c3c3c3;
+      bottom: 0px;
+      background-color: rgba(210, 210, 210, 0.88); 
+      color: #fff;
       display: none;
-      width: 199px;
     }
-    a:hover {
-      h3 {
-        display: block;
-      }
-    }
+  }
+  .date {
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: -20px;
   }
 }
 
 #newPosts {
   float: left;
   width: 660px;
-  height: 690px;
+  height: 870px;
   border: 1px dotted #CCCCCC;
   background-color: #ffffff;
   position: relative;
@@ -173,12 +163,14 @@
 	bottom: 5px;
   }
   #movePage {
-	position: absolute;
-	bottom: 0;
-	text-align: center;
-	width: 100%;
+    text-align: center;
+    width: 100%;
     input {
       width: 15px;
+    }
+    a.generalA {
+      cursor: pointer;
+      margin: 0 10px;
     }
   }
 }

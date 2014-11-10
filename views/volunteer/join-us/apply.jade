@@ -1,9 +1,9 @@
 extends ../../layout
 
 block content
-  form#volunteer-application.application(name='volunteerApplication' method="post" action="/background/upload_volunteer_form" )
+  form.formSubmit#volunteer-application.application(name='volunteerApplication' method="post" action="/background/upload_volunteer_form" )
     h1 志愿者申请表格
-    fieldset
+    fieldset(style="text-align: left")
       legend 个人信息
       .field
         label
@@ -50,7 +50,7 @@ block content
       .field
         label
           span.field-name 身份证号：
-          input#IDCardNo(type='text', name='IDCardNo' value='')
+          input#ID-cardNo(type='text', name='IDCardNo' value='')
         label
           span.field-name 特长：
           input#speciality(type='text', name='speciality' value='')

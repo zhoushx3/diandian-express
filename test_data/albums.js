@@ -43,7 +43,22 @@ exports.insert = function(db, callback){
             createdAt: new Date(),
             cover: '/images/post1_6.jpg',
             pictures: pictureIds.slice(5)
+          },
+
+          {
+            name: 'album_4',
+            createdAt: new Date(),
+            cover: '/images/post1_2.jpg',
+            pictures: pictureIds.slice(2,3)
+          },
+
+          {
+            name: 'album_5',
+            createdAt: new Date(),
+            cover: '/images/post1_6.jpg',
+            pictures: pictureIds.slice(2,4)
           }
+
         ], function(err, result){
           if (err){
             throw new Error('向albums插入数据失败！');

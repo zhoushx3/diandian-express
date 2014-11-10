@@ -1,8 +1,8 @@
 ul#navigator
   li
     a.hrefTracer(href='/') 首页
-  li
-    a.hrefTracer.invalid(href='/news' onclick='return false' style='cursor: default') 点点活动
+  li.invalid
+    a.hrefTracer.invalid(href='/news' onclick='return false', style='cursor: default') 点点活动
     ul
       li
         a.hrefTracer(href='/news') 最新动态
@@ -14,7 +14,7 @@ ul#navigator
     a.hrefTracer(href='/aiding') 申请资助
   li
     a.hrefTracer(href='/finance') 财务公开
-  li
+  li.invalid
     a.hrefTracer.invalid(href='/volunteer' onclick='return false', style='cursor: default') 志愿团队
     ul
       li

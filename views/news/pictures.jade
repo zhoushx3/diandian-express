@@ -1,15 +1,14 @@
 block content
   div#pictures
-    div.current
-      img(src=pictures[0].src)
+    div.current(style="background: url(#{pictures[0].src}) no-repeat; background-size: 100%; background-position: center")
     div#notes
       div
         p.title= pictures[0].title
-        p.note= pictures[0].note
+        p.note(style="text-indent:30px")= pictures[0].note
       div.picture-list
-        a.left.generalA(title='上一页') <<
-        a.right.generalA(title='下一页') >>
+        p.left.generalA(title='上一页') <
         div.picture-list-outer
           div.picture-list-inner(style.width=width)
             each picture in pictures
-              img(src=picture.src, title=picture.title, data-id=picture._id)
+              img(src=picture.src, title=picture.title, data-note=picture.note)
+        p.right.generalA(title='下一页') >

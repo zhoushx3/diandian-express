@@ -7,18 +7,18 @@ exports.insert = function(db, callback) {
       "username": "testUser",
       "email": "test@test.com",
       "password": "testtesttest",
-      "createdAt": "1999-09-09",
+      // "createdAt": "1999-09-09",
       "role": 'user',
       "profile": {
-        "nickname": "nickname",
-        "gender": "male",
-        "birthday": "1993-08-22",
-        "job": "学生",
-        "phone": "8008208820",
-        "QQ": "479791014",
-        "weibo": "testWeibo",
-        "photo": '/images/photo/default.jpg',
-        "about": "我是大傻逼"
+      //   "nickname": "nickname",
+      //   "gender": "male",
+      //   "birthday": "1993-08-22",
+      //   "job": "学生",
+      //   "phone": "8008208820",
+      //   "QQ": "479791014",
+      //   "weibo": "testWeibo",
+      //   "photo": '/images/photo/default.jpg',
+      //   "about": "我是大傻逼"
       }
     }, function(err, result) {
       if (err) {

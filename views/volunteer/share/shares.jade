@@ -2,24 +2,28 @@ extends ../../layout
 
 block content	
 	#share
-		#module-one
-			img(alt=share[0].headline, src=share[0].path)
-			p=share[0].contents
-		#module-two
-			p=share[1].contents
-			img(alt=share[1].headline, src=share[1].path)
-		#module-three
-			p=share[2].contents
-			img(alt=share[2].headline, src=share[2].path)
+		.module
+			a(href="/volunteer/"+share[0]._id style="background: url(#{share[0].path}) no-repeat; background-size: 100%; background-position: center")
+			div
+				p=share[0].contents  + "......"
+		.module
+			div
+				p=share[1].contents + "......"
+			a(href="/volunteer/"+share[1]._id style="background: url(#{share[1].path}) no-repeat; background-size: 100%; background-position: center")
+		.module
+			div
+				p=share[2].contents + "......"
+			a(href="/volunteer/"+share[2]._id style="background: url(#{share[2].path}) no-repeat; background-size: 100%; background-position: center")
 		#module-headline
-			h1
-				span 志愿者感言 
-			//	span="第"  + "n" + "期"
-			small 点点公益感谢有你们
-		#module-four
-			img(alt=share[3].headline, src=share[3].path)
-			p=share[3].contents
-		#module-five
-			img(alt=share[4].headline, src=share[4].path)
-			p=share[4].contents
-			a(href='/volunteer/shareList') 查看更多志愿者的分享
+				span(style="font-size: 38pt; color: #fff; ") 志愿者感言 
+				span(style="font-size: 36pt; color: rgba(72, 64, 64, 1)")="第"  + share[0].period + "期"
+				span(style="font-size: 17pt; color: rgba(72, 64, 64, 1)")点点公益感谢有你们
+		.module
+			a(href="/volunteer/"+share[3]._id style="background: url(#{share[3].path}) no-repeat; background-size: 100%; background-position: center")
+			div
+				p=share[3].contents + "......"
+		.module
+			a(href="/volunteer/"+share[4]._id style="background: url(#{share[4].path}) no-repeat; background-size: 100%; background-position: center")
+			div
+				p=share[4].contents + "......"
+		a.generalA(href='/volunteer/shareList' style="float: right; margin: 30px") 查看更多志愿者的分享

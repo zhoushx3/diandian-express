@@ -13,7 +13,7 @@
       localStorage.age = $("#age").val();
       localStorage.ID = $("#ID-cardNo").val();
       localStorage.work = $("#work").val();
-      localStorage.phone = $("#phone").val();
+      localStorage.phone = $("#cellphone").val();
       localStorage.else = $("#else").val();
       localStorage.income = $("#income").val();
       localStorage.pocession = $("#pocession").val();
@@ -35,7 +35,7 @@
       $("#age").val(localStorage.age);
       $("#ID-cardNo").val(localStorage.ID);
       $("#work").val(localStorage.work);
-      $("#phone").val(localStorage.phone);
+      $("#cellphone").val(localStorage.phone);
       $("#income").val(localStorage.income);
       $("#income").val(localStorage.income);
       $("#pocession").val(localStorage.pocession);

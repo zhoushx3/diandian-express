@@ -1,0 +1,64 @@
+#share {
+	width: 100%;
+	height: 690px;
+	background: #fff;
+}
+.module {
+	width: 450px;
+	height: 200px;
+	border: 1pt solid #aaa;
+	border-collapse: collapse;
+	display: inline-block;
+	float: left;
+	> div {
+		padding: 20px;
+		width: 61%;
+		height: 161px;
+		float: left;
+		overflow: hidden;
+		p {
+			width: 270px;
+			line-height: 27px;
+			text-indent: 38px;
+			font-size: 15px;
+			word-wrap: break-word;
+		}
+	}
+	a {
+		width: 30%;
+		height: 100%;
+		display: block;
+		float: left;
+	}
+}
+
+
+#module-headline {
+	width:  392px;
+	height: 102px;
+	padding:  60px 30px 40px 30px;
+	float: left;
+	position: relative;
+	background-color: #c7cb16;
+	span+span+span {
+		right: 29px;
+		bottom: 67px;
+		position: absolute;
+	}
+}
+
+#shareList {
+	height: 700px;
+	overflow: auto;
+	width: 100%;
+	background-color: #ffffff;
+}
+#shareList li {
+	text-align: left;
+	padding: 10px 20px;
+	border-bottom: 1px dotted #CCCCCC;
+	a, p, h4 {
+		margin-right: 30px;
+		display: inline-block;
+	}
+}

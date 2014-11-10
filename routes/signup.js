@@ -30,32 +30,32 @@ router.post('/', function(req, res) {
 	var username = req.body.username,
 		email = req.body.email,
 		nickname = req.body.nickname,
-		gender = req.body.gender,
-		birthday = req.body.birthday,
-		job = req.body.job,
-		phone = req.body.phone,
-		QQ = req.body.QQ,
-		weibo = req.body.weibo,
-		about = req.body.about,
-		date = new Date(),
-		month = date.getMonth() + 1;
+		gender = req.body.gender;
+		// birthday = req.body.birthday,
+		// job = req.body.job,
+		// phone = req.body.phone,
+		// QQ = req.body.QQ,
+		// weibo = req.body.weibo,
+		// about = req.body.about,
+		// date = new Date(),
+		// month = date.getMonth() + 1;
 
 	var newUser = new User({
 		"username": username,
 		"email": email,
 		"password": password,
-		"createdAt": date.getFullYear() + '-' + month + '-' + date.getDate(),
+		// "createdAt": date.getFullYear() + '-' + month + '-' + date.getDate(),
 		"role": 'user',
 		"profile": {
-			"nickname": nickname,
+		// 	"nickname": nickname,
 			"gender": gender,
-			"birthday": birthday,
-			"job": job,
-			"phone": phone,
-			"QQ": QQ,
-			"weibo": weibo,
-			"photo": '/images/photo/default.jpg',
-			"about": about
+		// 	"birthday": birthday,
+		// 	"job": job,
+		// 	"phone": phone,
+		// 	"QQ": QQ,
+		// 	"weibo": weibo,
+		// 	"photo": '/images/photo/default.jpg',
+		// 	"about": about
 		}
 	});
 

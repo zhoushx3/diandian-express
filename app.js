@@ -9,7 +9,7 @@ var config = require('./config/config');
 var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
-
+var ueditor = require("ueditor");
 var app = express();
 
 // view engine setup

@@ -1,18 +1,19 @@
 extends ../layout
 
 block content
-  #postPage
+  #postContents
     .post
       h2.post-title=post.title
-      .post-info
-        | 发布时间:
+      .digest(style="text-align:center")
+        |   时间  :  
         span.head=formatDate(post.createdAt)  
-        | 发布者:
-        span.head=author
-        | 查看:
-        span.head=post.viewCount  
-      //  | 评论:
-      //  span.head=post.commentCount  
-      .post-content!=post.content
+        |   发布者  :  
+        span.head=post.author
+        |   查看  :  
+        span.head.viewCount=post.viewCount  
+      -var i = 0
+          while (i < SegmentText(post.content).length)
+            p.post-content=SegmentText(post.content)[i++]
+      img.post-img(src=post.cover, alt="cover", style="display: block; margin: 0 auto")
     // include ../includes/sharebar
     // {{> comments}}

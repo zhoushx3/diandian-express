@@ -124,8 +124,8 @@ router.get('/share', function(req, res) {
 
   db.collection('share', function(err, col) {
     col.find({}, {
-      'limit': 5,
-      'skip': 2
+      limit : 5,
+      sort : { period: -1}
     }).toArray(function(err, docs) {
       share = docs;
       callback();
@@ -148,7 +148,11 @@ router.get('/shareList', function(req, res) {
   var db = req.db;
   var share, number;
   db.collection('share', function(err, col) {
-    col.find({}).toArray(function(err, docs) {
+    col.find({}, {
+      sort: {
+        period: -1
+      }
+    }).toArray(function(err, docs) {
       share = docs;
       callback();
     });

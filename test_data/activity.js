@@ -6,7 +6,7 @@ exports.insert = function(db, callback){
     col.insert([
       {
         headline: '雷锋预告',
-        dest_time: new Date(2014, 3, 10),
+        dest_time: new Date(2015, 11, 10),
         create_time: new Date(2014, 2, 11),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
@@ -16,12 +16,13 @@ exports.insert = function(db, callback){
         contents: '期西方文明的伟大人物',
         host: '阿里巴巴',
         guest: '腾讯',
-        help: '百度'
+        help: '百度',
+        viewCount: 1
       },
 
       {
         headline :'快乐游园',
-        dest_time: new Date(2014, 4, 2),
+        dest_time: new Date(2015, 4, 2),
         create_time: new Date(2014, 3, 2),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
@@ -31,12 +32,13 @@ exports.insert = function(db, callback){
         contents: '期西方文明的伟大人物',
         host: '阿里巴巴',
         guest: '百度',
-        help: '腾讯'
+        help: '腾讯',
+        viewCount: 0
       },
 
       {
         headline: '公益课堂',
-        dest_time: new Date(2014, 1, 2),
+        dest_time: new Date(2015, 1, 2),
         create_time: new Date(2014, 0, 2),
         logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
         author: '阿平 ',
@@ -46,7 +48,8 @@ exports.insert = function(db, callback){
         contents: '期西方文明的伟大人物',
         host: '百度',
         guest: '腾讯',
-        help: '阿里巴巴'
+        help: '阿里巴巴',
+        viewCount: 0
       }
     ], function(err, result){
       if (err){

@@ -8,7 +8,7 @@
 			$('li').removeClass('active');
 			$(this).addClass('active');
 			$('#activity_content #contents').css('display', 'none');
-			$('#activity_content #contents').eq($(this).index()).css('display', 'block');
+			$('#activity_content #contents').eq($(this).index()/2).css('display', 'block');
 		});
 	}
 })();

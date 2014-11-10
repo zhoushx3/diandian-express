@@ -11,8 +11,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_cat.jpg',
         headline: 'cute_cat', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: "It's a lucky cat",
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -21,8 +21,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_cat2.jpg',
         headline: 'cute_cat2', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: "It's a lucky cat222",
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -31,8 +31,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_dog.jpg',
         headline: 'cute_dog', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -41,8 +41,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_dog2.jpg',
         headline: 'cute_dog2', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothi',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -51,8 +51,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_rabbit.jpg',
         headline: 'cute_rabbit', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnonothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothithingnothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -61,8 +61,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_rabbit2.jpg',
         headline: 'cute_rabbit2', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnotnothingnothingnothingnothihingnothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -71,8 +71,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_what.jpg',
         headline: 'cute_what', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnothingnothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothinothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -81,8 +81,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_wolf.jpg',
         headline: 'cute_wolf', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothinothingnothingnothingnothinothingnothingnothingnothingnothingnothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -91,8 +91,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_rabbit2.jpg',
         headline: 'cute_rabbit2', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnotnothingnothingnothingnothihingnothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       },
 
       {
@@ -101,8 +101,8 @@ exports.insert = function(db, callback){
         author: 'who',
         path: '/images/share/cute_what.jpg',
         headline: 'cute_what', 
+        summary: 'I dont know, think about it yourself, thanks',
         contents: 'nothingnothingnothingnothingnothingnothingnothinothingnothingnothingnothinothingnothingnothingnothinothingnothingnothing',
-        summary: 'I dont know, think about it yourself, thanks'
       }
 
     ], function(err, result){

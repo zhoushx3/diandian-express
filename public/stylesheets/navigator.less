@@ -5,10 +5,6 @@
     display: block;
     color: #d1de30;
     width: 100%;
-  
-    a.invalid {
-      cursor: default;
-    }
   }
   
   li:hover > a {
@@ -16,7 +12,7 @@
     color: #ffffff;
   }
 
-  li {
+  li, li.invalid:hover {
     width: 145px;
     height: 35px;
     font-size: 20px;
@@ -27,6 +23,10 @@
     background: -ms-linear-gradient(#ffffff 0%,#E7E7E7 100%);  /** IE9 IE10 **/
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#E7E7E7',grandientType=1); /*IE7*/
     -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#E7E7E7',grandientType=1); /*IE8*/
+  }
+
+  li.invalid:hover a.invalid{
+    color: #D1DE30;
   }
   
   & > li {

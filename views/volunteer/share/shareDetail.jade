@@ -4,10 +4,11 @@ block content
   #postPage
     .post
       h2.post-title=share_item.headline
-      .post-info
-        | 发布时间:
+      .post-info(style="text-align:center")
+        |  发布时间 : 
         span.head=formatDate(share_item.date) 
-        | 发布者:
+        |  发布者 :  
         span.head=share_item.author
-      img(alt=share_item.headline, src=share_item.path) 
-      .post-content!=share_item.contents
+      .digest=" 摘要 : " + share_item.summary
+      .post-content(style="text-indent: 45px")=share_item.contents
+      img(alt=share_item.headline, src=share_item.path, style="display: block; margin: 30px auto") 

@@ -50,9 +50,6 @@ router.get('/', function(req, res) {
         createdAt: -1
       },
       limit: 3,
-      fields: {
-        content: 0
-      }
     }).toArray(function(err, docs) {
       posts = docs;
       callback();
