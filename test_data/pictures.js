@@ -16,7 +16,7 @@ exports.insert = function(db, callback){
           tempPictures.push({
             createdAt: new Date(),
             createdBy: doc._id,
-            src: '/images/post1_' + i + '.jpg',
+            src: '/images/picture_news/post1_' + i + '.jpg',
             title: '图片' + i,
             note: '这是图片新闻' + i
           });

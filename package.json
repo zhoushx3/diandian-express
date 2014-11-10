@@ -19,7 +19,7 @@
     "mongodb": "~1.4.5",
     "morgan": "~1.0.0",
     "static-favicon": "~1.0.0",
-    "ueditor": "0.0.7",
+    "ueditor": "^1.0.0",
     "underscore": "^1.6.0"
   },
   "devDependencies": {
