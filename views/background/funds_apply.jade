@@ -58,21 +58,21 @@ block content
 
 	#backgroundFundsApply
 		h3(style="text-align: center") 资助申请表
-		p 未审核
+		p(style="font-size: 14px") 未审核
 		#funds_unchecked
 			for fund in fundsApply
 				.fund_apply_item
 					a.view_fund_apply.generalA(data-name=fund.name, name=fund._id, role='button', data-toggle='modal', href='#fund')=fund.name + "  " +  formatDate(fund.date)
 					
 		hr 
-		p 已通过 
+		p(style="font-size: 14px") 已通过 
 		#funds_passed
 			for fund in fundsPassed
 				.fund_apply_item
 					a.view_fund_apply.generalA(name=fund._id, role='button', data-toggle='modal', href='#fund')=fund.name + "  " +  formatDate(fund.date)
 
 		hr 
-		p 未通过
+		p(style="font-size: 14px") 未通过
 		#funds_unpassed
 			for fund in fundsUnPassed
 				.fund_apply_item
@@ -80,7 +80,7 @@ block content
 
 
 		hr
-		p 按标签查询
+		p(style="font-size: 20px")  按标签查询
 		select(name="lables")
 			for item in labels[0].label
 				option=item

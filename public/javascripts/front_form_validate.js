@@ -1,6 +1,8 @@
 (function() {
+	var correct = true;
 	var form = $(".formSubmit");
 	form.submit(function(e) {
+		correct = true;
 		$('.formWarning').hide();
 		hasNull(e);
 		validate(e);
@@ -9,8 +11,10 @@
 	// function
 	function hasNull(e) {
 		for (var x = 0; x < 15; ++x)
-			if (isNull($(e.target).find('input[type="text"]').eq(x).val()))
-				$(e.target).find('input[type="text"]').eq(x).after('<span class="formWarning"> *</span>');
+			if (isNull($(e.target).find('input[type="text"]').eq(x).val())) {
+				correct = false;
+				$(e.target).find('input[type="text"]').eq(x).after('<span class="formWarning"> * </span>');
+			}
 	}
 
 	function validate(e) {
@@ -29,74 +33,75 @@
 		var $postcode = $(e.target).find('#postcode');  // 邮政编码
 		var $QQ = $(e.target).find('#QQ'); // QQ
 		if ($userName.length !== 0 && (isNull($userName.val()) || !isChinaOrNumbOrLett($userName.val()))) {
-			e.preventDefault();
+			correct = false;
 			$userName.after('<span class="formWarning"> 只能由汉字、字母、数字组成 </span>');
 		}
 
 		if ($email.length !== 0  && (isNull($email.val()) || !isEmail($email.val()))) {
-			e.preventDefault();
+			correct = false;
 			$email.after('<span class="formWarning"> 必须是合法邮箱 </span>');
 		}
 		
 		if ($password.length !== 0  && (isNull($password.val()) || !isLengthMathc($password.val(), 6, 12))) {
-			e.preventDefault();
+			correct = false;
 			$password.after('<span class="formWarning"> 密码长度 6 - 12 位 </span>');
 		}
 
 		if ($repeat_password.length !== 0  && isNull($repeat_password .val())) {
-			e.preventDefault();
+			correct = false;
 			$repeat_password.after('<span class="formWarning"> 两次密码输入不同 </span>');
 		}
 
 		if ($name.length !== 0  && (isNull($name.val()) || !isChinaOrNumbOrLett($name.val()))) {
-			e.preventDefault();
+			correct = false;
 			$name.after('<span class="formWarning"> 由汉字、字母、数字组成 </span>');
 		}
 
 		if ($nation.length !== 0 && (isNull($nation.val()) || !nation($nation.val()))) {
-			e.preventDefault();
+			correct = false;
 			$nation.after('<span class="formWarning"> 必须是属于中华56民族 </span>');
 		}
 
 		if($birth_year.length !== 0  && !isNumber($birth_year.val())) {
-			e.preventDefault();
+			correct = false;
 			$birth_year.after('<span class="formWarning"> 不合理 </span>');
 		}
 
 		if($birth_month.length !== 0  && !isNumber($birth_month.val())) {
-			e.preventDefault();
+			correct = false;
 			$birth_month.after('<span class="formWarning"> 不合理 </span>');
 		}
 
 		if($ID_card.length !== 0  && !IdCardRegCheck($ID_card.val())) {
-			e.preventDefault();
+			correct = false;
 			$ID_card.after('<span class="formWarning"> 不合理 </span>');
 		}
 
 		if($age.length !== 0  && !isNumber($age.val())) {
-			e.preventDefault();
+			correct = false;
 			$age.after('<span class="formWarning"> 必须是数字 </span>');
 		}
 
 		if($cellphone.length !== 0  && !checkMobile($cellphone.val())) {
-			e.preventDefault();
+			correct = false;
 			$cellphone.after('<span class="formWarning"> 不合理手机号码 </span>');
 		}
 
 		if($phone.length !== 0  && !checkPhone($phone.val())) {
-			e.preventDefault();	
+			correct = false;
 			$phone.after('<span class="formWarning"> 不合理电话号码 </span>');
 		}
 
 		if($postcode.length !== 0  && !isZip($postcode.val())) {
-			e.preventDefault();	
+			correct = false;
 			$postcode.after('<span class="formWarning"> 不是正确的邮政编码 </span>');
 		}
 
 		if($QQ.length !== 0  && !isQQ($QQ.val())) {
-			e.preventDefault();	
+			correct = false;
 			$QQ.after('<span class="formWarning"> 不正确的QQ号码 </span>');
 		}
+		if (!correct) e.preventDefault();
 	}
 /*
 用途：检查输入字符串是否为空或者全部都是空格

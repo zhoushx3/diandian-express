@@ -160,8 +160,10 @@ router.post("/upload_volunteer_form", function(req, res) {
          db.insert(volunteerApply, function(err, item) {
            assert.equal(null, err);
           });
+         req.flash('success', '申请表格投递成功,请等候审核');
          res.redirect("/volunteer/apply");
         } else {
+          req.flash('err', '请勿重复申请');
           res.redirect("/volunteer/apply");
         }
       }
@@ -1147,6 +1149,56 @@ router.post('/bannersubmitt', function(req, res) {
     }
     res.redirect('/background/banners');
   });
+});
+/*
+ **  后台横幅 添加链接
+ */
+router.post('/addLink', function(req, res) {
+  var db = req.db;
+  var activity = [];
+  var posts = [];
+  var all = [];
+  var count = 0;
+  db.collection('activity', function(err, col) {
+    col.find({}, {'headline': 1, _id: 1}).toArray(function(err, docs) {
+      activity = docs;
+      callback();
+      });
+    });
+  db.collection('posts', function(err, col) {
+    col.find({}, { 'title': 1,  _id: 1, }).toArray(function(err, docs) {
+      posts = docs;
+      callback();
+    });
+  });
+  function callback() {
+    if (count === 0)
+      count  = 1;
+    else {
+      all.push(activity);
+      all.push(posts);
+      res.send(all);
+    }
+  }
+});
+router.post('/modifyLink', function(req, res) {
+  var db = req.db;
+  var src = req.body.src;
+  var type = req.body.type;
+  var id = req.body.id;
+  if (type === 'foreshowUL') {
+    db.collection('carousels', function(err, col) {
+      col.update({'src': src}, {$set: {'link': '/news/activity'}}, function(err, item) {
+        res.send(item);
+      });
+    });
+  } else {
+    db.collection('carousels', function(err, col) {
+      col.update({'src': src}, {$set: {'link': '/news/posts/'+id}}, function(err, item) {
+        res.send(item);
+      });
+    });
+  }
 });
 
 /*

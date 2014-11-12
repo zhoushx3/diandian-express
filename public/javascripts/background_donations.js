@@ -4,6 +4,7 @@
 		$('.send').click(function() {
 				var texts = [];
 				var $input = $(this).parent().parent().find('input');
+				texts.push($input.eq(0).attr('value'));
 				for (var i = 1; i < $input.length; ++i) {
 					if ($input.eq(i).val() === '') {
 						$('#warning-every-fault').modal();
@@ -100,10 +101,14 @@
 					amounts: amounts,
 				},
 				success: function(data) {
-					if (data)
+					if (data) {
+						$(event.target).prev().click();
 						$('#operation-success').modal();
-					else
+					}
+					else {
+						$(event.target).prev().click();
 						$('#operation-fail').modal();
+					}
 				}
 			});
 		});
@@ -145,13 +150,17 @@
 					notes: notes,
 				},
 				success: function(data) {
-					if (data)
+					if (data) {
+						$(event.target).prev().click();
 						$('#operation-success').modal();
-					else
+					}
+					else {
+						$(event.target).prev().click();
 						$('#operation-fail').modal();
+					}
 				}
 			});
 		});
-
+		
 	}
 })();

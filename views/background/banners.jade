@@ -9,6 +9,18 @@ block content
 		.modal-footer
 			button.no.btn(data-dismiss='modal', aria-hidden='true')  取消 
 			button.yes.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 删除
+
+	div#addLink.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		.modal-body
+			h4 活动预告 
+			ul.foreshowUL 
+			h4 动态新闻
+			ul.postsUL
+		.modal-footer
+			button.no.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true')  取消 
+			button.yes.btn(data-dismiss='modal', aria-hidden='true') 确定
 			input.hiddenBanner(style="display: none" type="text", name="hiddenBanner", value="")
 
 	#background_banners
@@ -18,10 +30,11 @@ block content
 		div#warning
 			p 亲爱的管理员，请注意：
 			p 上传的横幅将呈现在首页，请适当删除过期的横幅，确保横幅总数不超过<span style="color: red"> 5 </span>	个。
-			p 请上传不大于1M的图片，且宽高比为<span style="color: red"> 904：280 </span>。
+			p 请上传不大于1M的图片，且宽高比为<span style="color: red"> 904：280 </span>, 否则显示比例会有差。
+			p PS : 点击横幅修改链接
 		div#div-image
 			-var number = banners.length
 				while (number > 0)
 					div
-						img(src=banners[--number].src, alt=banners[number].src)
+						img(style="cursor: pointer" src=banners[--number].src, alt=banners[number].src)
 						input.delete.btn.btn-danger(style="background-color: gray; color: #fff" type="button", value="删除" data-toggle="modal" href='#deletebanner')

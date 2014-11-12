@@ -624,11 +624,13 @@ p.summary {
 #backgroundNav .down-bottom {
   height: 135px;
 }
-#background-content {
+#background-content,
+#backgroundFundsApply,
+#backgroundVolunteersApply {
   float: right;
-  max-height: 1000px;
   width: 850px;
-  overflow: auto;
+  height: auto;
+  margin-bottom: 100px;
 }
 #background-alert-flash {
   text-align: center;
@@ -636,7 +638,8 @@ p.summary {
   margin-left: 173px;
 }
 .view_fund_apply {
-  display: block;
+  display: inline-block;
+  padding: 10px;
 }
 
 #backgroundFinace {
@@ -856,6 +859,14 @@ input.hiddenAlbumNames {
   margin-top: 10px;
   margin-bottom: 40px;
 }
+#addLink {
+  max-height: 500px;
+  overflow-y: auto;
+}
+#addLink label {
+  text-align: left;
+  margin-left: 30px;
+}
 
 .historyRecord,
 .newRecord {
@@ -943,7 +954,8 @@ input.type {
 #unlimited-history,
 #material-history,
 #warning-to-fill-blank,
-#operation-success {
+#operation-success,
+#warning-every-fault {
   background-color: #CCCC99;
   padding: 20px;
 }
@@ -1098,13 +1110,6 @@ input.type {
 .volunteer_apply_item {
   margin: 10px;
 }
-/*.view_volunteers_apply_button {
-  float: right;
-}
-
-.delete_volunteers_button {
-  float: right;
-}*/
 
 #donation-scroller {
   width: 100%;

@@ -74,6 +74,7 @@ router.post('/apply/submit', function(req, res) {
       if (err) {
         console.log("Something wrong happened in adding imformation to the aiding database.");
       } else {
+        req.flash('success', '资助申请表投递成功,请等候审核');
         res.redirect("/aiding");
       }
     });

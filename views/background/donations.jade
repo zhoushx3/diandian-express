@@ -6,11 +6,21 @@ block content
 	-var month = now.getMonth()+1
 	-var day = now.getDate()
 
+	div#operation-success.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-body-body
+			h3(style="text-align:center") 发布成功
+
+	div#operation-fail.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-body-body
+			h3(style="text-align:center") 发布失败
+
 	div#warning-every-fault.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
 		div.modal-body-body
-			h3(style="border-bottom:1px solid #fff") warning
-			h3(style="text-align:center")请将空格补齐
+			h3 warning
+			h3(style="text-align:center") 请将空格补齐
 
 	div#unlimited-mul.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
@@ -51,7 +61,7 @@ block content
 			-var i = 1
 				while (i <= 12)
 					option=i++ + "月"
-		ul.donation-history
+		ul.donation-history(style="max-height: 300px; overflow-y: auto")
 
 	div#limited-history.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
@@ -64,11 +74,11 @@ block content
 			-var i = 1
 				while (i <= 12)
 					option=i++ + "月"
-		ul.donation-history
+		ul.donation-history(style="max-height: 300px; overflow-y: auto")
 
 	div#material-history.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
-		h3 限定性捐款
+		h3 物资捐款 
 		select(name="2")
 			-var i = 2012
 				while (i <= year)
@@ -77,7 +87,7 @@ block content
 			-var i = 1
 				while (i <= 12)
 					option=i++ + "月"
-		ul.donation-history
+		ul.donation-history(style="max-height: 300px; overflow-y: auto")
 
 	div#donations-body
 		div#unlimited-donations
