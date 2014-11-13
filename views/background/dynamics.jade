@@ -1,26 +1,44 @@
 extends  ../background_layout
 
 block content
+
 	div#dynamic-news
-		a(href='./dynamics-edit')
+		a(href='./dynamics/dynamics-edit')
 			button#add-news 添 加 新 闻
-		div
-			p.news-title 英格兰公投
-			p.news-date 2014年9月21日 15:30:00
-			a(href='./dynamics-edit') 编辑
-			a(href='#') 删除
-			hr
+		for i in posts	
+			a.generalA.posts-edit(role='button', data-toggle='modal' href='##{i._id}')=i.title + " " + formatDate(i.createdAt)
+			.modal.hide.fade(id= '#{i._id}' tabindex='-1', role='dialog', aria-hidden='true' style="background-color: #CC9")
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+					h3(style="text-align: center") 动态新闻
+				.modal-body
+					form(method="post" action="/background/dynamics/update_posts?id=#{i._id}")
+						p
+							span 标题
+							input(name="title" type="text" value="#{i.title}")
+						p
+							span 作者
+							input(name="author" type="text" disabled="disabled" value="#{i.author}")
+						p
+							span 内容
+							textarea(style="width: 400px; height: 300px; resize: none" name="content")=i.content	
+						p
+							span 修改时间
+							input(name="createdAt" type="text" value=formatDate(i.createdAt))
+						p
+							span 插图
+							img.post-img.img-rounded(src="#{i.cover}" width="200px" height="180px")
+						input.btn(role='button' style="position: absolute; right: 100px; bottom: -140px" type="submit" value="确认")
+				.modal-footer
+					button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+					a.post-delete.btn.btn-danger(style="background-color: gray" role='button', data-toggle='modal' href='#delete-post' value=i._id) 删除 		
 
-		div
-			p.news-title 王菲谢霆锋复合
-			p.news-date 2014年9月22日 16:30:00
-			a(href='./dynamics-edit') 编辑
-			a(href='#') 删除
-			hr
-
-		div
-			p.news-title 李娜退役
-			p.news-date 2014年9月23日 17:30:00
-			a(href='./dynamics-edit') 编辑
-			a(href='#') 删除
-			hr
+	.modal.hide.fade(id= 'delete-post' tabindex='-1', role='dialog', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+			h3 Warning
+		.modal-body
+			p 你确定要删除这条动态新闻吗?
+		.modal-footer
+			button.btn(data-dismiss='modal', aria-hidden='true') 取消
+			a.btn.btn-danger.posts-delete-confirm(style="background-color: gray") 删除

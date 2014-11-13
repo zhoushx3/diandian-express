@@ -9,9 +9,11 @@ var express = require('express'),
   crypto = require('crypto'),
   DOCS_PATH = 'docs/',
   PICTURES_NEWS_PATH = 'public/images/picture_news/',
+  PICTURES_POST_PATH =  'public/images/posts/',
 //  VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
   MAXFILESZIZE = 4 * 1024 * 1024,
-  MAX_PICTURES_NEWS_SIZE = 15 * 1024 * 1024;
+  MAX_PICTURES_NEWS_SIZE = 1 * 1024 * 1024;
+  MAX_PICTURES_POST_SIZE = 1 * 1024 * 1024;
 //  MAXHEADIMGSZIZE = 2 * 1024 * 1024;
 
 
@@ -225,7 +227,105 @@ router.get('/volunteers_apply', function(req, res) {
     });
   });
 });
-// 图片新闻 部分
+// 动态新闻
+router.get('/dynamics', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  var db = req.db.collection('posts');
+  db.find({}, {sort: {createdAt: -1}}).toArray(function(err, docs) {
+    var data = docs;
+    res.render('background/dynamics', {
+      title: 'dynamics',
+      posts: data,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+// 动态新闻 编辑
+
+// 删除动态新闻,保留插图
+router.post('/delete_post', function(req, res) {
+  var db = req.db.collection('posts');
+  var ObjectID = require('mongodb').ObjectID;
+  db.remove({_id: ObjectID(req.body.post_id)}, function(err, item) {
+    if (err) console.log(err);
+    else res.redirect('dynamics');
+  });
+});
+//修改动态新闻
+router.post('/dynamics/update_posts', function(req, res) {
+  var db = req.db.collection('posts');
+  var ObjectID = require('mongodb').ObjectID;
+  db.update({_id: ObjectID(req.query.id)}, {$set: {title: req.body.title, content: req.body.content, createdAt: req.body.createdAt}}, function(err, item) {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('../dynamics');
+    } 
+  });
+});
+// 添加动态新闻
+router.get('/dynamics/dynamics-edit', function(req, res) {
+  if (!req.session.user) {
+    req.flash('error', '请先登陆');
+    return res.redirect('/signin');
+  }
+  if (req.session.user.role != 'admin') {
+    req.flash('error', '请用管理员账号登陆后台');
+    return res.redirect('/ ');
+  }
+  res.render('background/dynamics-edit', {
+    title: 'dynamics',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+router.post('/dynamics/upload_post', function(req, res) {
+  var db = req.db.collection('posts');
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    if (err) {
+      res.locals.error = err;
+      console.log(err);
+      return;
+    } else if (files.newCover.size === 0) {
+      res.redirect('../dynamics/dynamics-edit');
+      return;
+    } else {
+          form.uploadDir = PICTURES_POST_PATH;
+          form.keepExtensions = true;
+          form.maxFieldSize = MAXFILESZIZE;
+          var newPost = newPicture_post(fields, files);
+          db.insert(newPost, function(err, item) {
+            assert.equal(null, err);
+            fs.renameSync(files.newCover.path,  PICTURES_POST_PATH + files.newCover.name);
+            res.redirect('../dynamics');
+          });
+        }
+          function newPicture_post(fields,files) {
+            return {
+              createdAt: new Date(),
+              viewCount: 0,
+              commentCount: 0,
+              author: fields.newsCreator,
+              title: fields.newsTitle,
+              cover: '/images/posts/' + files.newCover.name,
+              content: fields.newContent,
+            };
+          }
+    });
+});
+// 图片新闻 部分  
 router.get('/news', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -248,18 +348,7 @@ router.get('/news', function(req, res) {
   });
 });
 
-router.post('/update_picture', function(req, res){
-  var db = req.db.collection('pictures');
-  db.update({src: req.query.src}, {$set: {title: req.body.title, note: req.body.note}}, function(err, item){
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect('news');
-    }
-  });
-});
-
-router.get('/news-edit', function(req, res) {
+router.get('/news/news-edit', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
     return res.redirect('/signin');
@@ -276,13 +365,22 @@ router.get('/news-edit', function(req, res) {
   });
 });
 
-router.post('/upload_picture_news', function(req, res) {
+router.post('/news/update_picture', function(req, res){
+  var db = req.db.collection('pictures');
+  db.update({src: req.query.src}, {$set: {title: req.body.title, note: req.body.note}}, function(err, item){
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('../news');
+    }
+  });
+});
+
+router.post('/news/upload_picture_news', function(req, res) {
   var db = req.db.collection('pictures');
   // using formidable
   var form = new formidable.IncomingForm();
-  form.uploadDir = PICTURES_NEWS_PATH; // set upload dir
-  form.keepExtensions = true; // 保留后缀
-  form.maxFieldSize = MAXFILESZIZE; // file size
   form.parse(req, function(err, fields, files) {
     if (err) {
       // expection handling
@@ -290,18 +388,25 @@ router.post('/upload_picture_news', function(req, res) {
       console.log(err);
       return;
     }
+    if (files.newsImage.size === 0) {
+      res.redirect('../news/news-edit');
+      return;
+    }
+    form.uploadDir = PICTURES_NEWS_PATH; // set upload dir
+    form.keepExtensions = true; // 保留后缀
+    form.maxFieldSize = MAXFILESZIZE; // file size
     var newPictureNews = newPicture_news(fields, files);
     db.findOne(
       {src: '/images/pircture_news' + files.newsImage.name},
       function(err, docs) {
         if (docs) {
-          res.redirect('news');
+            res.redirect('../news');
         } else {
           db.insert(newPictureNews, function(err, item) {
             assert.equal(null, err);
             // 重命名 文件
             fs.renameSync(files.newsImage.path,  PICTURES_NEWS_PATH + files.newsImage.name);
-            res.redirect('news');
+            res.redirect('../news');
           });
         }
       });
@@ -321,7 +426,6 @@ router.post('/upload_picture_news', function(req, res) {
       note: fields.newNote
     };
   }
-
 });
 
 // delete picture
@@ -528,40 +632,6 @@ router.post('/sendlimitedRecords', function(req, res) {
         save: true
       }, callback);
     }
-  });
-});
-
-router.get('/dynamics', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  res.render('background/dynamics', {
-    title: 'dynamics',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
-
-router.get('/dynamics-edit', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  res.render('background/dynamics-edit', {
-    title: 'dynamics',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
   });
 });
 
