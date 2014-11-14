@@ -11,7 +11,7 @@ block content
 	#activity_content(style="background: #fff")
 		each item in items
 			#contents
-				h2=formatDate(item.dest_time) + '  ' + item.logo
+				h2=formatDate(item.dest_time) + '  ' + item.headline
 				p.summary="时间 : " + formatDate(item.create_time) + '  作者 : ' + item.author + ' 来源 : ' + item.source + '  查看次数 : ' + item.viewCount
 				div
 					p="活动目的: " + item.destination

@@ -543,39 +543,6 @@ p.summary {
   width: 200px !important;
 }
 
-#news-editor {
-  margin-left: 210px;
-}
-#news-editor input {
-  line-height: 1.5em;
-  width: 800px;
-  height: 40px;
-  font-size: 25px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-#news-btn {
-  margin-top: 20px;
-  margin-left: 210px;
-}
-#news-btn button {
-  margin-bottom: 20px;
-  width: 100px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-#news-draft {
-  margin-right: 474px;
-}
-#news-cancel {
-  margin-right: 30px;
-}
-#news-logo {
-  margin-left: 880px;
-}
-
 #account {
   background-color: #f0e99f;
   padding: 10px;
@@ -626,7 +593,9 @@ p.summary {
 }
 #background-content,
 #backgroundFundsApply,
-#backgroundVolunteersApply {
+#backgroundVolunteersApply,
+#background_news,
+#backgroundFinace {
   float: right;
   width: 850px;
   height: auto;
@@ -641,21 +610,114 @@ p.summary {
   display: inline-block;
   padding: 10px;
 }
-
-#backgroundFinace {
-  height: 1000px;
-  overflow: auto;
+#add-picture-news,
+#add-news {
+  margin-top: -10px;
+  margin-bottom: 35px;
+  margin-left: 677px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
 }
+.picture-news-delete {
+  float: right;
+}
+.generalA.picture-news-edit {
+  width: 150px;
+  text-align: center;
+  display: inline-block;
+  margin: 10px 20px;
+}
+.img-rounded {
+  margin-left: 20px;
+}
+#background_news form input,
+#background_news form textarea {
+  display: inline-block;
+  margin-left: 20px;
+}
+#background_news form span {
+  display: inline-block;
+  width: 60px;
+}
+/*
+动态新闻
+*/
+#dynamic-news {
+  float: right;
+  width: 80%;
+  height: auto;
+}
+#dynamic-news form input,
+#dynamic-news form textarea {
+  display: inline-block;
+  margin-left: 10px;
+}
+#dynamic-news form span {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+.post-delete {
+  float: right;
+}
+.generalA.posts-edit {
+  display: block;
+  margin: 10px 20px;
+}
+#news-cancel {
+  margin: 21px 0 0 20px;
+}
+/*
+后台活动预告
+*/
+#foreshows-view {
+  width: 80%;
+  float: right;
+}
+#foreshows-view .modal-body span {
+  display: inline-block;
+  width: 70px;
+  margin-right: 10px;
+  text-align: right;
+}
+#foreshows-view .modal-body input {
+  text-align: center;
+}
+#add-foreshows {
+  float: right;
+  height: 40px;
+  background-color: #C4C400;
+  border-radius: 15px;
+}
+.foreshow-item input.hide {
+  display: none;
+}
+.foreshow-item a.foreshow-title {
+  font-size: 17px;
+}
+.foreshow-start-date {
+  display: block;
+  margin-top: 10px;
+  font-size: 15px;
+}
+.foreshow-end-date {
+  font-size: 15px;
+}
+.foreshow-end-date input {
+  width: 50px;
+  text-align: center;
+}
+.foreshow-end-date a.btn {
+  margin: 0  20px ;
+}
+/*
+后台财务报表
+*/
 #one {
   width: 90%;
-}
-.background_h1 {
-  line-height: normal;
-}
-#background_upload_button,
-.background_delete_button,
-.background_view_button {
-  float: right;
 }
 .itemReport,
 .annualReport,
@@ -664,6 +726,17 @@ p.summary {
 }
 .delete_files_button {
   margin-left: 10px;
+}
+#myView .btn {
+  display: block;
+  float: left;
+  margin: 0 100px;
+}
+#background_upload_button {
+  float: right;
+  height: 20px;
+  background-color: #C4C400;
+  border-radius: 15px;
 }
 
 /*background/albums.jade*/
@@ -845,6 +918,46 @@ input.hiddenAlbumNames {
   margin-top: 10px;
 }
 
+#news-editor {
+  margin: -80px 320px;
+  padding: 20px 60px;
+  height: 500px;
+  background-color: rgba(139, 249, 112, 0.84);
+}
+#news-editor input {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 20px auto;
+}
+#news-editor textarea {
+  resize: none;
+  width: 100%;
+  height: 200px;
+  margin: 20px auto;
+}
+#news-btn {
+  margin-top: 20px;
+  margin-left: 210px;
+}
+#news-btn button {
+  margin-bottom: 20px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: #C4C400;
+}
+#news-draft {
+  margin-right: 474px;
+}
+#news-cancel {
+  margin-right: 30px;
+}
+#news-logo {
+  margin-left: 880px;
+}
+
 #background_banners {
   width: 80%;
   float: right;
@@ -990,52 +1103,6 @@ input.type {
 }
 .donation-history li {
   text-align: left;
-}
-
-#dynamic-news {
-  margin-left: 200px;
-  padding: 10px;
-}
-#add-news {
-  margin-top: -10px;
-  margin-bottom: 35px;
-  margin-left: 677px;
-  width: 100px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-#dynamic-news .news-title {
-  width: 310px;
-  font-size: 20px;
-  float: left;
-}
-#dynamic-news .news-date {
-  width: 380px;
-  float: left;
-}
-#dynamic-news a {
-  margin-left: 5px;
-  color: #808000;
-  text-decoration: underline;
-}
-
-#add-picture-news {
-  margin-top: -10px;
-  margin-bottom: 35px;
-  margin-left: 677px;
-  width: 100px;
-  height: 40px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-.picture-news-edit {
-  float: right;
-}
-.picture-news-delete {
-  float: right;
 }
 
 #news-editor #upload-image {
@@ -1259,49 +1326,6 @@ input.type {
 }
 #footer > div:first-child {
   border-bottom: 1px solid #89939a;
-}
-
-#foreshows-view {
-  margin-left: 210px;
-  font-size: 20px;
-  line-height: 1em;
-}
-#foreshows-view button {
-  width: 100px;
-  border: 1px solid grey;
-  border-radius: 15px;
-  background-color: #C4C400;
-}
-#add-foreshows {
-  margin-left: 715px;
-  height: 40px;
-}
-.foreshow-item a {
-  text-decoration: underline;
-  color: #808000;
-  font-size: 15px;
-  margin-left: 5px;
-  float: right;
-}
-.foreshow-item input.hide {
-  display: none;
-}
-.foreshow-end-date-edit {
-  margin-left: 50px;
-  height: 25px;
-}
-.foreshow-title {
-  font-size: 25px;
-}
-.foreshow-start-date {
-  margin-top: 20px;
-  font-size: 17px;
-}
-.foreshow-end-date {
-  font-size: 17px;
-}
-.foreshow-end-date input {
-  width: 50px;
 }
 
 #share {

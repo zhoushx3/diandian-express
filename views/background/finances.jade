@@ -1,17 +1,17 @@
 extends  ../background_layout
 
 block content
-    backgroundFinace
+    #backgroundFinace
 
-      a#background_upload_button.btn(href='#upload', role='button', data-toggle='modal') 上传报表
+      a#background_upload_button.btn.btn-danger(href='#upload', role='button', data-toggle='modal') 上传报表
       // Modal
       #upload.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h3#myModalLabel 上传报表
-        .modal-body
+          h3#myModalLabel(style="text-align: center") 上传报表
+        .modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
           form#one(enctype='multipart/form-data' method='post' action='/background/finances')
-            h1 项目收支报表
+            h4 项目收支报表
             input(type='text' name='year' placeholder= '年份 输入格式: 2014')
             select(name='month')
               each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -19,10 +19,10 @@ block content
             p 上传文件重新命名为 年份-月份.后缀
             #oneItems
                 input(type="file" name="add")
-                input(id = 'item' type="submit" name="submit" value="提交" disabled="")
+                input(id = 'item' type="submit" name="submit" value="提交")
       
           form#two(enctype='multipart/form-data' method='post' action='/background/finances')
-            h1 季度报表
+            h4 季度报表
             input(type='text' name='year' placeholder= '年份 输入格式: 2014')
             select(name="month")
               each val in ['一', '二', '三', '四']
@@ -30,43 +30,40 @@ block content
             p 上传文件重新命名为 年份-第X季度.后缀
                #twoItems
                   input(type='file' name='add')
-                  input(id = 'season' type='submit' name='submit' value='提交' disabled="")
+                  input(id = 'season' type='submit' name='submit' value='提交')
       
           form#three(enctype='multipart/form-data' method='post' action='/background/finances')
-            h1 年度报表
+            h4 年度报表
             input(type='text' name='year' placeholder= '年份 输入格式: 2014')
             p 上传文件重新命名为 年度-年份.后缀
                 #threeItems
                 input(type='file' name='add')
-                input(id = 'annual' type='submit' name='submit' value='提交' disabled="")
+                input(id = 'annual' type='submit' name='submit' value='提交')
   
         .modal-footer
           button.btn(data-dismiss='modal', aria-hidden='true') 关闭
       
-      h1.background_h1 项目收支报表
+      h4.background_h1 项目收支报表
 
       #itemDisplay
         for fileName in itemFiles
             .itemReport 
-              li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
-                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
-      
-      h1.background_h1 季度报表
+                a.background_view_button.generalA(file="#{fileName}" href='#myView', role='button', data-toggle='modal')=fileName
+      hr
+
+      h4.background_h1 季度报表
       #seasonDisplay
         for fileName in seasonFiles
             .seasonReport 
-              li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
-                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
+                a.background_view_button.generalA(file="#{fileName}" href='#myView', role='button', data-toggle='modal')=fileName
       
-      h1.background_h1 年度报表
+      hr
+
+      h4.background_h1 年度报表
       #annualDisplay
         for fileName in annualFiles
             .annualReport 
-              li #{fileName}
-                a.background_delete_button.btn(file="#{fileName}" href='#myDelete', role='button', data-toggle='modal') Delete
-                a.background_view_button.btn(file="#{fileName}" href='#myView', role='button', data-toggle='modal') View
+                a.background_view_button.generalA(file="#{fileName}" href='#myView', role='button', data-toggle='modal')=fileName
 
       
       // myDelete
@@ -77,15 +74,17 @@ block content
         .modal-body
           p 确定要删除该报表么？
         .modal-footer
-          button.delete_files_button.btn(data-dismiss='modal', aria-hidden='true') 刪除
-          button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+          button.btn(data-dismiss='modal', aria-hidden='true') 取消
+          button.delete_files_button.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 刪除
 
       // myView
       #myView.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h3#myViewHeader
+          h3#myViewHeader(style="text-align: center")
         .modal-body
-          p#myViewContent 啦啦啦
+          img#myViewContent(src="")
         .modal-footer
-          button.btn(data-dismiss='modal', aria-hidden='true') 关闭
+          button.btn.btn-danger(style="background-color: #fff; color: #aaa" data-dismiss='modal', aria-hidden='true') 关闭
+          a.background_delete_button.btn.btn-danger(style="background-color: gray" href='#myDelete', role='button', data-toggle='modal') 刪除
+

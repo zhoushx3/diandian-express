@@ -11,9 +11,7 @@
         now = parseInt(container.css('margin-left'));
       if (now >= -426)
         $('#pictures .left').hide();
-      container.animate({
-        marginLeft: now + 426 + 'px'
-      }, 'slow');
+      container.css('margin-left', now + 426 + 'px');
       $('#pictures .right').show();
     });
 
@@ -23,9 +21,7 @@
           num = $('#pictures .picture-list-inner').children('img').length/4;
       if (-now - 426*(Math.floor(num)-1) >= 0)
           $('#pictures .right').hide();
-      container.animate({
-          marginLeft: now - 426 + 'px'
-      }, 'slow');
+      container.css('margin-left', now - 426 + 'px');
       $('#pictures .left').show();
     });
   }

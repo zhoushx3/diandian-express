@@ -510,27 +510,14 @@
 	}
 })();;(function(){
 
-	var preDeleteFileName;
-	function setFileName(name) {
-		preDeleteFileName = name;
-	}
-
-	function deleteFile(fileName) {
-		$.post("finances_deleteFiles", {
-			fileName: fileName
-		});
-	}
-
-	function deletePageElement (fileName) {
-		$("[file=" + "'" +fileName + "'" + "]").parent().parent().remove();
-	}
+	var fileName;
 
 	function setMyViewHeader(fileName) {
 		$("#myViewHeader").text(fileName.split('.')[0]);
 	}
 
 	function setMyViewContent(content) {
-		$("#myViewContent").text(content.content);
+		$("#myViewContent").attr('src', content.content);
 	}
 
 	$(".background_delete_button").click(function() {
@@ -538,7 +525,7 @@
 	});
 
 	$(".background_view_button").click(function(){
-		var fileName = $(this).attr("file");
+		fileName = $(this).attr("file");
 		$.post("finances_ViewFiles",{
 			fileName: fileName},
 			function(data){
@@ -550,30 +537,32 @@
 			});
 	});
 
-
 	$(".delete_files_button").click(function() {
-		console.log( preDeleteFileName );
-		deleteFile(preDeleteFileName);
-		deletePageElement( preDeleteFileName );
+		window.alert(fileName);
+		$.post("finances_deleteFiles", {
+			fileName: fileName
+		});
+		$("[file=" + "'" +fileName + "'" + "]").parent().parent().remove();
+		// deletePageElement( preDeleteFileName );
 	});
 	
 	/** IF input(type=file) is null
 		*	 disable input(type= submit)
 		* 	ELSE enable
 	**/
-	$("backgroundFinace input[type='file']").mouseout(function(){
-		console.log($(this).val());
-		if ($(this).val() !== '') {
-			$(this).next().removeAttr("disabled");
-		} else {
-			$(this).next().attr("disabled","");
-		}
-	});
+	// $("backgroundFinace input[type='file']").mouseout(function(){
+	// 	console.log($(this).val());
+	// 	if ($(this).val() !== '') {
+	// 		$(this).next().removeAttr("disabled");
+	// 	} else {
+	// 		$(this).next().attr("disabled","");
+	// 	}
+	// });
 
 })();;(function() {
 	if (location.pathname == '/background/foreshows') {
 		var dest_id;
-		$('button.foreshow-end-date-edit').click(function() {
+		$('a.foreshow-end-date-edit').click(function() {
 			var year = $(this).prev().find('input').eq(0).val();
 			var month = $(this).prev().find('input').eq(1).val();
 			var day = $(this).prev().find('input').eq(2).val();
@@ -592,11 +581,11 @@
 			});
 		});
 		// 删除前先设置id
-		$('.foreshow-href a.delete').click(function() {
+		$('.foreshow-end-date a.delete').click(function() {
 			dest_id = $(this).parent().parent().find('.hide').attr('value');
 		});
 		// 删除活动预告
-		$('button.deleteForeshow.btn').click(function(){
+		$('a.deleteForeshow.btn').click(function(){
 			$.ajax({
 				type: 'post',
 				url: '/background/deleteForeshow',
@@ -732,18 +721,24 @@
 })();
 
 ;(function(){
-	var preDeletePictureSrc;
-	function setPreDeletePicture(itemSrc){
-		preDeletePictureSrc = itemSrc;
+	var label;
+	function set(item){
+		label = item;
 	}
 
 	$(".picture-news-delete").click(function(){
-		setPreDeletePicture($(this).attr("picturesrc"));
+		set($(this).attr("picturesrc"));
 	});
+	
 	$(".picture-delete-confirm").click(function(){
-		$.post("delete_picture" ,{
-			src: preDeletePictureSrc}, function(){
-				location.reload();
+		$.post("delete_picture" ,{src: label}, function(){
+			location.reload();
+		});
+	});
+
+	$('.posts-delete-confirm').click(function() {
+		$.post('delete_post', {post_id: $("a.post-delete").attr('value')}, function() {
+			location.reload();
 		});
 	});
 })();;(function() {
@@ -1227,9 +1222,7 @@
         now = parseInt(container.css('margin-left'));
       if (now >= -426)
         $('#pictures .left').hide();
-      container.animate({
-        marginLeft: now + 426 + 'px'
-      }, 'slow');
+      container.css('margin-left', now + 426 + 'px');
       $('#pictures .right').show();
     });
 
@@ -1239,9 +1232,7 @@
           num = $('#pictures .picture-list-inner').children('img').length/4;
       if (-now - 426*(Math.floor(num)-1) >= 0)
           $('#pictures .right').hide();
-      container.animate({
-          marginLeft: now - 426 + 'px'
-      }, 'slow');
+      container.css('margin-left', now - 426 + 'px');
       $('#pictures .left').show();
     });
   }

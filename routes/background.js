@@ -7,7 +7,7 @@ var express = require('express'),
   assert = require('assert'),
   User = require('../collections/accounts'),
   crypto = require('crypto'),
-  DOCS_PATH = 'docs/',
+  DOCS_PATH = 'images/docs/',
   PICTURES_NEWS_PATH = 'public/images/picture_news/',
   PICTURES_POST_PATH =  'public/images/posts/',
 //  VOLUNTEER_HEADIMG_PATH = 'volunteer_headImg/',
@@ -31,7 +31,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/finances', function(req, res) {
-  fs.readdir(DOCS_PATH, function(err, files) {
+  fs.readdir('public/' + DOCS_PATH, function(err, files) {
     var itemFiles = [],
       seasonFiles = [],
       annualFiles = [];
@@ -61,9 +61,6 @@ router.get('/finances', function(req, res) {
 router.post('/finances', function(req, res) {
   // using formidable
   var form = new formidable.IncomingForm();
-  form.uploadDir = DOCS_PATH; // set upload dir
-  form.keepExtensions = true; // 保留后缀
-  form.maxFieldSize = MAXFILESZIZE; // file size
   form.parse(req, function(err, fields, files) {
     if (err) {
       // expection handling
@@ -71,6 +68,13 @@ router.post('/finances', function(req, res) {
       console.log(err);
       return;
     }
+    if (files.add.size === 0) {
+      res.redirect('./finances');
+      return;
+    }
+    form.uploadDir = DOCS_PATH; // set upload dir
+    form.keepExtensions = true; // 保留后缀
+    form.maxFieldSize = MAXFILESZIZE; // file size
     var newPath;
     // 判断报表类型
     if (fields.month !== undefined) {
@@ -79,33 +83,31 @@ router.post('/finances', function(req, res) {
       newPath = DOCS_PATH + "年度-" + fields.year + '.' + (files.add.name + "").split('.')[1];
     }
     // 重命名 文件
-    fs.renameSync(files.add.path, newPath);
+    fs.renameSync(files.add.path, 'public/' + newPath);
   });
   res.redirect('finances');
 });
-
 
 
 // delete file post router
 router.post('/finances_deleteFiles', function(req, res) {
   // request body fileName
-  fs.unlink(DOCS_PATH + req.body.fileName, function() {
+  fs.unlink('public/' + DOCS_PATH + req.body.fileName, function() {
     console.log("Delete " + DOCS_PATH + req.body.fileName + "  !");
   });
-
   res.redirect('finances');
 });
 
 // view file post router
 router.post('/finances_ViewFiles', function(req, res) {
-  fs.readFile(DOCS_PATH + req.body.fileName, {
-      encoding: "UTF-8"
-    },
-    function(errr, data) {
+  // fs.readFile(DOCS_PATH + req.body.fileName, {
+  //     encoding: "UTF-8"
+  //   },
+
+    // function(errr, data) {
       res.send({
-        content: data
+        content: '../' + DOCS_PATH + req.body.fileName,
       });
-    });
 });
 
 
@@ -634,7 +636,9 @@ router.post('/sendlimitedRecords', function(req, res) {
     }
   });
 });
-
+/**
+ ** 后台 活动预告
+ **/
 router.get('/foreshows', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
@@ -659,8 +663,10 @@ router.get('/foreshows', function(req, res) {
     });
   });
 });
-
-router.get('/foreshows-edit', function(req, res) {
+/**
+ ** 后台 活动预告
+ **/
+router.get('/foreshows/foreshows-edit', function(req, res) {
   if (!req.session.user) {
     req.flash('error', '请先登陆');
     return res.redirect('/signin');
@@ -674,6 +680,61 @@ router.get('/foreshows-edit', function(req, res) {
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
+  });
+});
+/**
+ ** 后台 活动预告 修改
+ **/
+router.post('/foreshows/update_activity', function(req, res) {
+  var db = req.db.collection('activity');
+  var ObjectID = require('mongodb').ObjectID;
+  db.update({_id: ObjectID(req.query.id)}, {$set: {
+    headline: req.body.headline,
+    logo: req.body.logo,
+    source: req.body.source,
+    host: req.body.host,
+    guest: req.body.guest,
+    help: req.body.help,
+    destination: req.body.destination,
+    contents: req.body.contents,
+  }}, function(err, item) {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('../foreshows');
+    } 
+  });
+});
+/**
+ ** 后台 添加活动预告
+ **/
+router.post('/foreshows/upload_foreshow', function(req, res) {
+  var db = req.db.collection('activity');
+  var getNewForeshow = function() {
+    return {
+        headline: req.body.activity_headline,
+        dest_time: new Date(),
+        create_time: new Date(),
+        author: req.body.activity_author,
+        source: req.body.activity_source,
+        destination: req.body.activity_destination,
+        contents: req.body.activity_contents,
+        host: req.body.activity_host,
+        guest: req.body.activity_guest,
+        help: req.body.activity_help,
+        viewCount: 1
+    };
+  };
+  db.insert(getNewForeshow(), {w:1}, function(err, records) {
+    if (err)  {
+      console.log(err);
+      return;
+    }
+    else {
+      console.log(records);
+      res.redirect('../foreshows');
+    }
   });
 });
 /*

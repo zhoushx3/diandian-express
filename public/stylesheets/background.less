@@ -52,7 +52,7 @@
 
 }
 
-#background-content, #backgroundFundsApply, #backgroundVolunteersApply, #background_news{
+#background-content, #backgroundFundsApply, #backgroundVolunteersApply, #background_news, #backgroundFinace{
 	float: right;
 	width: 850px;
 	height: auto;
@@ -138,4 +138,85 @@
 
 #news-cancel {
 	margin: 21px 0 0 20px;
+}
+
+/*
+后台活动预告
+*/
+#foreshows-view {
+	width: 80%;
+	float: right;
+	.modal-body {
+		span {
+			display: inline-block;
+			width: 70px;
+			margin-right: 10px;
+			text-align: right;
+		}
+		input {
+			text-align: center;
+		}
+	}
+}
+
+#add-foreshows {
+	float: right;	
+	height: 40px;
+	background-color: #C4C400;
+	border-radius: 15px;
+}
+
+.foreshow-item {
+	input.hide {
+		display: none;
+	}
+	a.foreshow-title {
+		font-size: 17px;
+	}
+}
+
+.foreshow-start-date {
+	display: block;
+	margin-top: 10px;
+	font-size: 15px;
+}
+
+.foreshow-end-date {
+	font-size: 15px;
+	input {
+		width: 50px;
+		text-align: center;
+	}
+	a.btn {
+		margin: 0  20px ;
+	}
+}
+/*
+后台财务报表
+*/
+
+#one {
+	width: 90%;
+}
+
+.itemReport , .annualReport, .seasonReport {
+	margin-bottom: 10px;
+}
+
+.delete_files_button {
+	margin-left: 10px;
+}
+
+#myView {
+	.btn {
+		display: block;
+		float: left;
+		margin: 0 100px;
+	}
+}
+#background_upload_button {
+	float: right;	
+	height: 20px;
+	background-color: #C4C400;
+	border-radius: 15px;
 }

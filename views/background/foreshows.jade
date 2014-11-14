@@ -3,55 +3,67 @@ extends  ../background_layout
 block content
 	div#deleteForeshow.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		.modal-header
-			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') x
 		.modal-body
 			p 确定要删除该活动预告吗？
 		.modal-footer
-			button.btn(data-dismiss='modal', aria-hidden='true') 关闭
-			button.deleteForeshow.btn(data-dismiss='modal', aria-hidden='true') 是
+			a.btn(data-dismiss='modal', aria-hidden='true') 取消
+			a.deleteForeshow.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 删除
 
 	div#modifySuccess.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		.modal-header
-			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') x
 		.modal-body
 			p 保存成功
 
+
+
 	div#foreshows-view
-		a(href='./foreshows-edit')
+		a(href='./foreshows/foreshows-edit')
 			button#add-foreshows 添加活动预告
 
 		each item in activity
 			div.foreshow-item
 				input.hide(type="text", value=item._id)
 				hr
-				span.foreshow-title=item.headline
-
-				span.foreshow-href
-					a.delete(data-toggle="modal" href='#deleteForeshow') 删除
-					a(href='./foreshows-edit') 编辑
-
-				div.foreshow-start-date
-					span='发布时间:' + formatDate(item.create_time) 
-
+				a.foreshow-title.generalA(data-toggle='modal' href='##{item._id}')=item.headline
+				span.foreshow-start-date='发布时间 : ' + formatDate(item.create_time) 
 				div.foreshow-end-date
 					span 截止时间: 
-						<input type="text", value=#{item.dest_time.getFullYear()}></input>年
-						<input type="text", value=#{item.dest_time.getMonth()+1}></input>月
-						<input type="text", value=#{item.dest_time.getDate()}></input>日
-					button.foreshow-end-date-edit(data-toggle="modal" href='#modifySuccess') 保存修改
+						<input type="text", value=#{item.dest_time.getFullYear()}></input> 年 
+						<input type="text", value=#{item.dest_time.getMonth()+1}></input> 月 
+						<input type="text", value=#{item.dest_time.getDate()}></input> 日 
+					a.btn.btn-danger.foreshow-end-date-edit(style="background-color: #C4C400" data-toggle="modal" href='#modifySuccess') 保存修改
+					a.btn.btn-danger.delete(style="background-color: gray" data-toggle="modal" href='#deleteForeshow') 删除
 				hr
-//
-	{
-		headline: '雷锋预告',
-		dest_time: new Date(2014, 3, 10),
-		create_time: new Date(2014, 2, 11),
-		logo: '珠海口岸广场“重温雷锋精神，传递美好祝福”',
-		author: '阿平 ',
-		source: '点点公益',
-		summary: '这是在逗我',
-		destination: '目标是逗你',
-		contents: '期西方文明的伟大人物',
-		host: '阿里巴巴',
-		guest: '腾讯',
-		help: '百度'
-	}
+			.modal.hide.fade(id= '#{item._id}' tabindex='-1', role='dialog', aria-hidden='true' style="background-color: #CC9")
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+					h3(style="text-align: center") 活动预告
+				.modal-body
+					form(method="post" action="/background/foreshows/update_activity?id=#{item._id}")
+						p
+							span 标题
+							input(name="headline" type="text" value="#{item.headline}")
+						p
+							span 作者
+							input(name="author" type="text" disabled="disabled" value="#{item.author}")
+						p
+							span 来源
+							input(name="source" type="text" value="#{item.source}")
+						p
+							span 主办单位
+							input(name="host" type="text" value="#{item.host}")
+						p
+							span 承办单位
+							input(name="guest" type="text" value="#{item.guest}")
+						p
+							span 协办单位
+							input(name="help" type="text" value="#{item.help}")
+						p
+							span 活动目的
+							textarea(style="width: 400px; height: 100px; resize: none" name="destination")=item.destination
+						p
+							span 活动内容
+							textarea(style="width: 400px; height: 300px; resize: none" name="contents")=item.contents		
+						input.btn.btn-danger(role='button' style="margin: 0 auto; display: block; background-color: #C4C400" type="submit" value="确认")

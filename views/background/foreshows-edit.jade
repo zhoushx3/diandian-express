@@ -1,38 +1,19 @@
 extends  ../background_layout
 
 block content
-	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/ueditor.config.js")
-	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/_examples/editor_api.js")
-	script(type="text/javascript" charset="utf-8" src="/lib/ueditor1_4_3/lang/zh-cn/zh-cn.js")
-
 	div#news-logo(style="margin-left:852px;")
 		span 点点动态·活动预告
 		img(src='/images/logo-small.png')
 
-	div#news-editor
-		div
-			input#news-title(placeholder = "请在这里输入标题")
-
-		div
-			input#news-author(placeholder = "输入文本作者姓名")
-
-		div
-			script#news-body(type="text/plain" style="width:800px;height:200px;")
-
-	div#news-btn
-		button#news-draft 保存草稿
-		a(href='./foreshows')
-			button#news-cancel 取消
-		button.save 发布
-
-	script.
-		var ue = UE.getEditor('news-body');	
-		ue.ready(function() {
-			ue.setContent('hello');
-		});
-		$('#news-btn .save').click(function() { window.alert('a');
-			var html = ue.getContent();
-			var txt = ue.getContentTxt();
-			console.log(html);
-			console.log(txt);
-		});
+	div#news-editor(style="height: 800px")
+		form#news-edit-form(name='newsEditForm' method ="post" action="/background/foreshows/upload_foreshow")
+			input#activity-headline(type='text' name='activity_headline' value="标题")
+			input#activity-author(type='text' name= 'activity_author' placeholder = "作者")
+			input#activity-source(type='text' name='activity_source' placeholder = "来源")
+			input#activity-host(type='text' name='activity_host' placeholder = "主办单位")
+			input#activity-guest(type='text' name='activity_guest' placeholder = "承办单位")
+			input#activity-help(type='text' name='activity_help' placeholder = "协办单位")
+			textarea#activity-destination(style="height: 100px" type='text' name='activity_destination' placeholder = "活动目的")
+			textarea#activity-contents(type='text' name='activity_contents' placeholder = "活动内容")
+			a.btn.btn-danger(style="background-color: gray; margin-left: 29px" role="button" href='../foreshows') 取消
+			input.btn.btn-danger(style="width: 57px; display: inline-block; margin-left: 100px"  type='submit' name='submit' value='提交')
