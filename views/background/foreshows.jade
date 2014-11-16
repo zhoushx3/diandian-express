@@ -29,7 +29,7 @@ block content
 				a.foreshow-title.generalA(data-toggle='modal' href='##{item._id}')=item.headline
 				span.foreshow-start-date='发布时间 : ' + formatDate(item.create_time) 
 				div.foreshow-end-date
-					span 截止时间: 
+					span 撤销时间: 
 						<input type="text", value=#{item.dest_time.getFullYear()}></input> 年 
 						<input type="text", value=#{item.dest_time.getMonth()+1}></input> 月 
 						<input type="text", value=#{item.dest_time.getDate()}></input> 日 
@@ -52,18 +52,6 @@ block content
 							span 来源
 							input(name="source" type="text" value="#{item.source}")
 						p
-							span 主办单位
-							input(name="host" type="text" value="#{item.host}")
-						p
-							span 承办单位
-							input(name="guest" type="text" value="#{item.guest}")
-						p
-							span 协办单位
-							input(name="help" type="text" value="#{item.help}")
-						p
-							span 活动目的
-							textarea(style="width: 400px; height: 100px; resize: none" name="destination")=item.destination
-						p
 							span 活动内容
-							textarea(style="width: 400px; height: 300px; resize: none" name="contents")=item.contents		
+							textarea(style="width: 400px; height: 400px; resize: none" name="contents")=item.contents		
 						input.btn.btn-danger(role='button' style="margin: 0 auto; display: block; background-color: #C4C400" type="submit" value="确认")

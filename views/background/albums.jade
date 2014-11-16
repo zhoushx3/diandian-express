@@ -1,37 +1,46 @@
 extends  ../background_layout
 
 block content 
-	form(action="modifyAlbumInfo", method="post")
-		input.save_all(type="submit", value="save all modification")
-		input.add(type="button", value="add")
-		input.hiddenAlbumIds(type="text", name="hiddenAlbumIds", value="")
-		input.hiddenAlbumNames(type="text", name="hiddenAlbumNames", value="")
-	#albums_list_show
-		each album in albums
-			.ui-state-default
-				a(href='/background/albums/' + album._id)
-					img(src=album.cover)
-				textarea(name=album.name, title=album._id)=album.name
+	#add_album.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+			h3#myModalLabel(style="text-align: center") 相册名称
+		.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+			form(enctype='multipart/form-data' , action="/background/albums/uploadAlbum", method="post")
 				div
-					input.delete(type="button", value="@")
+					h4(style="display: inline") 相册名称
+					input(	style="display: inline-block; margin-left: 15px;" type="text", name="new_album_name")
+				div
+					h4(style="display: inline") 相册封面
+					input(	style="display: inline-block; margin-left: 15px;"  type="file", name="upload")
+				div
+				a.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 取消
+				input.btn.btn-success(type="submit", value="确定")
 
-	#make_sure
-		form(action="/background/albums/deleteAlbum", method="post")
-			p="Do you really want to delete it ? "
-			input.yes(type="submit", value="yes")
-			input.no(type="button", value="no")
-			input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
-			input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
+	#make_sure.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+			h3#myModalLabel(style="text-align: center") 相册
+		.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+			form(action="/background/albums/deleteAlbum", method="post")
+				p 你确定要删除该相册吗?
+				a.no.btn(data-dismiss='modal', aria-hidden='true') 取消
+				input.yes.btn-danger.btn(style="background-color: gray" type="submit", value="删除")
+				input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
+				input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
 
-	div#add_album
-		form(enctype='multipart/form-data' , action="/background/albums/uploadAlbum", method="post")
-			div.first_step
-				h3 相册名称
-				input(type="text", name="new_album_name")
-			div.second_step
-				h3 相册封面
-				input(type="file", name="upload")
-			input.cancel(type="button", value="取消")
-			input.go(type="submit", value="确定")
+	#backgroundAlbum
+		a.add.btn.btn-danger(role='button', data-toggle='modal' href="#add_album") 添加相册
+		
+		form(action="modifyAlbumInfo", method="post")
+			input.save_all(type="submit", value="save all modification")
+			input.hiddenAlbumIds(type="text", name="hiddenAlbumIds", value="")
+			input.hiddenAlbumNames(type="text", name="hiddenAlbumNames", value="")
+		#albums_list_show
+			each album in albums
+				.ui-state-default(name=album._id)
+					a(href='/background/albums/' + album._id style="background: url('#{album.cover}') no-repeat; background-size: 100%;")
+					textarea(name=album.name, title=album._id)=album.name
+					a.btn.btn-danger.delete(role="button", data-toggle='modal' href="#make_sure") x
 
-
+	

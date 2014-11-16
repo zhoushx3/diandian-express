@@ -5,15 +5,11 @@ block content
 		span 点点动态·活动预告
 		img(src='/images/logo-small.png')
 
-	div#news-editor(style="height: 800px")
+	div#news-editor(style="height: 680px")
 		form#news-edit-form(name='newsEditForm' method ="post" action="/background/foreshows/upload_foreshow")
 			input#activity-headline(type='text' name='activity_headline' value="标题")
 			input#activity-author(type='text' name= 'activity_author' placeholder = "作者")
 			input#activity-source(type='text' name='activity_source' placeholder = "来源")
-			input#activity-host(type='text' name='activity_host' placeholder = "主办单位")
-			input#activity-guest(type='text' name='activity_guest' placeholder = "承办单位")
-			input#activity-help(type='text' name='activity_help' placeholder = "协办单位")
-			textarea#activity-destination(style="height: 100px" type='text' name='activity_destination' placeholder = "活动目的")
-			textarea#activity-contents(type='text' name='activity_contents' placeholder = "活动内容")
+			textarea#activity-contents(style="height: 400px" type='text' name='activity_contents' placeholder = "活动内容")
 			a.btn.btn-danger(style="background-color: gray; margin-left: 29px" role="button" href='../foreshows') 取消
 			input.btn.btn-danger(style="width: 57px; display: inline-block; margin-left: 100px"  type='submit' name='submit' value='提交')

@@ -30,7 +30,7 @@ block content
 							p
 								span 插图
 								img.picture-news-img.img-rounded(src="#{i.src}" width="200px" height="180px")
-							input.btn(role='button' style="position: absolute; right: 100px; bottom: 70px" type="submit" value="确认")
+							input.btn(role='button' style="position: absolute; right: 100px; bottom: 70px" type="submit" value="确认修改")
 					.modal-footer
 						button.btn(data-dismiss='modal', aria-hidden='true') 关闭
 						a.picture-news-delete.btn.btn-danger(style="background-color: gray" role='button', data-toggle='modal' href='#delete-picture-news' picturesrc='#{i.src}') 删除
@@ -38,7 +38,7 @@ block content
 		.modal.hide.fade(id= 'delete-picture-news' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 			.modal-header
 				button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-				h3 Warning
+				h1(style="color: red") !
 			.modal-body
 				p 你确定要删除该条图片新闻么？
 			.modal-footer

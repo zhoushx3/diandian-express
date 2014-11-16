@@ -718,11 +718,7 @@ router.post('/foreshows/upload_foreshow', function(req, res) {
         create_time: new Date(),
         author: req.body.activity_author,
         source: req.body.activity_source,
-        destination: req.body.activity_destination,
         contents: req.body.activity_contents,
-        host: req.body.activity_host,
-        guest: req.body.activity_guest,
-        help: req.body.activity_help,
         viewCount: 1
     };
   };
@@ -1077,9 +1073,9 @@ router.post('/albums/uploadAlbum', function(req, res) {
     new_album_src,
     actual_album_src,
     form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.encoding = "utf-8";
-  form.parse(req, function(error, fields, files) {
+    form.keepExtensions = true;
+    form.encoding = "utf-8";
+    form.parse(req, function(error, fields, files) {
     if (files.upload.size !== 0) { // 没上传文件也照吃
       new_album_name = fields.new_album_name;
       new_album_src = "public/images/albums/" + files.upload.name;
@@ -1319,7 +1315,7 @@ router.post('/modifyLink', function(req, res) {
   var id = req.body.id;
   if (type === 'foreshowUL') {
     db.collection('carousels', function(err, col) {
-      col.update({'src': src}, {$set: {'link': '/news/activity'}}, function(err, item) {
+      col.update({'src': src}, {$set: {'link': '/news/activity/' + id}}, function(err, item) {
         res.send(item);
       });
     });

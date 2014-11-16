@@ -30,11 +30,6 @@
 
 // background_albums
 	if (location.pathname == '/background/albums') {
-				// $( "#albums_list_show" ).sortable();
-		// $(.add) click event is to add new imgs 
-			$('.add').click(function() {
-				$('#add_album').addClass('active').children('form').css("animation", "myfirst 2s");
-			});
 		// $('.save_all') click event is to save album_names
 			$('.save_all').click(function() {
 				$('.hiddenAlbumIds').attr('value', "");
@@ -48,27 +43,18 @@
 
 // background_albums and background_albums_details comon events
 	if (location.pathname.indexOf('/background/albums/') > -1 || location.pathname == '/background/albums') {
+		var album_id;
 		// $(.delete) click event is used to make sure whether to remove the matched element
 				$(document).delegate('.delete', "click", function(event) {
-					$('#make_sure').addClass('active');
-
+					album_id = $(this).parent().attr('name');
 					$(document).delegate('.yes', 'click', function() {
 						$('.hiddenAlbumName').attr('value', $(event.target).parent().parent().children('textarea').attr('title'));
 						$('.hiddenAlbumId').attr('value', $(event.target).parent().parent().children('textarea').attr('name'));
-						$('#make_sure').removeClass('active');
-						$(event.target).parent().parent().remove();
+						$(event.target).parent().remove();
 						// ! event.target returns a DOM then $() get a jquery object. 
 						// ! $().parent() is the direct parent, only one
 						// ! $().remove() remove  the set of matched elements from the DOM.
 					});
-
-					$(document).delegate('.no', 'click', function() {
-						$('#make_sure').removeClass('active');
-					});
-				});
-		// $(.cancel) click event  cancel to add an new album or add new photos
- 				$('.cancel').click(function() {
- 					$(this).parent().parent().removeClass('active').children('form').css("animation", "");
 				});
 	}
 })();

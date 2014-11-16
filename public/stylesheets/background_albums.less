@@ -1,5 +1,5 @@
 /*background/albums.jade*/
-input.save_all, input.add {
+input.save_all {
 	display: block;
 }
 #albums_list_show {
@@ -12,24 +12,26 @@ input.save_all, input.add {
 		height: 200px;
 		margin: 10px;
 		padding: 10px;
+		position: relative;
+		a {
+			display: inline-block;
+			height: 150px;
+			width: 230px;
+			border-radius: 10px;
+		}
 		textarea {
 			width: 217px;
-			height: 45px;
+			height: 25px;
+			resize: none;
+			margin: 0;
 		}
-		img {
-			height: 150px;
-		}
-		a {
-			width: 100%;
-			height: 90%;
-			&:hover {
-				color: rgba(1,1,1,1);
-			}
-		}
-		div {
-			position: relative;
-			bottom: 216px;
+		a.delete {
+			position: absolute;
+			bottom: 185px;
 			left: 200px;
+			height: 15px;
+			width: 15px;
+			background-color: #AFAFAF;
 		}
 	}
 }
@@ -89,36 +91,6 @@ input.upload, input.sort, input.sort_ok{
 		}
 	}
 }
-
-#make_sure {
-	display: none;
-	position: fixed;
-	z-index: 2;
-	left: 0%;
-	top: 0%;
-	width: 100%;
-	height: 100%;
-	margin: 0 auto;
-	&.active {
-		display: block;
-	}
-	form {
-		position: relative;
-		top: 23%;
-		left: 42%;
-		width: 220px;
-		height: 70px;
-		background-color: rgba(107, 231, 135, 0.85);
-		.yes {
-			margin: 0 20px;
-			float: left;
-		}
-		.no {
-			margin: 0 20px;
-			float: right;
-		}
-	}
-}
 input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hiddenPictureIntroductions, input.hiddenPictureNames, input.hiddenAlbumCoverSrc, input.hiddenAlbum_Id, input.hiddenAlbumIds, input.hiddenAlbumNames{
 	display: none;
 }
@@ -130,31 +102,25 @@ input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hidde
 	to {transform: scale(1, 1);}
 }
 
-#add_album, #add_new_photos {
-	display: none;
-	width: 1000px;
-	height: 1000px;
-	&.active {
-		display: block;
-		}
-	form {
-		position: absolute;
-		border: 10px solid green;
-		background-color: white;
-		left: 40%;
-		top: 40%;
-		h3 {
-			text-align: center;
-		}
-		input.go {
-			float: left;
-			padding: 10px;
-			margin-top: 10px;
-		}
-		input.cancel {
-			float: right;
-			padding: 10px;
-			margin-top: 10px;
-		}
+#backgroundAlbum  {
+	.add {
+		float: right;	
+		height: 20px;
+		background-color: #C4C400;
+		border-radius: 15px;
+	}
+}
+
+#add_album {
+	.btn {
+		display: inline-block;
+		margin: 20px 100px 0px 100px;
+	}
+}
+
+#make_sure {
+	.btn {
+		display: inline-block;
+		margin: 10px 50px 0px 130px;
 	}
 }

@@ -2,7 +2,7 @@ extends ../../layout
 
 block content	
 	#share
-		.module
+		.module(style="border-right: 1pt  solid #aaa")
 			a(href="/volunteer/"+share[0]._id style="background: url(#{share[0].path}) no-repeat; background-size: 100%; background-position: center")
 			div
 				p=share[0].contents  + "......"
@@ -18,7 +18,7 @@ block content
 				span(style="font-size: 38pt; color: #fff; ") 志愿者感言 
 				span(style="font-size: 36pt; color: rgba(72, 64, 64, 1)")="第"  + share[0].period + "期"
 				span(style="font-size: 17pt; color: rgba(72, 64, 64, 1)")点点公益感谢有你们
-		.module
+		.module(style="border-right: 1pt  solid #aaa")
 			a(href="/volunteer/"+share[3]._id style="background: url(#{share[3].path}) no-repeat; background-size: 100%; background-position: center")
 			div
 				p=share[3].contents + "......"

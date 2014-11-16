@@ -52,14 +52,14 @@
 			$repeat_password.after('<span class="formWarning"> 两次密码输入不同 </span>');
 		}
 
-		if ($name.length !== 0  && (isNull($name.val()) || !isChinaOrNumbOrLett($name.val()))) {
+		if ($name.length !== 0  && (isNull($name.val()) || !isChina($name.val()))) {
 			correct = false;
-			$name.after('<span class="formWarning"> 由汉字、字母、数字组成 </span>');
+			$name.after('<span class="formWarning"> 只能由汉字组成 </span>');
 		}
 
 		if ($nation.length !== 0 && (isNull($nation.val()) || !nation($nation.val()))) {
 			correct = false;
-			$nation.after('<span class="formWarning"> 必须是属于中华56民族 </span>');
+			$nation.after('<span class="formWarning"> 中文, 中华56民族 </span>');
 		}
 
 		if($birth_year.length !== 0  && !isNumber($birth_year.val())) {
@@ -126,8 +126,21 @@
 用途：检查输入字符串是否只由汉字、字母、数字组成
 如果通过验证返回true,否则返回false
 */
-	function isChinaOrNumbOrLett( s ){//判断是否是汉字、字母、数字组成
-		var regu = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";  
+	function isChinaOrNumbOrLett( s ){//判断是否是汉字组成
+		var regu = "^[0-9A-Za-z\u4e00-\u9fa5]+$";  
+		var re = new RegExp(regu);
+		if (re.test(s)) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+/*
+用途：检查输入字符串是否只由汉字、字母、数字组成
+如果通过验证返回true,否则返回false
+*/
+	function isChina( s ){//判断是否是汉字组成
+		var regu = "^[\u4e00-\u9fa5]+$";  
 		var re = new RegExp(regu);
 		if (re.test(s)) {
 			return true;
@@ -152,7 +165,7 @@
 */
 	function checkMobile( s ){  
 		if (!s) return false;
-		var regu =/^[1][3][0-9]{9}$/;
+		var regu =/^[1][3,5][0-9]{9}$/;
 		var re = new RegExp(regu);
 		if (re.test(s)) {
 			return true;
