@@ -115,7 +115,7 @@ router.get('/activity', function(req, res) {
   var activity;
   var date = new Date();
   db.collection('activity', function(err, col) {
-    col.find({'dest_time': {$gt: date}}, {sort {create_time: -1}}).toArray(function(err, docs) {
+    col.find({'dest_time': {$gt: date}}, {sort :{create_time: -1}}).toArray(function(err, docs) {
       activity = docs;
       callback();
     });
