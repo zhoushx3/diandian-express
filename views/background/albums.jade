@@ -3,7 +3,7 @@ extends  ../background_layout
 block content 
 	#add_album.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		.modal-header
-			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
 			h3#myModalLabel(style="text-align: center") 相册名称
 		.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
 			form(enctype='multipart/form-data' , action="/background/albums/uploadAlbum", method="post")
@@ -20,27 +20,21 @@ block content
 	#make_sure.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		.modal-header
 			button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-			h3#myModalLabel(style="text-align: center") 相册
+			h1#myModalLabel(style="color: red") !
 		.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
 			form(action="/background/albums/deleteAlbum", method="post")
 				p 你确定要删除该相册吗?
 				a.no.btn(data-dismiss='modal', aria-hidden='true') 取消
 				input.yes.btn-danger.btn(style="background-color: gray" type="submit", value="删除")
-				input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
 				input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
 
 	#backgroundAlbum
-		a.add.btn.btn-danger(role='button', data-toggle='modal' href="#add_album") 添加相册
-		
-		form(action="modifyAlbumInfo", method="post")
-			input.save_all(type="submit", value="save all modification")
-			input.hiddenAlbumIds(type="text", name="hiddenAlbumIds", value="")
-			input.hiddenAlbumNames(type="text", name="hiddenAlbumNames", value="")
+		button.corner.add.btn.btn-danger(role='button', data-toggle='modal' href="#add_album") 添加相册
 		#albums_list_show
 			each album in albums
-				.ui-state-default(name=album._id)
+				.ui-state-default(value=album._id)
 					a(href='/background/albums/' + album._id style="background: url('#{album.cover}') no-repeat; background-size: 100%;")
-					textarea(name=album.name, title=album._id)=album.name
+					p(style="text-align: center" name=album.name, title=album._id)=album.name
 					a.btn.btn-danger.delete(role="button", data-toggle='modal' href="#make_sure") x
 
 	

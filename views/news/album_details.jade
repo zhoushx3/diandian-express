@@ -6,11 +6,11 @@ block content
 		-var i = 1
 		each item in album.pictures
 			.each_picture
-				.select_img(style="background: url(#{item.src}) no-repeat; background-size: 100%; height: 120px; cursor: pointer" data-count=i++, src=item.src, alt=item.name, data-toggle="modal" href='#show_picture')
-				p=item.name
-				p(style="display: none")=item.instruction
+				.select_img(style="background: url(#{item.src}) no-repeat; background-size: 100%; height: 120px; cursor: pointer" data-count=i++, src=item.src, alt=item.headline, data-toggle="modal" href='#show_picture')
+				p=item.headline
+				p(style="display: none")=item.introduction
 				
-	#show_picture.modal.hide.fade(style="background: rgba(208, 225, 41, 0.64)" tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+	#show_picture.modal.hide.fade(style="background: rgba(139, 249, 112, 0.84)" tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
 		div.modal-header-header
 			a.carousel-control.left < 

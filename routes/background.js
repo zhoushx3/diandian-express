@@ -1023,14 +1023,14 @@ router.get('/albums/:id', function(req, res) {
   });
 });
 /**
- **  删除相册
+ **  删除相册 [][][][]
  **/
 router.post('/albums/deleteAlbum', function(req, res) {
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
   db.collection('albums', function(err, col) {
     col.remove({
-      _id: ObjectID(req.param('hiddenAlbumName'))
+      _id: ObjectID(req.param('hiddenAlbumId'))
     }, {
       safe: true
     }, function(err, result) {
@@ -1042,21 +1042,20 @@ router.post('/albums/deleteAlbum', function(req, res) {
   });
 });
 /**
- **  删除相册内的照片
+ **  删除相册内的照片 [][][][][]
  **/
-router.post('/albums/deleteAlbum/:name', function(req, res) {
+router.post('/albums/deletePitures', function(req, res) {
   var db = req.db;
   var ObjectID = require('mongodb').ObjectID;
-  var album_name = req.params.name;
-  var picture_name = req.param('hiddenAlbumId');
-  var album_id = req.param('hiddenAlbumName');
+  var picture_name = req.body.pictureName;
+  var album_id = req.body.album_id;
   db.collection('albums', function(err, col) {
     col.update({
       _id: ObjectID(album_id)
     }, {
       $pull: {
         pictures: {
-          name: picture_name,
+          headline: picture_name,
         }
       }
     }, function(err, result) {
@@ -1065,7 +1064,7 @@ router.post('/albums/deleteAlbum/:name', function(req, res) {
   });
 });
 /**
- **  上传相册
+ **  上传相册 [][][][]
  **/
 router.post('/albums/uploadAlbum', function(req, res) {
   var db = req.db,
@@ -1103,7 +1102,7 @@ router.post('/albums/uploadAlbum', function(req, res) {
   });
 });
 /**
- **  上传相册的照片
+ **  上传相册的照片 [][][][]
  **/
 router.post('/albums/uploadPhotos', function(req, res) {
   var db = req.db,
@@ -1121,8 +1120,9 @@ router.post('/albums/uploadPhotos', function(req, res) {
       fs.renameSync(file.path, 'public/images/albums/' + file.name);
       files.push({
         src: '/images/albums/' + file.name,
-        name: file.name,
-        instruction: "no instruction for now"
+        headline: file.name.split('.')[0],
+        index: '/images/albums/' + file.name,
+        introduction: "暂时还没有介绍内容"
       });
     }
   });
@@ -1145,41 +1145,17 @@ router.post('/albums/uploadPhotos', function(req, res) {
   });
 });
 /**
- **  修改相册封面和照片简介
+ **  修改相册封面 [][][][]
  **/
-router.post('/albums/modifyAlbumInfo/:name', function(req, res) {
+router.post('/albums/modifyAlbumCover', function(req, res) {
   var db = req.db;
-  var i = 1;
   var ObjectID = require('mongodb').ObjectID;
-  var hiddenAlbum_Id = req.param('hiddenAlbum_Id');
-  var hiddenAlbumCoverSrc = req.param('hiddenAlbumCoverSrc');
-  var hiddenPictureNames = req.param('hiddenPictureNames').split("***");
-  var hiddenPictureIntroductions = req.param('hiddenPictureIntroductions').split("***");
-  var callback = function(err, result) {
-    if (err) {
-      console.log(err.message);
-      return;
-    }
-  };
   db.collection('albums', function(err, col) {
-    for (i = 1; i < hiddenPictureNames.length; ++i) {
-      col.update({
-        $and: [{
-          _id: ObjectID(hiddenAlbum_Id)
-        }, {
-          'pictures.name': hiddenPictureNames[i]
-        }]
-      }, {
-        $set: {
-          'pictures.$.instruction': hiddenPictureIntroductions[i]
-        }
-      }, callback);
-    }
     col.update({
-      _id: ObjectID(hiddenAlbum_Id)
+      _id: ObjectID(req.body.album_id),
     }, {
       $set: {
-        'cover': hiddenAlbumCoverSrc
+        'cover': req.body.pictureSrc,
       }
     }, function(err, result) {
       if (err) {
@@ -1187,37 +1163,47 @@ router.post('/albums/modifyAlbumInfo/:name', function(req, res) {
         return;
       }
     });
-    res.redirect('/background/albums/' + hiddenAlbum_Id);
+    res.redirect('/background/albums/' + req.body.album_id);
   });
 });
 /**
- **  修改相册名称
+ **  修改照片信息 [][][][][]
  **/
-router.post('/modifyAlbumInfo', function(req, res) {
-  var db = req.db;
-  var i = 1;
+router.post('/albums/modifyPictureContents', function(req, res) {
+  var db = req.db.collection('albums');
   var ObjectID = require('mongodb').ObjectID;
-  var hiddenAlbumIds = req.param('hiddenAlbumIds').split("***");
-  var hiddenAlbumNames = req.param('hiddenAlbumNames').split("***");
-  var callback = function(err, result) {
-    if (err) {
-      console.log(err.message);
-      return;
-    }
-  };
-
-  db.collection('albums', function(err, col) {
-    for (i = 1; i < hiddenAlbumIds.length; ++i) {
-      col.update({
-        _id: ObjectID(hiddenAlbumIds[i])
+  db.update({
+        $and: [{
+          _id: ObjectID(req.body.album_id)
+        }, {
+          'pictures.index': req.body.pictureIndex,
+        }]
       }, {
         $set: {
-          name: hiddenAlbumNames[i]
+          'pictures.$.introduction': req.body.introduction,
+          'pictures.$.headline' : req.body.headline,
         }
-      }, callback);
-    }
-  });
-  res.redirect('/background/albums');
+      }, function(err, result) {
+        res.redirect('/background/albums/' + req.body.album_id);
+      });
+});
+/**
+ **  修改相册名称 [][][][]
+ **/
+router.post('/albums/modifyAlbumName', function(req, res) {
+  var db = req.db;console.log(req.body.album_name);
+  var ObjectID = require('mongodb').ObjectID;
+  db.collection('albums', function(err, col) {
+      col.update({
+        _id: ObjectID(req.body.album_id)
+      }, {
+        $set: {
+          name: req.body.album_name,
+        }
+      }, function(err, result) {
+        res.redirect('/background/albums');
+      });
+    });
 });
 /*
  **  后台横幅管理基本页面

@@ -1,3 +1,6 @@
+textarea {
+	resize: none;
+}
 #account {
 	background-color: rgba(240, 233, 159, 1);
 	padding: 10px;
@@ -52,7 +55,7 @@
 
 }
 
-#background-content, #backgroundFundsApply, #backgroundVolunteersApply, #background_news, #backgroundFinace, #backgroundAlbum{
+#background-content, #backgroundFundsApply, #backgroundVolunteersApply, #background_news, #backgroundFinace, #backgroundAlbum, #album_contents{
 	float: right;
 	width: 850px;
 	height: auto;
@@ -70,7 +73,7 @@
 	padding: 10px;
 }
 
-#add-picture-news, #add-news {
+#add-picture-news, #add-news, .corner.btn.btn-danger{
 	margin-top: -10px;
 	margin-bottom: 35px;
 	margin-left: 677px;
@@ -79,6 +82,9 @@
 	border: 1px solid grey;
 	border-radius: 15px;
 	background-color: #C4C400;
+	&:hover {
+		background-color:  #C4C400 ;
+	}
 }
 
 .picture-news-delete, {

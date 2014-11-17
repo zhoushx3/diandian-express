@@ -9,7 +9,7 @@ input.save_all {
 	.ui-state-default {
 		float: left;
 		width: 230px;
-		height: 200px;
+		height: 160px;
 		margin: 10px;
 		padding: 10px;
 		position: relative;
@@ -27,7 +27,7 @@ input.save_all {
 		}
 		a.delete {
 			position: absolute;
-			bottom: 185px;
+			bottom: 145px;
 			left: 200px;
 			height: 15px;
 			width: 15px;
@@ -41,80 +41,24 @@ input.upload, input.sort, input.sort_ok{
 	display: inline-block;
 }
 
-#album_cover {
-	float: right;
-	width: 840px;
-	height: 240px;
-	img {
-		width: 200px;
-		margin-left: 11px;
-		height: 180px;
-	}
-	h3 {
-		margin-left: 12px;
-	}
-	form {
-		float: right;
-		width: 600px;
-	}
-}
 
-#album_pitures_list {
-	float: right;
-	width: 840px;
-	.ui-state-default {
-		display: inline-block;
-		width: 385px;
-		height: 184px;
-		margin: 10px;
-		padding: 5px;
-		img {
-			height: 184px;
-			width: 184px;
-			cursor: pointer;
-		}
-		textarea {
-			width: 185px;
-			float: right;
-			height: 174px;
-		}
-		.img_property, .new_img_load {
-			float: left;
-			width: 100%;
-			display: none;
-			position: relative;
-			left: 5px;
-			bottom: 32px;
-			&.active{
-				display: block;
-			}
-		}
-	}
-}
-input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hiddenPictureIntroductions, input.hiddenPictureNames, input.hiddenAlbumCoverSrc, input.hiddenAlbum_Id, input.hiddenAlbumIds, input.hiddenAlbumNames{
-	display: none;
-}
 /**
 **添加新相册操作/新照片操作
 **/
-@keyframes myfirst {
-	from {transform: scale(0.1, 0.1);}
-	to {transform: scale(1, 1);}
-}
 
-#backgroundAlbum  {
-	.add {
-		float: right;	
-		height: 20px;
-		background-color: #C4C400;
-		border-radius: 15px;
-	}
-}
-
-#add_album {
+#add_album, #add_new_photos {
 	.btn {
 		display: inline-block;
 		margin: 20px 100px 0px 100px;
+	}
+}
+#album_pitures_list {
+	.btn {
+		display: inline-block;
+		margin: 20px 47px 0 47px;
+	}
+	input, textarea {
+		width: 400px;
 	}
 }
 
@@ -122,5 +66,20 @@ input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hidde
 	.btn {
 		display: inline-block;
 		margin: 10px 50px 0px 130px;
+	}
+}
+
+input.hiddenAlbumName, input.hiddenPictureName, input.hiddenAlbumId, input.hiddenPictureIntroductions, input.hiddenPictureNames, input.hiddenAlbumCoverSrc, input.hiddenAlbum_Id, input.hiddenAlbumIds, input.hiddenAlbumNames{
+	display: none;
+}
+
+#album_contents {
+	#album_pitures_list > a {
+		background-size: 100%;
+		height: 150px;
+		width: 150px;
+		margin: 10px;
+		display: inline-block;
+		border-radius: 3px;
 	}
 }

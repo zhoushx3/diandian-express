@@ -1,41 +1,47 @@
 extends  ../background_layout
 
 block content 
-	#album_cover
-		h3=album.name
-		img(src=album.cover, alt=album.name)
-		form(action="modifyAlbumInfo/" + album.name, method="post")
-			input.add(type="button", value="add new photos")
-			input.save(type="submit", value="save cover and introductions")
-			input.hiddenAlbum_Id(type="text", value=album._id, name="hiddenAlbum_Id")
-			input.hiddenAlbumCoverSrc(type="text", value="", name="hiddenAlbumCoverSrc")
-			input.hiddenPictureNames(type="text", value="", name="hiddenPictureNames")
-			input.hiddenPictureIntroductions(type="text", value="", name="hiddenPictureIntroductions")
-	#album_pitures_list
-		if album.pictures
-			each item in album.pictures
-				.ui-state-default
-					img(src=item.src, alt=item.name)
-					textarea(name=item.name, title=album._id)=item.instruction
-					.img_property
-						input.delete(type="button", value="删除照片？")
-						input.setCover(type="button", value="设为封面？" )
-					.new_img_load
-						input(type="file")
-						input.delete(type="button", value="删除照片？")
-	#make_sure
-		form(action="deleteAlbum/"+album.name, method="post")
-			p="Do you really want to delete it ? "
-			input.yes(type="submit", value="yes")
-			input.no(type="button", value="no")
-			input.hiddenAlbumName(type="text", name="hiddenAlbumName", value="")
-			input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
+	#album_contents
+		button.addPhotos.corner.btn.btn-danger(data-toggle='modal' href="#add_new_photos") 添加照片
+		p 相册名称   <input value=#{album.name}></input><input type="button" class="btn btn-success saveAlbumName" value="保存修改"></input>
+		.album_cover(style="background: url('#{album.cover}')" no-repeat)
 
-	#add_new_photos
-		form(enctype="multipart/form-data", action="/background/albums/uploadPhotos", method="post")
-			div.first_step
-				h3 添加照片(可同时添加多张)
-				input(type="file", name="upload", multiple="multiple")
-				input.hiddenAlbumId(type="text", name="hiddenAlbumId", value=album._id)
-			input.cancel(type="button", value="取消")
-			input.go(type="submit", value="确定")
+		#album_pitures_list
+			if album.pictures
+				each item in album.pictures
+					a(style="background: url('#{item.src}') no-repeat; background-size: 100%" data-toggle='modal' href="##{item.headline}" data-src=item.src data-index=item.index name=item.headline) &ensp; 
+					.modal.hide.fade(id=item.headline tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+						.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+							p 图片标题   <input type="text" value=#{item.headline}></input> 
+							p 图片内容   <textarea style="height: 200px; display: inline-block">#{item.introduction}</textarea>
+						.modal-footer
+							a.btn.btn-success.setCover 设为封面
+							a.btn.btn-danger.delete(data-toggle='modal' href="#make_sure") 删除照片
+							a.btn.btn-danger.save(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 保存修改
+
+
+		#add_new_photos.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+			.modal-header
+				button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+				h3#myModalLabel(style="text-align: center") 添加照片
+			.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+				form(enctype="multipart/form-data", action="/background/albums/uploadPhotos", method="post")
+					div.first_step
+						h4 可同时添加多张
+						input(type="file", name="upload", multiple="multiple")
+						input.hiddenAlbumId(type="text", name="hiddenAlbumId", value="")
+					a.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 取消
+					input.btn.btn-success(type="submit", value="确定")
+
+		
+
+		#make_sure.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+			.modal-header
+				button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+				h3#myModalLabel(style="color: red") !
+			.modal-body
+				p "你确定要删除该照片吗?"
+				a.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 取消
+				a.yes.btn.btn-danger(role="button") 确定

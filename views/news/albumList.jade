@@ -1,7 +1,7 @@
 block content
 	div#album-list
 		h2 点点相册
-		div
+		div(style="overflow-x: hidden")
 			each album in albums
 				.album(data-href='/news/album/' + album.name, style="background: url(#{album.cover}) no-repeat; background-size: 100%; background-position: center")
 					p.name=album.name

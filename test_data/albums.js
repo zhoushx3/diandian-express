@@ -12,9 +12,10 @@ exports.insert = function(db, callback){
       
       for (var i = 1; i <= 10; i++) {
         pictureIds.push({
+          index: '/images/post1_' + i + '.jpg',
           src: '/images/post1_' + i + '.jpg',
-          name: '\u56fe\u7247' + i,
-          instruction: "有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有"
+          headline: '\u56fe\u7247' + i,
+          introduction: "有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有有什么好介绍的吗？没有"
         });
       }
 
