@@ -2,11 +2,11 @@ extends ../../layout
 
 block content	
 	#share
-		.module(style="border-right: 1pt  solid #aaa")
+		.module(style="border-right: 1px  solid #aaa")
 			a(href="/volunteer/"+share[0]._id style="background: url(#{share[0].path}) no-repeat; background-size: 100%; background-position: center")
 			div
 				p=share[0].contents  + "......"
-		.module
+		.module(style="padding-left: 3px")
 			div
 				p=share[1].contents + "......"
 			a(href="/volunteer/"+share[1]._id style="background: url(#{share[1].path}) no-repeat; background-size: 100%; background-position: center")

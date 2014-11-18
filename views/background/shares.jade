@@ -1,40 +1,52 @@
-// 后台 分享交流    每一期都硬性要求有5张
-
-mixin period(share)
-	each item in share
-		form.share_details(action="/background/modifyTexts/" + item._id, enctype="multipart/form-data", method="post")
-			.share_img
-				img(alt=item.headline, src=item.path)
-				input(type='file', value="换图", name="changePhoto")
-			.share_contents
-				textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")=item.summary
-				textarea.contents(name="contents", placeholder="详细描述")=item.contents
-			input(type='submit', value="保存")
-
-
 extends  ../background_layout
 
 block content 
 	#background_share
-		input(id="share_add", type="button", value="添加新一期志愿者分享")
-		form#add_choose(action="/background/addNewPeriod/" + (number+1), enctype="multipart/form-data", method="post")
-			input(id="submit_new_period", type="submit", value="提交新的一期")
-			input(id="cancel_new_period", type="button", value="取消提交")
-			input(id="author_name", type="text", name="author_name", value="author")
-			input.uploadInfo(type="text", name="uploadInfo")
-			-var x = 1
-				while x < 6
-					.share_details
-						.share_img
-							img(alt="defalut", src='/images/ini.png')
-							input.uploadFiles(type='file', value="换图", name="changePhoto" + (x++))
-						.share_contents
-							textarea.summary(name="summary", placeholder="简短描述,请不要超过一百字")=" "
-							textarea.contents(name="contents", placeholder="详细描述")=" "
+		button.corner.btn.btn-danger(style="margin-bottom: 0; width: 200px" data-toggle='modal' href="#add_period") 添加新一期志愿者分享
+		-var x = 0
+		-var period = record_number / 5
+			while (x++ < period)
+				div
+					h4="志愿者分享第" + (period-x+1) + "期"
+					div
+						-var y = 0
+							while y++ < 5
+								a.generalA(data-toggle='modal' href='##{share[(x-1)*5+y-1]._id}')=share[(x-1)*5+y-1].author + " : " + share[(x-1)*5+y-1].headline
+								.modal.hide.fade(id= '#{share[(x-1)*5+y-1]._id}' tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+									.modal-header
+										button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+										h3#myModalLabel(style="text-align: center") 志愿者分享查看
+									.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+										form(method="post" action="/background/shares/update_oneShare?id=#{share[(x-1)*5+y-1]._id}")
+											p
+												span 标题
+												input(name="headline" type="text" value="#{share[(x-1)*5+y-1].headline}")
+											p
+												span 作者
+												input(name="author" type="text"  value="#{share[(x-1)*5+y-1].author}")
+											p
+												span 封面摘要
+												textarea(style="width: 400px; height: 100px; resize: none" name="summary")=share[(x-1)*5+y-1].summary	
+											p
+												span 内容
+												textarea(style="width: 400px; height: 300px; resize: none" name="contents")=share[(x-1)*5+y-1].contents	
+											p
+												span 插图
+												img.post-img.img-rounded(src="#{share[(x-1)*5+y-1].path}" width="200px" height="180px")
+											input.btn(role='button' style="position: absolute; right: 50px; bottom: -250px" type="submit" value="确认修改")
 
-		- var n = number
-			while n > 0
-				form(method="post", action='/background/share_period/' + n)
-					input(type="submit", value="第" + n + "期志愿者分享")
-				if (show == n--)			
-					+period(share)
+	#add_period.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-header
+			button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+			h3#myModalLabel(style="text-align: center")="添加志愿者分享第" +  (record_number/5+1) + "期"
+		.modal-body(style="background-color: rgba(139, 249, 112, 0.84)")
+			form(enctype='multipart/form-data' , action="/background/shares/addNewPeriod?id=#{record_number/5+1}", method="post")
+				h4  ! 请添加5张照片
+				input(type="file", name="upload1")
+				input(type="file", name="upload2")
+				input(type="file", name="upload3")
+				input(type="file", name="upload4")
+				input(type="file", name="upload5")
+				div
+					a.btn.btn-danger(style="background-color: gray" data-dismiss='modal', aria-hidden='true') 取消
+					input.btn.btn-success(type="submit", value="确定")

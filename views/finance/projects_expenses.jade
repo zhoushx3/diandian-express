@@ -7,8 +7,7 @@ block content
       h3 项目开支
       #container
         ul#records
-          each item in cost
-            li=item.src
-          img#img(alt = "月报告")
+          each item in month
+            img(src=item alt = "月报告")
           #no-info 对不起，本月暂无公开数据。
     .clear

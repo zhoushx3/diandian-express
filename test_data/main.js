@@ -1,5 +1,5 @@
 exports.insert = function(callback){
-  var files = ['fundLabels', 'funds_apply', 'volunteers_apply' ,'albums', 'accounts', 'posts', 'carousels', 'donations', 'projects_expenses', 'monthly_report', 'annually_reports', 'pictures', 'share', 'activity'];
+  var files = ['fundLabels', 'funds_apply', 'volunteers_apply' ,'albums', 'accounts', 'posts', 'carousels', 'donations', 'pictures', 'share', 'activity'];
   var counter = 0;
 
   require('../lib/db').getConnection(function(db){

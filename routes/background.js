@@ -779,48 +779,11 @@ router.get('/shares', function(req, res) {
     return res.redirect('/ ');
   }
   var db = req.db;
-  var record_num;
-  db.collection('share', function(err, col) {
-    col.find(function(err, cursor) {
-      cursor.count(function(err, count) {
-        record_num = count;
-        callback();
-      });
-    });
-  });
-  var callback = function() {
-    res.render('background/shares', {
-      title: '分享交流',
-      number: Math.floor(record_num / 5),
-      show: 0,
-      user: req.session.user,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
-    });
-  };
-});
-/**
- ** 分享页面按期显示，通过点击得到当期期数
- **/
-router.post('/share_period/:number', function(req, res) {
-  if (!req.session.user) {
-    req.flash('error', '请先登陆');
-    return res.redirect('/signin');
-  }
-  if (req.session.user.role != 'admin') {
-    req.flash('error', '请用管理员账号登陆后台');
-    return res.redirect('/ ');
-  }
-  var serial_number = req.params.number;
-  var record_number, count = 0;
-  var db = req.db;
+  var count = 0;
   var share;
+  var record_number;
   db.collection('share', function(err, col) {
-    col.find({
-      period: serial_number.toString()
-    }, {
-      'limit': 5
-    }).toArray(function(err, docs) {
+    col.find({}, {sort: {'period': -1}}).toArray(function(err, docs) {
       if (err) {
         console.log(err.message);
       } else {
@@ -843,8 +806,7 @@ router.post('/share_period/:number', function(req, res) {
       res.render('background/shares', {
         title: '分享交流',
         share: share,
-        number: Math.floor(record_number / 5),
-        show: serial_number,
+        record_number: record_number,
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -853,100 +815,106 @@ router.post('/share_period/:number', function(req, res) {
   };
 });
 /**
- ** 分享页面修改文本和照片
+ ** 分享页面修改文本
  **/
-router.post('/modifyTexts/:id', function(req, res) {
+router.post('/shares/update_oneShare', function(req, res) {
+  var db = req.db.collection('share');
   var ObjectID = require('mongodb').ObjectID;
-  var id = req.params.id;
-  var files = [];
-  var texts = [];
-  var db = req.db;
-  var form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.encoding = "utf-8";
-  form.on('field', function(field, value) {
-    texts.push(value);
-  });
-  form.on('file', function(field, file) {
-    if (file.size !== 0) { // 没上传文件也照吃
-      fs.renameSync(file.path, 'public/images/share/' + file.name);
-      files.push({
-        path: '/images/share/' + file.name
-      });
-    }
-  });
-  form.parse(req, function() {
-    db.collection('share', function(err, col) {
-      if (files.length === 0) {
-        col.update({
-          _id: ObjectID(id)
-        }, {
-          $set: {
-            'summary': texts[0],
-            'contents': texts[1]
-          }
-        }, function(err, result) {
-          if (err) {
-            console.log(err.message);
-            return;
-          }
-          res.redirect('/background/shares');
-        });
-      } else {
-        col.update({
-          _id: ObjectID(id)
-        }, {
-          $set: {
-            'summary': texts[0],
-            'contents': texts[1],
-            'path': files[0].path
-          }
-        }, function(err, result) {
-          if (err) {
-            console.log(err.message);
-            return;
-          }
-          res.redirect('/background/shares');
-        });
-      }
-    });
+  db.update({_id: ObjectID(req.query.id)}, {$set: {headline: req.body.headline, summary: req.body.summary, contents: req.body.contents, author: req.body.author}}, function(err, item) {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('../shares');
+    } 
   });
 });
 /**
+ ** 分享页面修改文本和照片
+ **/
+// router.post('/modifyTexts/:id', function(req, res) {
+//   var ObjectID = require('mongodb').ObjectID;
+//   var id = req.params.id;
+//   var files = [];
+//   var texts = [];
+//   var db = req.db;
+//   var form = new formidable.IncomingForm();
+//   form.keepExtensions = true;
+//   form.encoding = "utf-8";
+//   form.on('field', function(field, value) {
+//     texts.push(value);
+//   });
+//   form.on('file', function(field, file) {
+//     if (file.size !== 0) { // 没上传文件也照吃
+//       fs.renameSync(file.path, 'public/images/share/' + file.name);
+//       files.push({
+//         path: '/images/share/' + file.name
+//       });
+//     }
+//   });
+//   form.parse(req, function() {
+//     db.collection('share', function(err, col) {
+//       if (files.length === 0) {
+//         col.update({
+//           _id: ObjectID(id)
+//         }, {
+//           $set: {
+//             'summary': texts[0],
+//             'contents': texts[1]
+//           }
+//         }, function(err, result) {
+//           if (err) {
+//             console.log(err.message);
+//             return;
+//           }
+//           res.redirect('/background/shares');
+//         });
+//       } else {
+//         col.update({
+//           _id: ObjectID(id)
+//         }, {
+//           $set: {
+//             'summary': texts[0],
+//             'contents': texts[1],
+//             'path': files[0].path
+//           }
+//         }, function(err, result) {
+//           if (err) {
+//             console.log(err.message);
+//             return;
+//           }
+//           res.redirect('/background/shares');
+//         });
+//       }
+//     });
+//   });
+// });
+/**
  ** 分享页面添加新的一期
  **/
-router.post('/addNewPeriod/:number', function(req, res) {
-  var number = req.params.number;
-  var texts = [];
+router.post('/shares/addNewPeriod', function(req, res) {
+  var number = req.query.id;
   var fileNames = [];
   var arr = [];
   var db = req.db;
   var form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.encoding = "utf-8";
-  form.on('field', function(field, value) {
-    texts.push(value);
-  });
   form.on('file', function(field, file) { // 这一步我主要是得到上传文件的位置并移到指定的位置
-    if (file.size !== 0) { // 没上传文件也照吃
       fs.renameSync(file.path, 'public/images/share/' + file.name);
-    }
+      fileNames.push(file.name);
   });
   form.parse(req, function(err) {
-    fileNames = texts[1].split('***');
     for (var i = 0; i < 5; ++i) {
-      if (fileNames[i] != " ")
         fileNames[i] = '/images/share/' + fileNames[i];
-      else
-        fileNames[i] = '/images/ini.png';
       arr.push({
         period: number,
         date: new Date(),
-        author: texts[0],
+        author: "点点",
         path: fileNames[i],
-        headline: fileNames[i].replace(/\/images\//, ''),
-        contents: texts[2 * i + 3],
-        summary: texts[2 * i + 2]
+        headline: "点点",
+        contents: "点点",
+        summary: "点点"
       });
     }
     db.collection('share', function(err, col) {

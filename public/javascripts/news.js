@@ -9,10 +9,10 @@
     $('.left').on('click', function(){
       var container = $('#pictures .picture-list-inner'),
         now = parseInt(container.css('margin-left'));
-      if (-now - 416 <= 10)
+      if (-now - 432 <= 10)
         $('#pictures .left').hide();
       container.animate({
-        marginLeft: now + 416 + 'px'
+        marginLeft: now + 432 + 'px'
       }, 'slow');
       $('#pictures .right').show();
     });
@@ -25,7 +25,7 @@
           $('#pictures .right').hide();
       else {
         container.animate({
-          marginLeft: now - 416 + 'px'
+          marginLeft: now - 432 + 'px'
         }, 'slow');
         $('#pictures .left').show();
       }

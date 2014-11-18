@@ -2,13 +2,20 @@ extends  ../layout
 
 block content
   #monthly-reports.finance
-    include sidebar
+    .finance-sidebar
+      h3 请选择年份
+      #year
+        select
+          - each year in years
+            option(value=year)=year
+      ol#months
+        - for (var m = 1; m < 5; m++)  
+          li= '第' + m + '季度'
     #main-content
-      h3 每月收支报表
+      h3 季度收支报表
       #container
         ul#records
-          each item in money
-            li=item.src
-          img#img(alt = "月报告")
-          #no-info 对不起，本月暂无公开数据。
+          each item in quarter
+            img(src=item  alt = "季度报告")
+          #no-info 对不起，本季度暂无公开数据。
     .clear

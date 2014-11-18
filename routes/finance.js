@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
+var fs = require('fs');
+var DOCS_PATH = 'images/docs/';
 /* GET finance page. */
 router.get('/', function(req, res) {
   res.render('finance/finance', {
@@ -45,88 +46,75 @@ router.get('/donations', function(req, res) {
 });
 /* GET projects-/*expenses page*/
 router.get('/projects-expenses', function(req, res) {
-  var db = req.db;
-  var cost;
+ var monthFiles = [];
+  var years = [];
   var today = new Date().getFullYear();
   //years starts from 2012 to nowadays
-  var years = [];
   for (var i = 2012; i <= today; ++i)
     years.push(i);
-
-  db.collection('cost', function(err, col) {
-    col.find().toArray(function(err, docs) {
-      cost = docs;
-      callback();
-    });
-  });
-  var callback = function() {
+  fs.readdir('public/' + DOCS_PATH, function(err, files) {
+    var sortFiles = files.sort();
+    for (var i = 0; i < sortFiles.length; i++) {
+      if (sortFiles[i].match("月份"))
+        monthFiles.push( '../' + DOCS_PATH + sortFiles[i]);
+    }
     res.render('finance/projects_expenses', {
       title: '项目开支',
-      years: years,
-      cost: cost,
       showAll: false,
+      years: years,
+      month: monthFiles,
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
-  };
+  });
 });
 /* GET monthly-reports page*/
 router.get('/monthly-reports', function(req, res) {
-  var db = req.db;
-  var money;
-  var today = new Date().getFullYear();
+  var quarterFiles = [];
   var years = [];
+  var today = new Date().getFullYear();
+  //years starts from 2012 to nowadays
   for (var i = 2012; i <= today; ++i)
     years.push(i);
-
-  db.collection('money', function(err, col) {
-    col.find().toArray(function(err, docs) {
-      money = docs;
-      callback();
-    });
-  });
-
-  var callback = function() {
+  fs.readdir('public/' + DOCS_PATH, function(err, files) {
+    var sortFiles = files.sort();
+    for (var i = 0; i < sortFiles.length; i++) {
+      if (sortFiles[i].match("季度"))
+        quarterFiles.push( '../' + DOCS_PATH + sortFiles[i]);
+    }
     res.render('finance/monthly_reports', {
-      title: '每月报表',
+      title: '季度报表',
       years: years,
-      showAll: false,
-      money: money,
+      quarter: quarterFiles,
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
-  };
+  });
 });
 /* GET annually-reports page*/
 router.get('/annually-reports', function(req, res) {
-  var db = req.db;
-  var annual;
+  var annualFiles = [];
+  var years = [];
   var today = new Date().getFullYear();
   //years starts from 2012 to nowadays
-  var years = [];
   for (var i = 2012; i <= today; ++i)
     years.push(i);
-
-  db.collection('annual', function(err, col) {
-    col.find({}).toArray(function(err, docs) {
-      annual = docs;
-      callback();
-    });
-  });
-
-  var callback = function() {
+  fs.readdir('public/' + DOCS_PATH, function(err, files) {
+    var sortFiles = files.sort();
+    for (var i = 0; i < sortFiles.length; i++) {
+      if (sortFiles[i].match("年度"))
+        annualFiles.push( '../' + DOCS_PATH + sortFiles[i]);
+    }
     res.render('finance/annually_reports', {
-      title: '年报表',
+      title: '季度报表',
       years: years,
-      annual: annual,
-      showAll: false,
+      annual: annualFiles,
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
-  };
+  });
 });
-
 module.exports = router;
