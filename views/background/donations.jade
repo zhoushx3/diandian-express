@@ -94,7 +94,7 @@ block content
 			div#unlimited-donations-header
 				h3(style='display: inline-block') 非限定性捐款
 				a.historyRecord(style="text-decoration: underline" name="0" data-toggle="modal" href='#unlimited-history') 历史记录
-				
+				h5 (指向点点公益捐赠善款，且不指定用于某一公益活动，可由点点公益自由分配用于任一公益活动)
 			div#unlimited-donations-wrapper.wrapper
 				span <input class="type", value="0"></input>
 				span <input class="donate_year" placeholder='#{year}'></input> 年 
@@ -114,7 +114,7 @@ block content
 			div#limited-donations-header
 				h3(style='display: inline-block') 限定性捐款 
 				a.historyRecord(style="text-decoration: underline" name="1" data-toggle="modal" href='#limited-history') 历史记录
-				
+				h5 (指向点点公益捐赠善款，并指定用于某一公益活动)
 			div#limited-donations-wrapper.wrapper
 				span <input class="type", value="1"></input>
 				span <input class="donate_year" placeholder='#{year}'></input> 年 
@@ -135,7 +135,7 @@ block content
 			div#material-donations-header
 				h3(style='display: inline-block') 物资捐款 
 				a.historyRecord(style="text-decoration: underline" name="2" data-toggle="modal" href='#material-history') 历史记录
-				
+				h5 (指向点点公益捐赠某类具体事物)
 			div#material-donations-wrapper.wrapper
 				span <input class="type", value="2"></input>
 				span <input class="donate_year" placeholder='#{year}'></input> 年 
