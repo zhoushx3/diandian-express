@@ -122,7 +122,7 @@ router.get('/activity', function(req, res) {
   });
   var callback = function() {
     res.render('news/activity', {
-      title: 'activity',
+      title: '活动预告',
       items: activity,
       user: req.session.user,
       success: req.flash('success').toString(),

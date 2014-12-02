@@ -47,7 +47,7 @@ router.get('/finances', function(req, res) {
     }
 
     res.render('background/finances', {
-      title: 'finances',
+      title: '财务报告',
       itemFiles: itemFiles,
       seasonFiles: seasonFiles,
       annualFiles: annualFiles,
@@ -220,7 +220,7 @@ router.get('/volunteers_apply', function(req, res) {
       }
     }
     res.render('background/volunteers_apply', {
-      title: 'volunteers_apply ',
+      title: '志愿者申请表 ',
       volunteersApply: volunteersApply,
       volunteersPassed: volunteersPassed,
       user: req.session.user,
@@ -243,7 +243,7 @@ router.get('/dynamics', function(req, res) {
   db.find({}, {sort: {createdAt: -1}}).toArray(function(err, docs) {
     var data = docs;
     res.render('background/dynamics', {
-      title: 'dynamics',
+      title: '动态新闻',
       posts: data,
       user: req.session.user,
       success: req.flash('success').toString(),
@@ -286,7 +286,7 @@ router.get('/dynamics/dynamics-edit', function(req, res) {
     return res.redirect('/ ');
   }
   res.render('background/dynamics-edit', {
-    title: 'dynamics',
+    title: '动态新闻',
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
@@ -341,7 +341,7 @@ router.get('/news', function(req, res) {
   db.find().toArray(function(err, docs){
     var data = docs;
     res.render('background/news', {
-      title: 'news',
+      title: '图片新闻 ',
       pictureNews: data,
       user: req.session.user,
       success: req.flash('success').toString(),
@@ -360,7 +360,7 @@ router.get('/news/news-edit', function(req, res) {
     return res.redirect('/');
   }
   res.render('background/news-edit', {
-    title: 'news-edit',
+    title: '图片新闻编辑',
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
@@ -492,7 +492,7 @@ router.get('/donations', function(req, res) {
     return res.redirect('/ ');
   }
   res.render('background/donations', {
-    title: 'donations',
+    title: '捐赠明细',
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
@@ -654,7 +654,7 @@ router.get('/foreshows', function(req, res) {
     col.find({}).toArray(function(err, docs) {
       activity = docs;
       res.render('background/foreshows', { // 放在外边里面不一样，异步的关系？
-        title: 'foreshows',
+        title: '活动预告',
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString(),
@@ -676,7 +676,7 @@ router.get('/foreshows/foreshows-edit', function(req, res) {
     return res.redirect('/ ');
   }
   res.render('background/foreshows-edit', {
-    title: 'foreshows',
+    title: '活动预告编辑',
     user: req.session.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
@@ -1335,7 +1335,7 @@ router.get('/funds_apply', function(req, res) {
               fundsApply.push(docs[i]);
           }
           res.render('background/funds_apply', {
-            title: 'fundsApply',
+            title: '资助申请',
             labels: label,
             fundsApply: fundsApply,
             fundsPassed: fundsPassed,

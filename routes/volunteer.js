@@ -10,7 +10,7 @@ router.get('/join-us', function(req, res) {
     counter++;
     if (counter == 3) {
       res.render('volunteer/join-us/join-us', {
-        title: 'join-us',
+        title: '加入我们',
         showDonationScroller: true,
         carousels: carousels,
         posts: posts,
@@ -70,7 +70,7 @@ router.get('/apply', function(req, res) {
     counter++;
     if (counter == 3) {
       res.render('volunteer/join-us/apply', {
-        title: 'apply',
+        title : '志愿者申请',
         showDonationScroller: true,
         carousels: carousels,
         posts: posts,
