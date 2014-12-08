@@ -7,6 +7,9 @@
 		hasNull(e);
 		validate(e);
 		$('.formWarning').css('color', 'red').css('font-size', '12px');
+		if (!correct) {
+			$('html, body').animate({scrollTop: '270px'}, 'slow'); 
+		}
 	});
 	// function
 	function hasNull(e) {
