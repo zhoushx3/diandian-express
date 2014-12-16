@@ -6,6 +6,15 @@ block content
 	-var month = now.getMonth()+1
 	-var day = now.getDate()
 
+	div#operation-concern.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
+		div.modal-body-body
+			h3(style="text-align:center") 你确定发布信息如下吗?
+			p
+		div.modal-footer-footer
+			button(data-dismiss='modal', aria-hidden='true') 取消
+			button.goSend 发布
+
 	div#operation-success.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-hidden='true') X
 		div.modal-body-body

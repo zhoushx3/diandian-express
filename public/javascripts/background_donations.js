@@ -1,8 +1,11 @@
 (function() {
 	if (location.pathname == '/background/donations') {
+		// 单条发布信息内容存储
+		var texts = [];
 		// 将输入框的值通过ajax传给服务器
 		$('.send').click(function() {
-				var texts = [];
+				texts = [];
+				$('#operation-concern').find('p').text(' ');
 				var $input = $(this).parent().parent().find('input');
 				texts.push($input.eq(0).attr('value'));
 				for (var i = 1; i < $input.length; ++i) {
@@ -11,18 +14,24 @@
 						return;						
 					}
 					texts.push($input.eq(i).val());
+					$('#operation-concern').find('p').text($('#operation-concern').find('p').text()+" " + $input.eq(i).val());
 				}
-				$.ajax({
-					type: 'get',
-					url: '/background/addToDonation',
-					data: {texts: texts},
-					success: function(data) {
-						if(data)
-							$('#operation-success').modal();
-						else
-							$('#operation-fail').modal();
-					}
-				});
+			$('#operation-concern').modal();
+		});
+		// 确认单条信息发布
+		$('.goSend').click(function() {
+			$('#operation-concern').find('.close').click();
+			$.ajax({
+				type: 'get',
+				url: '/background/addToDonation',
+				data: {texts: texts},
+				success: function(data) {
+					if(data)
+						$('#operation-success').modal();
+					else
+						$('#operation-fail').modal();
+				}
+			});
 		});
 		// 将输入框初始化
 		$('.cancel').click(function() {
