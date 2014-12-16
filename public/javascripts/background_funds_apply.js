@@ -22,7 +22,7 @@
 							$('#labels').append('<button class="label">' + data.label[j] + '</button>');
 						}
 					} else {
-						window.alert('retrieve failed');
+						window.alert('数据获取失败~');
 					}
 				}
 			});

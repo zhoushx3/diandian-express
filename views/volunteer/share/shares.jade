@@ -3,27 +3,35 @@ extends ../../layout
 block content	
 	#share
 		.module(style="border-right: 1px  solid #aaa")
-			a(href="/volunteer/"+share[0]._id style="background: url(#{share[0].path}) no-repeat; background-size: 100%; background-position: center")
-			div
-				p=share[0].contents  + "......"
+			if (share.length > 0)
+				a(href="/volunteer/"+share[0]._id style="background: url(#{share[0].path}) no-repeat; background-size: 100%; background-position: center")
+				div
+					p=share[0].contents  + "......"
 		.module(style="padding-left: 3px")
-			div
-				p=share[1].contents + "......"
-			a(href="/volunteer/"+share[1]._id style="background: url(#{share[1].path}) no-repeat; background-size: 100%; background-position: center")
+			if (share.length > 0)
+				div
+					p=share[1].contents + "......"
+				a(href="/volunteer/"+share[1]._id style="background: url(#{share[1].path}) no-repeat; background-size: 100%; background-position: center")
 		.module
-			div
-				p=share[2].contents + "......"
-			a(href="/volunteer/"+share[2]._id style="background: url(#{share[2].path}) no-repeat; background-size: 100%; background-position: center")
+			if (share.length > 0)
+				div
+					p=share[2].contents + "......"
+				a(href="/volunteer/"+share[2]._id style="background: url(#{share[2].path}) no-repeat; background-size: 100%; background-position: center")
 		#module-headline
 				span(style="font-size: 50px; color: #fff; ") 志愿者感言 
-				span(style="font-size: 49px; color: rgba(72, 64, 64, 1)")="第"  + share[0].period + "期"
+				if (share.length > 0)
+					span(style="font-size: 49px; color: rgba(72, 64, 64, 1)")="第"  + share[0].period + "期"
+				else
+					span(style="font-size: 49px; color: rgba(72, 64, 64, 1)")="第0期"
 				span(style="font-size: 23px; color: rgba(72, 64, 64, 1)")点点公益感谢有你们
 		.module(style="border-right: 1pt  solid #aaa")
-			a(href="/volunteer/"+share[3]._id style="background: url(#{share[3].path}) no-repeat; background-size: 100%; background-position: center")
-			div
-				p=share[3].contents + "......"
+			if (share.length > 0)
+				a(href="/volunteer/"+share[3]._id style="background: url(#{share[3].path}) no-repeat; background-size: 100%; background-position: center")
+				div
+					p=share[3].contents + "......"
 		.module
-			a(href="/volunteer/"+share[4]._id style="background: url(#{share[4].path}) no-repeat; background-size: 100%; background-position: center")
-			div
-				p=share[4].contents + "......"
+			if (share.length > 0)
+				a(href="/volunteer/"+share[4]._id style="background: url(#{share[4].path}) no-repeat; background-size: 100%; background-position: center")
+				div
+					p=share[4].contents + "......"
 		a.generalA(href='/volunteer/shareList' style="float: right; margin: 30px") 查看更多志愿者的分享

@@ -10,6 +10,10 @@
 		$("#myViewContent").attr('src', content.content);
 	}
 
+	$('.background_delete_button').click(function() {
+		$(this).prev().click();
+	});
+
 	$(".background_delete_button").click(function() {
 		setFileName($(this).attr("file"));
 	});
@@ -28,7 +32,6 @@
 	});
 
 	$(".delete_files_button").click(function() {
-		window.alert(fileName);
 		$.post("finances_deleteFiles", {
 			fileName: fileName
 		});

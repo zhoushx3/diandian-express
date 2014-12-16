@@ -40,7 +40,7 @@
 					location.reload();
 				},
 				error: function(data) {
-					window.alert(data);
+					console.log(data);
 				}
 			});
 		});
